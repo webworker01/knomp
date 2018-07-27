@@ -1,0 +1,95 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <link rel="icon" type="image/png" href="/static/favicon.png"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.4.2/pure-min.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.5/d3.min.js"></script>
+    <script src="/static/nvd3.js"></script>
+    <link rel="stylesheet" href="/static/nvd3.css">
+
+    <script src="/static/main.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <title>z-nomp</title>
+
+</head>
+
+<body>
+
+<header>
+    <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal">
+
+        <a class="pure-menu-heading hot-swapper" href="/"><i class="fa fa-home"></i>&nbsp;z-nomp</a>
+
+        <ul>
+            <li class="{{? it.selected === 'getting_started' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/getting_started">
+                    <i class="fa fa-rocket"></i>&nbsp;
+                    Getting Started
+                </a>
+            </li>
+            <li class="{{? it.selected === 'stats' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/stats">
+                    <i class="fa fa-bar-chart-o"></i>&nbsp;
+                    Graph Stats
+                </a>
+            </li>
+            <li class="{{? it.selected === 'tbs' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/tbs">
+                    <i class="fa fa-table"></i>&nbsp;
+                    Tab Stats
+                </a>
+            </li>
+            <li class="{{? it.selected === 'workers' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/workers">
+                    <i class="fa fa-cogs"></i>&nbsp;
+                    Workers Stats
+                </a>
+            </li>
+            <li class="{{? it.selected === 'api' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/api">
+                    <i class="fa fa-code"></i>&nbsp;
+                    API
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<main>
+    {{=it.page}}
+</main>
+
+
+<footer>
+
+    <div>
+        This site is powered by the open source <a target="_blank" href="https://github.com/joshuayabut/z-nomp/">z-nomp</a>
+        project created by Joshua Yabut and the Zclassic Community and is licensed under the <a href="https://en.wikipedia.org/wiki/MIT_License">MIT License</a>
+    </div>
+    <div>
+        <i class="fa fa-heart"></i>&nbsp; Support this project by donating&nbsp;<i class="fa fa-btc"></i>&nbsp;BTC: 18vHMxVzotQ9EPyESrf7Z1hNM9AwJeVHgD
+    </div>
+    <div id="communityFooter">
+        Community&nbsp;<i class="fa fa-comment"></i>&nbsp;: &nbsp;<a target="_blank" href="https://zclassic.herokuapp.com">#zclassic IRC</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a target="_blank" href="http://reddit.com/r/zclassic">/r/zclassic</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <iframe src="http://ghbtns.com/github-btn.html?user=joshuayabut&repo=z-nomp&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="140" height="20"></iframe>
+    </div>
+
+</footer>
+
+</body>
+</html>
