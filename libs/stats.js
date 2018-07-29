@@ -464,7 +464,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                         allCoinStats[coinStats.name] = (coinStats);
                     }
                     // sort pools alphabetically
-                    allCoinStats = sortPoolsByName(allCoinStats);
+                    // allCoinStats = sortPoolsByName(allCoinStats);
+                    allCoinStats = sortPoolsByShares(allCoinStats);
                     callback();
                 }
             });
@@ -657,7 +658,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
                 var algoStats = portalStats.algos[algo];
                 algoStats.hashrateString = _this.getReadableHashRateString(algoStats.hashrate);
             });
-            portalStats.pools = sortPoolsByShares(portalStats.pools);
+
             portalStats.pools = sortPoolsByHashrate(portalStats.pools);
 
             _this.stats = portalStats;
