@@ -463,8 +463,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
                         allCoinStats[coinStats.name] = (coinStats);
                     }
                     // sort pools alphabetically
-                    // allCoinStats = sortPoolsByName(allCoinStats);
-                    allCoinStats = sortPoolsByHashrate(allCoinStats);
+                    allCoinStats = sortPoolsByName(allCoinStats);
                     callback();
                 }
             });
@@ -575,8 +574,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                     }
                 });
 
-				// sort miners
-				coinStats.miners = sortMinersByHashrate(coinStats.miners);
+
+
 				
                 var shareMultiplier = Math.pow(2, 32) / algos[coinStats.algorithm].multiplier;
                 coinStats.hashrate = shareMultiplier * coinStats.shares / portalConfig.website.stats.hashrateWindow;
@@ -661,6 +660,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                 algoStats.hashrateString = _this.getReadableHashRateString(algoStats.hashrate);
             });
 
+            portalStats.pools = sortPoolsByHashrate(portalStats.pools);
+
             _this.stats = portalStats;
             
             // save historical hashrate, not entire stats!
@@ -715,7 +716,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
     
     function sortPoolsByHashrate(objects) {
 		var newObject = {};
-		var sortedArray = sortProperties(objects, 'networkSolsString', false, false);
+		var sortedArray = sortProperties(objects, 'hashrateString', false, true);
 		for (var i = 0; i < sortedArray.length; i++) {
 			var key = sortedArray[i][0];
 			var value = sortedArray[i][1];
