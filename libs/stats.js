@@ -716,7 +716,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
     
     function sortPoolsByHashrate(objects) {
 		var newObject = {};
-		var sortedArray = sortProperties(objects, 'hashrateString', false, true);
+		var sortedArray = sortProperties(objects, 'hashrate', true, true);
 		for (var i = 0; i < sortedArray.length; i++) {
 			var key = sortedArray[i][0];
 			var value = sortedArray[i][1];
