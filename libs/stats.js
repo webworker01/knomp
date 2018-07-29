@@ -463,7 +463,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                         allCoinStats[coinStats.name] = (coinStats);
                     }
                     // sort pools alphabetically
-                    allCoinStats = sortPoolsByName(allCoinStats);
+                    // allCoinStats = sortPoolsByName(allCoinStats);
+                    allCoinStats = sortPoolsByHashrate(allCoinStats);
                     callback();
                 }
             });
@@ -712,6 +713,17 @@ module.exports = function(logger, portalConfig, poolConfigs){
 		return newObject;
     }
     
+    function sortPoolsByHashrate(objects) {
+		var newObject = {};
+		var sortedArray = sortProperties(objects, 'networkSolsString', false, false);
+		for (var i = 0; i < sortedArray.length; i++) {
+			var key = sortedArray[i][0];
+			var value = sortedArray[i][1];
+			newObject[key] = value;
+		}
+		return newObject;
+    }
+
     function sortBlocks(a, b) {
         var as = parseInt(a.split(":")[2]);
         var bs = parseInt(b.split(":")[2]);
