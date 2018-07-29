@@ -447,7 +447,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
 							currentRoundShares: (replies[i + 8] || {}),
                             currentRoundTimes: (replies[i + 11] || {}),
                             maxRoundTime: 0,
-                            shareCount: 0
+                            shareCount: 0,
+                            shareSort: replies[i + 2] ? (replies[i + 2].validShares || 0) : 0
                         };
                         for(var j = replies[i + 10].length; j > 0; j--){
                             var jsonObj;
@@ -573,9 +574,6 @@ module.exports = function(logger, portalConfig, poolConfigs){
 						}
                     }
                 });
-
-
-
 				
                 var shareMultiplier = Math.pow(2, 32) / algos[coinStats.algorithm].multiplier;
                 coinStats.hashrate = shareMultiplier * coinStats.shares / portalConfig.website.stats.hashrateWindow;
@@ -659,7 +657,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
                 var algoStats = portalStats.algos[algo];
                 algoStats.hashrateString = _this.getReadableHashRateString(algoStats.hashrate);
             });
-
+            portalStats.pools = sortPoolsByShares(portalStats.pools);
             portalStats.pools = sortPoolsByHashrate(portalStats.pools);
 
             _this.stats = portalStats;
@@ -717,6 +715,17 @@ module.exports = function(logger, portalConfig, poolConfigs){
     function sortPoolsByHashrate(objects) {
 		var newObject = {};
 		var sortedArray = sortProperties(objects, 'hashrate', true, true);
+		for (var i = 0; i < sortedArray.length; i++) {
+			var key = sortedArray[i][0];
+			var value = sortedArray[i][1];
+			newObject[key] = value;
+		}
+		return newObject;
+    }
+
+    function sortPoolsByShares(objects) {
+		var newObject = {};
+		var sortedArray = sortProperties(objects, 'shareSort', true, true);
 		for (var i = 0; i < sortedArray.length; i++) {
 			var key = sortedArray[i][0];
 			var value = sortedArray[i][1];
