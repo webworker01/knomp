@@ -27,6 +27,12 @@
     "user": "RPCUSERVAR",
     "password": "RPCPASSVAR"
 }],
-"p2p": { "enabled": true },
+
+"p2p": {
+        "enabled": true,
+        "host": "127.0.0.1",
+        "port": P2PPORTVAR,
+        "disableTransactions": true
+},
 "mposMode": { "enabled": false }
 }
