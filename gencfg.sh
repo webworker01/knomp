@@ -33,7 +33,7 @@ rm $ufwdisablefile
     magic=${string: -8}
     magicrev=$(echo ${magic:6:2}${magic:4:2}${magic:2:2}${magic:0:2})
 
-    p2pport=$(printf '%x\n' $(komodo-cli -ac_name=$chain getinfo | jq '.p2pport'))
+    p2pport=$(komodo-cli -ac_name=$chain getinfo | jq '.p2pport')
     thisconf=$(<~/.komodo/$chain/$chain.conf)
 
     rpcuser=$(echo $thisconf | grep -Po "rpcuser=(\S*)" | sed 's/rpcuser=//')
