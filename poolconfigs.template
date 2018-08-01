@@ -1,0 +1,32 @@
+{
+"enabled":true,
+"coin": "COINNAMEVAR.json",
+"address": "WALLETADDRVAR",
+"zAddress": "",
+"tAddress": "WALLETADDRVAR",
+"walletInterval": 5,
+"rewardRecipients": {},
+"tlsOptions": { "enabled": false },
+"paymentProcessing": { "enabled": false, "daemon": false },
+"ports": {
+    "STRATUMPORTVAR": {
+        "tls":false,
+        "diff": 0.05,
+        "varDiff": {
+            "minDiff": 0.04,
+            "maxDiff": 16,
+            "targetTime": 15,
+            "retargetTime": 60,
+            "variancePercent": 30
+        }
+    }
+},
+"daemons": [{
+    "host": "127.0.0.1",
+    "port": RPCPORTVAR,
+    "user": "RPCUSERVAR",
+    "password": "RPCPASSVAR"
+}],
+"p2p": { "enabled": true },
+"mposMode": { "enabled": false }
+}
