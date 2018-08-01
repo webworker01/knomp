@@ -1,30 +1,30 @@
 {
-  "name": "Komodo-mining",
-  "version": "0.0.1",
-  "description": "High performance Stratum poolserver in Node.js",
-  "keywords": [
-    "stratum",
-    "mining",
-    "pool",
-    "poolserver",
-    "komodo"
-  ],
-  "homepage": "https://github.com/TheComputerGenie/Knomp",
-  "bugs": {
-    "url": "https://github.com/TheComputerGenie/Knomp/issues"
-  },
-  "license": "GPL-2.0",
-  "author": "ComputerGenie",
-  "contributors": [
-    "z-classic"
-  ],
+    "name": "Komodo-mining",
+    "version": "0.0.1",
+    "description": "High performance Stratum poolserver in Node.js",
+    "keywords": [
+        "stratum",
+        "mining",
+        "pool",
+        "poolserver",
+        "komodo"
+    ],
+    "homepage": "https://github.com/TheComputerGenie/Knomp",
+    "bugs": {
+        "url": "https://github.com/TheComputerGenie/Knomp/issues"
+    },
+    "license": "GPL-2.0",
+    "author": "ComputerGenie",
+    "contributors": [
+        "z-classic"
+    ],
     "main": "init.js",
     "bin": {
         "block-notify": "./scripts/blockNotify.js"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/TheComputerGenie/Knomp.git"
+        "url": "https://github.com/webworker01/Knomp.git"
     },
     "dependencies": {
         "async": "2.3.0",
@@ -42,7 +42,7 @@
         "nonce": "1.0.4",
         "redis": "2.7.1",
         "request": "2.81.0",
-        "stratum-pool": "git+https://github.com/TheComputerGenie/node-stratum-pool.git"
+        "stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git"
     },
     "engines": {
         "node": ">=0.10"

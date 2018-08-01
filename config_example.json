@@ -6,18 +6,18 @@
 
     "clustering": {
         "enabled": true,
-        "forks": "auto"
+        "forks": 1
     },
 
     "defaultPoolConfigs": {
-        "blockRefreshInterval": 500,
+        "blockRefreshInterval": 0,
         "jobRebroadcastTimeout": 55,
         "connectionTimeout": 600,
         "emitInvalidBlockHashes": false,
-        "validateWorkerUsername": true,
+        "validateWorkerUsername": false,
         "tcpProxyProtocol": false,
         "banning": {
-            "enabled": true,
+            "enabled": false,
             "time": 600,
             "invalidPercent": 50,
             "checkThreshold": 500,
