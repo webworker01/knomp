@@ -2,6 +2,6 @@
 "name": "COINNAMEVAR",
 "symbol": "COINNAMEVAR",
 "algorithm": "equihash",
-"txfee": 0.0001
+"txfee": 0.0001,
 "peerMagic": "MAGICREVVAR"
 }
