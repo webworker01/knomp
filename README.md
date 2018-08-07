@@ -30,17 +30,14 @@ zcutil/build.sh -j8
 strip src/komodod
 strip src/komodo-cli
 ```
- Now, let's run an asset to mine (MGNX in this case)
+ Now, let's run the assets.
+ - This will start ALL of the assets might take a day or so to sync, depending on system speed/network connection.
 ```shell
 cd ~/komodo/src
-./komodod -ac_name=MGNX -ac_supply=12000000 -ac_staked=90 -ac_reward=2000000000 -ac_halving=525960 -ac_cc=2 -ac_end=2629800 -addnode=45.32.236.224 -gen -genproclimit=1 &
+./assetchains.old
 ```
-To check on our Assetchain status, we use something like:
-```shell
-# You always need to add ac_name to the cli or it will poll komodod for KMD
-cd ~/komodo/src
-./komodo-cli -ac_name=MGNX getwalletinfo
-```
+ Once all these chains have synced up we cna configure the stratum.
+ 
  We need npm and mvn installed
 
 ```shell
@@ -50,9 +47,11 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | 
 nvm install 8
 ```
 Now, let's build our stratum and run it (this stage assumes you already have Redis properly installed and running)
+This will install the stratum and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
 ```shell
 git clone https://github.com/TheComputerGenie/Knomp
 cd Knomp
+./gencfg.sh
 nvm use 8
 npm install
 npm start
