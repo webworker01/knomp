@@ -9,9 +9,9 @@
         "poolserver",
         "komodo"
     ],
-    "homepage": "https://github.com/TheComputerGenie/Knomp",
+    "homepage": "https://github.com/webworker01/knomp",
     "bugs": {
-        "url": "https://github.com/TheComputerGenie/Knomp/issues"
+        "url": "https://github.com/webworker01/knomp/issues"
     },
     "license": "GPL-2.0",
     "author": "ComputerGenie",
@@ -24,11 +24,11 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/webworker01/Knomp.git"
+        "url": "https://github.com/webworker01/knomp.git"
     },
     "dependencies": {
         "async": "2.3.0",
-        "bignum": "0.12.5",
+        "bignum": "0.13.0",
         "body-parser": "1.17.1",
         "colors": "1.1.2",
         "compression": "1.6.2",
