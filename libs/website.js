@@ -4,15 +4,15 @@ var path = require('path');
 
 var async = require('async');
 var watch = require('node-watch');
-var redis = require('redis');
+//var redis = require('redis');
 
 var dot = require('dot');
 var express = require('express');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 
-var Stratum = require('stratum-pool');
-var util = require('stratum-pool/lib/util.js');
+//var Stratum = require('stratum-pool');
+//var util = require('stratum-pool/lib/util.js');
 
 var api = require('./api.js');
 
@@ -41,7 +41,7 @@ module.exports = function(logger){
         'workers.html': 'workers',
         'api.html': 'api',
         'admin.html': 'admin',
-        'mining_key.html': 'mining_key',
+//        'mining_key.html': 'mining_key',
         'miner_stats.html': 'miner_stats',
         'payments.html': 'payments'
     };
