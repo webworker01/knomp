@@ -33,12 +33,13 @@
     }
 
     .menuList > a{
-        display: block;
+        display: inline-block;
         color: #e3f7ff;
         text-decoration: none;
         padding: 7px;
         padding-left: 25px;
         text-transform: capitalize;
+        width:40px;
     }
 
     .menuList > a:hover{
@@ -53,10 +54,10 @@
     }
     .miningOption{
         color: white;
-        display: flex;
+        /* display: flex;
         flex: 1 1 auto;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: wrap; */
         min-height: 215px;
         justify-content: center;
         align-items: center;
@@ -81,6 +82,7 @@
     }
     .miningOptionInstructions{
         flex: 1 1 auto;
+        padding:10px;
     }
 
     .miningOptionInstructions > div:first-child{
@@ -181,6 +183,12 @@
 </style>
 
 <div id="holder">
+    <a href="#" class="miningOption" id="coinGlowTrigger">
+        <div class="miningOptionInstructions">
+            <div>Select a coin for connection details</div>
+            <div>Configurations for each coin are available for advanced miners</div>
+        </div>
+    </a>
 
     <div id="menu">
 
@@ -226,7 +234,7 @@
         </div>
     </div>
 
-    <div id="main">
+    <!-- <div id="main">
         <a href="#" class="miningOption" id="nompAppDownload">
             <div class="miningOptionNum">1.</div>
             <div class="miningOptionInstructions">
@@ -245,7 +253,7 @@
                 <div>Configurations for each coin are available for advanced miners</div>
             </div>
         </a>
-    </div>
+    </div> -->
 </div>
 
 <a href="#" id="coinInfoBackground" class="hidden"></a>
