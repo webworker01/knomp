@@ -31,7 +31,6 @@ module.exports = function(logger){
 
     var logSystem = 'Website';
 
-
     var pageFiles = {
         'index.html': 'index',
         'home.html': '',
@@ -74,8 +73,6 @@ module.exports = function(logger){
 
         //logger.debug(logSystem, 'Stats', 'Website updated to latest stats');
     };
-
-
 
     var readPageFiles = function(files){
         async.each(files, function(fileName, callback){

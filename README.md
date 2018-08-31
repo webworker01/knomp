@@ -1,9 +1,9 @@
 ## Mining stratum for Komodo and Komodo assetchains.
-## (READY FOR TESTING)
+## (READY FOR TESTING
 
 Requirements
 ------------
-* node v8+
+* node v10+
 * libsodium
 * boost
 * Redis (see https://redis.io/topics/quickstart for details)
@@ -41,19 +41,16 @@ To check on our Assetchain status, we use something like:
 cd ~/komodo/src
 ./komodo-cli -ac_name=MGNX getwalletinfo
 ```
- We need npm and mvn installed
+ We need npm installed
 
 ```shell
 cd ~
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-nvm install 8
 ```
 Now, let's build our stratum and run it (this stage assumes you already have Redis properly installed and running)
 ```shell
-git clone https://github.com/TheComputerGenie/Knomp
-cd Knomp
-nvm use 8
+git clone https://github.com/webworker01/knomp
+cd knomp
 npm install
 npm start
 ```
