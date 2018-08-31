@@ -1,9 +1,9 @@
 ## Mining stratum for Komodo and Komodo assetchains.
-## (READY FOR TESTING)
+## (READY FOR TESTING
 
 Requirements
 ------------
-* node v8+
+* node v10+
 * libsodium
 * boost
 * Redis (see https://redis.io/topics/quickstart for details)
@@ -36,29 +36,32 @@ strip src/komodo-cli
 cd ~/komodo/src
 ./assetchains.old
 ```
- Once all these chains have synced up we cna configure the stratum.
- 
- We need npm and mvn installed
+
+ Once all these chains have synced up we can configure the stratum.
+
+ We need node and npm installed
 
 ```shell
 cd ~
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-nvm install 8
 ```
 Now, let's build our stratum and run it (this stage assumes you already have Redis properly installed and running)
 This will install the stratum and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
 ```shell
-git clone https://github.com/TheComputerGenie/Knomp
-cd Knomp
+git clone https://github.com/webworker01/knomp
+cd knomp
 ./gencfg.sh
-nvm use 8
 npm install
 npm start
 ```
 
+[Further info on config](https://github.com/zone117x/node-open-mining-portal)
+
 License
 -------
+
+Forked from ComputerGenie repo (deleted)
+
 Released under the GNU General Public License v2
 http://www.gnu.org/licenses/gpl-2.0.html
 

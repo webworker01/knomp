@@ -4,15 +4,15 @@ var path = require('path');
 
 var async = require('async');
 var watch = require('node-watch');
-var redis = require('redis');
+//var redis = require('redis');
 
 var dot = require('dot');
 var express = require('express');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 
-var Stratum = require('stratum-pool');
-var util = require('stratum-pool/lib/util.js');
+//var Stratum = require('stratum-pool');
+//var util = require('stratum-pool/lib/util.js');
 
 var api = require('./api.js');
 
@@ -31,7 +31,6 @@ module.exports = function(logger){
 
     var logSystem = 'Website';
 
-
     var pageFiles = {
         'index.html': 'index',
         'home.html': '',
@@ -41,7 +40,7 @@ module.exports = function(logger){
         'workers.html': 'workers',
         'api.html': 'api',
         'admin.html': 'admin',
-        'mining_key.html': 'mining_key',
+//        'mining_key.html': 'mining_key',
         'miner_stats.html': 'miner_stats',
         'payments.html': 'payments'
     };
@@ -74,8 +73,6 @@ module.exports = function(logger){
 
         //logger.debug(logSystem, 'Stats', 'Website updated to latest stats');
     };
-
-
 
     var readPageFiles = function(files){
         async.each(files, function(fileName, callback){
@@ -129,93 +126,6 @@ module.exports = function(logger){
     };
 
     setInterval(buildUpdatedWebsite, websiteConfig.stats.updateInterval * 1000);
-
-    var buildKeyScriptPage = function(){
-        async.waterfall([
-            function(callback){
-                var client = redis.createClient(portalConfig.redis.port, portalConfig.redis.host);
-                if (portalConfig.redis.password) {
-                    client.auth(portalConfig.redis.password);
-                }
-                client.hgetall('coinVersionBytes', function(err, coinBytes){
-                    if (err){
-                        client.quit();
-                        return callback('Failed grabbing coin version bytes from redis ' + JSON.stringify(err));
-                    }
-                    callback(null, client, coinBytes || {});
-                });
-            },
-            function (client, coinBytes, callback){
-                var enabledCoins = Object.keys(poolConfigs).map(function(c){return c.toLowerCase()});
-                var missingCoins = [];
-                enabledCoins.forEach(function(c){
-                    if (!(c in coinBytes))
-                        missingCoins.push(c);
-                });
-                callback(null, client, coinBytes, missingCoins);
-            },
-            function(client, coinBytes, missingCoins, callback){
-                var coinsForRedis = {};
-                async.each(missingCoins, function(c, cback){
-                    var coinInfo = (function(){
-                        for (var pName in poolConfigs){
-                            if (pName.toLowerCase() === c)
-                                return {
-                                    daemon: poolConfigs[pName].paymentProcessing.daemon,
-                                    address: poolConfigs[pName].address
-                                }
-                        }
-                    })();
-                    var daemon = new Stratum.daemon.interface([coinInfo.daemon], function(severity, message){
-                        logger[severity](logSystem, c, message);
-                    });
-                    daemon.cmd('dumpprivkey', [coinInfo.address], function(result){
-                        if (result[0].error){
-                            logger.error(logSystem, c, 'Could not dumpprivkey for ' + c + ' ' + JSON.stringify(result[0].error));
-                            cback();
-                            return;
-                        }
-
-                        var vBytePub = util.getVersionByte(coinInfo.address)[0];
-                        var vBytePriv = util.getVersionByte(result[0].response)[0];
-
-                        coinBytes[c] = vBytePub.toString() + ',' + vBytePriv.toString();
-                        coinsForRedis[c] = coinBytes[c];
-                        cback();
-                    });
-                }, function(err){
-                    callback(null, client, coinBytes, coinsForRedis);
-                });
-            },
-            function(client, coinBytes, coinsForRedis, callback){
-                if (Object.keys(coinsForRedis).length > 0){
-                    client.hmset('coinVersionBytes', coinsForRedis, function(err){
-                        if (err)
-                            logger.error(logSystem, 'Init', 'Failed inserting coin byte version into redis ' + JSON.stringify(err));
-                        client.quit();
-                    });
-                }
-                else{
-                    client.quit();
-                }
-                callback(null, coinBytes);
-            }
-        ], function(err, coinBytes){
-            if (err){
-                logger.error(logSystem, 'Init', err);
-                return;
-            }
-            try{
-                keyScriptTemplate = dot.template(fs.readFileSync('website/key.html', {encoding: 'utf8'}));
-                keyScriptProcessed = keyScriptTemplate({coins: coinBytes});
-            }
-            catch(e){
-                logger.error(logSystem, 'Init', 'Failed to read key.html file');
-            }
-        });
-
-    };
-    buildKeyScriptPage();
 
     var getPage = function(pageId){
         if (pageId in pageProcessed){
@@ -281,10 +191,7 @@ module.exports = function(logger){
 
     };
 
-
-
     var app = express();
-
 
     app.use(bodyParser.json());
 
@@ -297,9 +204,9 @@ module.exports = function(logger){
         next();
     });
 
-    app.get('/key.html', function(req, res, next){
-        res.end(keyScriptProcessed);
-    });
+    // app.get('/key.html', function(req, res, next){
+    //     res.end(keyScriptProcessed);
+    // });
 
     //app.get('/stats/shares/:coin', usershares);
     //app.get('/stats/shares', shares);
