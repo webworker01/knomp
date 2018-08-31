@@ -29,7 +29,7 @@ rm $ufwdisablefile
   if [[ " ${skip[@]} " =~ " ${chain} " ]]; then
     pointless=0
   else
-    string=$(printf '%x\n' $(komodo-cli -ac_name=$chain getinfo | jq '.magic'))
+    string=$(printf '%08x\n' $(komodo-cli -ac_name=$chain getinfo | jq '.magic'))
     magic=${string: -8}
     magicrev=$(echo ${magic:6:2}${magic:4:2}${magic:2:2}${magic:0:2})
 
