@@ -16,7 +16,6 @@ var compress = require('compression');
 
 var api = require('./api.js');
 
-
 module.exports = function(logger){
 
     dot.templateSettings.strip = false;
@@ -91,7 +90,6 @@ module.exports = function(logger){
         });
     };
 
-
     // if an html file was changed reload it
     /* requires node-watch 0.5.0 or newer */
     watch(['./website', './website/pages'], function(evt, filename){
@@ -121,11 +119,10 @@ module.exports = function(logger){
                 var res = portalApi.liveStatConnections[uid];
                 res.write(statData);
             }
-
         });
     };
 
-    setInterval(buildUpdatedWebsite, websiteConfig.stats.updateInterval * 1000);
+    //setInterval(buildUpdatedWebsite, websiteConfig.stats.updateInterval * 1000);
 
     var getPage = function(pageId){
         if (pageId in pageProcessed){
@@ -164,7 +161,6 @@ module.exports = function(logger){
         portalStats.getCoins(function(){
             processTemplates();
             res.end(indexesProcessed['user_shares']);
-
         });
     };
 
@@ -264,6 +260,4 @@ module.exports = function(logger){
         logger.error(logSystem, 'Server', 'Could not start website on ' + portalConfig.website.host + ':' + portalConfig.website.port
             +  ' - its either in use or you do not have permission');
     }
-
-
 };

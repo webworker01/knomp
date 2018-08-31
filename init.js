@@ -93,7 +93,6 @@ var buildPoolConfigs = function(){
 
     var poolConfigFiles = [];
 
-
     /* Get filenames of pool config json files that are enabled */
     fs.readdirSync(configDir).forEach(function(file){
         if (!fs.existsSync(configDir + file) || path.extname(configDir + file) !== '.json') return;
@@ -102,7 +101,6 @@ var buildPoolConfigs = function(){
         poolOptions.fileName = file;
         poolConfigFiles.push(poolOptions);
     });
-
 
     /* Ensure no pool uses any of the same ports as another pool */
     for (var i = 0; i < poolConfigFiles.length; i++){
@@ -126,7 +124,6 @@ var buildPoolConfigs = function(){
 
         }
     }
-
 
     poolConfigFiles.forEach(function(poolOptions){
 
@@ -164,7 +161,6 @@ var buildPoolConfigs = function(){
                 poolOptions[option] = clonedOption;
             }
         }
-
 
         configs[poolOptions.coin.name] = poolOptions;
 
@@ -214,7 +210,6 @@ var spawnPoolWorkers = function(){
         logger.warning('Master', 'PoolSpawner', 'No pool configs exists or are enabled in pool_configs folder. No pools spawned.');
         return;
     }
-
 
     var serializedConfigs = JSON.stringify(poolConfigs);
 
@@ -326,7 +321,6 @@ var spawnPoolWorkers = function(){
 
 };
 
-
 var startCliListener = function(){
 
     var cliPort = portalConfig.cliPort;
@@ -358,7 +352,6 @@ var startCliListener = function(){
         }
     }).start();
 };
-
 
 var processCoinSwitchCommand = function(params, options, reply){
 
@@ -400,13 +393,11 @@ var processCoinSwitchCommand = function(params, options, reply){
         return;
     }
 
-
     var switchNames = [];
 
     if (params[1]) {
         switchNames.push(params[1]);
-    }
-    else{
+    } else {
         for (var name in portalConfig.switching){
             if (portalConfig.switching[name].enabled && portalConfig.switching[name].algorithm === options.algorithm)
                 switchNames.push(name);
@@ -427,10 +418,7 @@ var processCoinSwitchCommand = function(params, options, reply){
     });
 
     reply('Switch message sent to pool workers');
-
 };
-
-
 
 var startPaymentProcessor = function(){
 
@@ -477,7 +465,6 @@ var startWebsite = function(){
     });
 };
 
-
 var startProfitSwitch = function(){
 
     if (!portalConfig.profitSwitch || !portalConfig.profitSwitch.enabled){
@@ -497,8 +484,6 @@ var startProfitSwitch = function(){
         }, 2000);
     });
 };
-
-
 
 (function init(){
 
