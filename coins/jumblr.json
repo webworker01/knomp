@@ -1,0 +1,7 @@
+{
+    "name": "jumblr",
+    "symbol": "JUMBLR",
+    "algorithm": "equihash",
+    "peerMagic": "3ab2451e",
+    "txfee": 0.0001
+}

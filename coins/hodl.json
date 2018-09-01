@@ -1,0 +1,7 @@
+{
+    "name": "hodl",
+    "symbol": "HODL",
+    "algorithm": "equihash",
+    "peerMagic": "7516cc00",
+    "txfee": 0.0001
+}

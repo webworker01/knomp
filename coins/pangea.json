@@ -1,0 +1,7 @@
+{
+    "name": "pangea",
+    "symbol": "PANGEA",
+    "algorithm": "equihash",
+    "peerMagic": "17356a68",
+    "txfee": 0.0001
+}

@@ -1,0 +1,7 @@
+{
+    "name": "chain",
+    "symbol": "CHAIN",
+    "algorithm": "equihash",
+    "peerMagic": "568ea9e0",
+    "txfee": 0.0001
+}

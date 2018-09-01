@@ -1,0 +1,7 @@
+{
+    "name": "sec",
+    "symbol": "SEC",
+    "algorithm": "equihash",
+    "peerMagic": "8c93278f",
+    "txfee": 0.0001
+}
