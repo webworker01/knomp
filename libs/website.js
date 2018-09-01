@@ -38,7 +38,7 @@ module.exports = function(logger){
         'tbs.html': 'tbs',
         'workers.html': 'workers',
         'api.html': 'api',
-        'admin.html': 'admin',
+//        'admin.html': 'admin',
 //        'mining_key.html': 'mining_key',
         'miner_stats.html': 'miner_stats',
         'payments.html': 'payments'
@@ -122,7 +122,7 @@ module.exports = function(logger){
         });
     };
 
-    //setInterval(buildUpdatedWebsite, websiteConfig.stats.updateInterval * 1000);
+    setInterval(buildUpdatedWebsite, websiteConfig.stats.updateInterval * 1000);
 
     var getPage = function(pageId){
         if (pageId in pageProcessed){
@@ -137,7 +137,7 @@ module.exports = function(logger){
 			address = address.split(".")[0];
             portalStats.getBalanceByAddress(address, function(){
                 processTemplates();
-		res.header('Content-Type', 'text/html');
+		        res.header('Content-Type', 'text/html');
                 res.end(indexesProcessed['miner_stats']);
             });
         }
@@ -216,6 +216,7 @@ module.exports = function(logger){
         portalApi.handleApiRequest(req, res, next);
     });
 
+    /*
     app.post('/api/admin/:method', function(req, res, next){
         if (portalConfig.website
             && portalConfig.website.adminCenter
@@ -230,6 +231,7 @@ module.exports = function(logger){
             next();
 
     });
+    */
 
     app.use(compress());
     app.use('/static', express.static('website/static'));
