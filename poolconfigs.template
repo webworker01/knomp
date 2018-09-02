@@ -8,6 +8,7 @@
 "rewardRecipients": {},
 "tlsOptions": { "enabled": false },
 "paymentProcessing": { "enabled": false, "daemon": false },
+"trackShares": { "disable": true },
 "ports": {
     "STRATUMPORTVAR": {
         "tls":false,
