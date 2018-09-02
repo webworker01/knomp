@@ -199,6 +199,7 @@
     </div>
 </div>
 
+{{if (blockscomb.length > 0) { }}
 <center><div id="bottomCharts{{=pool}}" style="text-align:center;" align="center">
     <div class="chartWrapper" style="text-align:center;">
         <div class="chartLabel">Finders of the last {{=blockscomb.length}} blocks</div>
@@ -311,7 +312,7 @@ legend.append('text')
     });
 </script>
 {{ } }}
-
+{{ } }}
 <script>
     document.querySelector('main').appendChild(document.createElement('script')).src = '/static/stats.js';
 </script>
