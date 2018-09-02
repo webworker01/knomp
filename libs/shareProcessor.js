@@ -15,7 +15,7 @@ module.exports = function(logger, poolConfig){
 
     var redisConfig = poolConfig.redis;
     var coin = poolConfig.coin.name;
-    var trackShares = (typeof poolConfig.trackShares.disable !== 'undefined') ? poolConfig.trackShares.disable : true;
+    var trackShares = (typeof poolConfig.trackShares.disable !== 'undefined') ? !poolConfig.trackShares.disable : true;
 
     var forkId = process.env.forkId;
     var logSystem = 'Pool';
