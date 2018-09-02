@@ -282,7 +282,7 @@ var spawnPoolWorkers = function(){
                         // if its been less than 15 minutes since last share was submitted
                         var timeChangeSec = roundTo(Math.max(now - lastShareTime, 0) / 1000, 4);
                         //var timeChangeTotal = roundTo(Math.max(now - lastStartTime, 0) / 1000, 4);
-                        if (timeChangeSec < 900) {
+                        if (timeChangeSec < 900 && msg.trackShares) {
                             // loyal miner keeps mining :)
                             redisCommands.push(['hincrbyfloat', msg.coin + ':shares:timesCurrent', workerAddress + "." + poolConfigs[msg.coin].poolId, timeChangeSec]);                            
                             //logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+':{totalTimeSec:'+timeChangeTotal+', timeChangeSec:'+timeChangeSec+'}');
@@ -291,7 +291,7 @@ var spawnPoolWorkers = function(){
                                     logger.error('PPLNT', msg.coin, 'Thread '+msg.thread, 'Error with time share processor call to redis ' + JSON.stringify(err));
                             });
                         } else {
-                            // they just re-joined the pool
+                            // they just re-joined the pool or we aren't tracking it
                             _lastStartTimes[workerAddress] = now;
                             logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+' re-joined.');
                         }
