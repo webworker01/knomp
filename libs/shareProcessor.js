@@ -17,8 +17,6 @@ module.exports = function(logger, poolConfig){
     var coin = poolConfig.coin.name;
     var trackShares = (typeof poolConfig.trackShares.disable !== 'undefined') ? true : poolConfig.trackShares.disable;
 
-    if (poolOptions.mposMode && poolOptions.mposMode.enabled){
-
     var forkId = process.env.forkId;
     var logSystem = 'Pool';
     var logComponent = coin;
