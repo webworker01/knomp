@@ -70,7 +70,7 @@ function SetupForStats(logger, poolOptions, setupFinished) {
                     finalRedisCommands.push(['hset', coin + ':stats', 'networkBlocks', result[0].response.blocks]);
                 }
                 if (result[0].response.difficulty !== null) {
-                    finalRedisCommands.push(['hset', coin + ':stats', 'networkDiff', result[0].response.difficulty]);
+                    finalRedisCommands.push(['hset', coin + ':stats', 'networkDiff', result[0].response.difficulty.toFixed(2)]);
                 }
                 if (result[0].response.networkhashps !== null) {
                     finalRedisCommands.push(['hset', coin + ':stats', 'networkSols', result[0].response.networkhashps]);
