@@ -24,12 +24,13 @@ module.exports = function(logger){
         results.forEach(function(coin){
 
             var poolOptions = poolConfigs[coin];
-            var processingConfig = poolOptions.paymentProcessing;
+            var daemonConfig = poolOptions.daemons[0];
+
             var logSystem = 'Payments';
             var logComponent = coin;
 
-            logger.debug(logSystem, logComponent, 'Payment processing setup with daemon ('
-                + processingConfig.daemon.user + '@' + processingConfig.daemon.host + ':' + processingConfig.daemon.port
+            logger.debug(logSystem, logComponent, 'Network stats setup with daemon ('
+                + daemonConfig.user + '@' + daemonConfig.host + ':' + daemonConfig.port
                 + ') and redis (' + poolOptions.redis.host + ':' + poolOptions.redis.port + ')');                
         });
     });
@@ -38,12 +39,12 @@ module.exports = function(logger){
 function SetupForStats(logger, poolOptions, setupFinished) {
 
     var coin = poolOptions.coin.name;
-    var processingConfig = poolOptions.paymentProcessing;
+    var daemonConfig = poolOptions.daemons[0];
 
     var logSystem = 'Payments';
     var logComponent = coin;
 
-    var daemon = new Stratum.daemon.interface([processingConfig.daemon], function(severity, message){
+    var daemon = new Stratum.daemon.interface([daemonConfig], function(severity, message){
         logger[severity](logSystem, logComponent, message);
     });
 
