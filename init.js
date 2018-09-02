@@ -498,7 +498,7 @@ var startNetworkStats = function(){
         portalConfig: JSON.stringify(portalConfig)
     });
     worker.on('exit', function(code, signal){
-        logger.error('Master', 'Website', 'Website process died, spawning replacement...');
+        logger.error('Master', 'NetworkStats', 'NetworkStats process died, spawning replacement...');
         setTimeout(function(){
             startNetworkStats(portalConfig, poolConfigs);
         }, 2000);
