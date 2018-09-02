@@ -103,7 +103,7 @@ module.exports = function(logger){
         var logSystem = 'Pool';
         var logComponent = coin;
         var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
-        var trackShares = (typeof poolOptions.trackShares.disable !== 'undefined') ? true : poolOptions.trackShares.disable;
+        var trackShares = (typeof poolOptions.trackShares.disable !== 'undefined') ? poolOptions.trackShares.disable : true;
 
         var handlers = {
             auth: function(){},
