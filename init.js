@@ -14,6 +14,7 @@ var PoolWorker = require('./libs/poolWorker.js');
 var PaymentProcessor = require('./libs/paymentProcessor.js');
 var Website = require('./libs/website.js');
 var ProfitSwitch = require('./libs/profitSwitch.js');
+var NetworkStats = require('./libs/networkStats.js');
 
 var algos = require('stratum-pool/lib/algoProperties.js');
 
@@ -79,6 +80,9 @@ if (cluster.isWorker){
             break;
         case 'profitSwitch':
             new ProfitSwitch(logger);
+            break;
+        case 'networkStats':
+            new NetworkStats(logger);
             break;
     }
 
@@ -447,7 +451,6 @@ var startPaymentProcessor = function(){
     });
 };
 
-
 var startWebsite = function(){
 
     if (!portalConfig.website.enabled) return;
@@ -480,7 +483,24 @@ var startProfitSwitch = function(){
     worker.on('exit', function(code, signal){
         logger.error('Master', 'Profit', 'Profit switching process died, spawning replacement...');
         setTimeout(function(){
-            startWebsite(portalConfig, poolConfigs);
+            startProfitSwitch(portalConfig, poolConfigs);
+        }, 2000);
+    });
+};
+
+var startNetworkStats = function(){
+
+    if (!portalConfig.website.enabled) return;
+
+    var worker = cluster.fork({
+        workerType: 'networkStats',
+        pools: JSON.stringify(poolConfigs),
+        portalConfig: JSON.stringify(portalConfig)
+    });
+    worker.on('exit', function(code, signal){
+        logger.error('Master', 'Website', 'Website process died, spawning replacement...');
+        setTimeout(function(){
+            startNetworkStats(portalConfig, poolConfigs);
         }, 2000);
     });
 };
@@ -492,6 +512,8 @@ var startProfitSwitch = function(){
     spawnPoolWorkers();
 
     startPaymentProcessor();
+
+    startNetworkStats();
 
     startWebsite();
 
