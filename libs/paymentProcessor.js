@@ -70,7 +70,7 @@ function SetupForPool(logger, poolOptions, setupFinished){
     var pplntEnabled = processingConfig.paymentMode === "pplnt" || false;
     var pplntTimeQualify = processingConfig.pplnt || 0.51; // 51%
     
-    var getMarketStats = poolOptions.coin.getMarketStats === true;
+    
     var requireShielding = poolOptions.coin.requireShielding === true;
     var fee = parseFloat(poolOptions.coin.txfee) || parseFloat(0.0004);
 
@@ -318,38 +318,6 @@ function SetupForPool(logger, poolOptions, setupFinished){
             }
         );
     }
-    
-    function cacheMarketStats() {
-        var marketStatsUpdate = [];
-        var coin = logComponent.replace('_testnet', '').toLowerCase();
-        if (coin == 'zen')
-            coin = 'zencash';
-        
-        request('https://api.coinmarketcap.com/v1/ticker/'+coin+'/', function (error, response, body) {
-            if (error) {
-                logger.error(logSystem, logComponent, 'Error with http request to https://api.coinmarketcap.com/ ' + JSON.stringify(error));
-                return;
-            }
-            if (response && response.statusCode) {
-                if (response.statusCode == 200) {
-                    if (body) {
-                        var data = JSON.parse(body);
-                        if (data.length > 0) {
-                            marketStatsUpdate.push(['hset', logComponent + ':stats', 'coinmarketcap', JSON.stringify(data)]);
-                            redisClient.multi(marketStatsUpdate).exec(function(err, results){
-                                if (err){
-                                    logger.error(logSystem, logComponent, 'Error with redis during call to cacheMarketStats() ' + JSON.stringify(error));
-                                    return;
-                                }
-                            });
-                        }
-                    }
-                } else {
-                    logger.error(logSystem, logComponent, 'Error, unexpected http status code during call to cacheMarketStats() ' + JSON.stringify(response.statusCode));
-                }
-            }
-        });
-    }
 
     // run shielding process every x minutes
     var shieldIntervalState = 0; // do not send ZtoT and TtoZ and same time, this results in operation failed!
@@ -368,15 +336,6 @@ function SetupForPool(logger, poolOptions, setupFinished){
                     break;
             }
         }, shielding_interval);
-    }
-
-    // market stats caching every 5 minutes
-    if (getMarketStats === true) {
-        var market_stats_interval = 300 * 1000;
-        var marketStatsInterval = setInterval(function() {
-            // update market stats using coinmarketcap
-            cacheMarketStats();
-        }, market_stats_interval);
     }
 
     // check operation statuses every 57 seconds

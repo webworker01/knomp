@@ -41,6 +41,8 @@ function SetupForStats(logger, poolOptions, setupFinished) {
     var coin = poolOptions.coin.name;
     var daemonConfig = poolOptions.daemons[0];
 
+    var getMarketStats = poolOptions.coin.getMarketStats === true;
+
     var logSystem = 'Payments';
     var logComponent = coin;
 
@@ -111,10 +113,51 @@ function SetupForStats(logger, poolOptions, setupFinished) {
         );
     }
 
+    function cacheMarketStats() {
+        var marketStatsUpdate = [];
+        var coin = logComponent.replace('_testnet', '').toLowerCase();
+        if (coin == 'zen')
+            coin = 'zencash';
+        
+        request('https://api.coinmarketcap.com/v1/ticker/'+coin+'/', function (error, response, body) {
+            if (error) {
+                logger.error(logSystem, logComponent, 'Error with http request to https://api.coinmarketcap.com/ ' + JSON.stringify(error));
+                return;
+            }
+            if (response && response.statusCode) {
+                if (response.statusCode == 200) {
+                    if (body) {
+                        var data = JSON.parse(body);
+                        if (data.length > 0) {
+                            marketStatsUpdate.push(['hset', logComponent + ':stats', 'coinmarketcap', JSON.stringify(data)]);
+                            redisClient.multi(marketStatsUpdate).exec(function(err, results){
+                                if (err){
+                                    logger.error(logSystem, logComponent, 'Error with redis during call to cacheMarketStats() ' + JSON.stringify(error));
+                                    return;
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    logger.error(logSystem, logComponent, 'Error, unexpected http status code during call to cacheMarketStats() ' + JSON.stringify(response.statusCode));
+                }
+            }
+        });
+    }
+
     // network stats caching every 58 seconds
     var stats_interval = 58 * 1000;
     var statsInterval = setInterval(function() {
         // update network stats using coin daemon
         cacheNetworkStats();
     }, stats_interval);
+
+    // market stats caching every 5 minutes
+    if (getMarketStats === true) {
+        var market_stats_interval = 300 * 1000;
+        var marketStatsInterval = setInterval(function() {
+            // update market stats using coinmarketcap
+            cacheMarketStats();
+        }, market_stats_interval);
+    }
 }
