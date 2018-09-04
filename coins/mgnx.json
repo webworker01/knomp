@@ -1,0 +1,7 @@
+{
+    "name": "mgnx",
+    "symbol": "MGNX",
+    "algorithm": "equihash",
+    "peerMagic": "82b8ec47",
+    "txfee": 0.0001
+}

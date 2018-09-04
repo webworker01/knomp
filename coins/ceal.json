@@ -1,0 +1,7 @@
+{
+    "name": "ceal",
+    "symbol": "CEAL",
+    "algorithm": "equihash",
+    "peerMagic": "098c5f90",
+    "txfee": 0.0001
+}

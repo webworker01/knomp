@@ -1,0 +1,7 @@
+{
+    "name": "bots",
+    "symbol": "BOTS",
+    "algorithm": "equihash",
+    "peerMagic": "ec562904",
+    "txfee": 0.0001
+}

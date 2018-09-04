@@ -1,0 +1,7 @@
+{
+    "name": "crypto",
+    "symbol": "CRYPTO",
+    "algorithm": "equihash",
+    "peerMagic": "b47caeaa",
+    "txfee": 0.0001
+}

@@ -1,0 +1,7 @@
+{
+    "name": "revs",
+    "symbol": "REVS",
+    "algorithm": "equihash",
+    "peerMagic": "1a774141",
+    "txfee": 0.0001
+}

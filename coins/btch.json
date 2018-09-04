@@ -1,0 +1,7 @@
+{
+    "name": "btch",
+    "symbol": "BTCH",
+    "algorithm": "equihash",
+    "peerMagic": "f41c5eff",
+    "txfee": 0.0001
+}

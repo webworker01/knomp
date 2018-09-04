@@ -16,7 +16,6 @@ var compress = require('compression');
 
 var api = require('./api.js');
 
-
 module.exports = function(logger){
 
     dot.templateSettings.strip = false;
@@ -39,7 +38,7 @@ module.exports = function(logger){
         'tbs.html': 'tbs',
         'workers.html': 'workers',
         'api.html': 'api',
-        'admin.html': 'admin',
+//        'admin.html': 'admin',
 //        'mining_key.html': 'mining_key',
         'miner_stats.html': 'miner_stats',
         'payments.html': 'payments'
@@ -91,7 +90,6 @@ module.exports = function(logger){
         });
     };
 
-
     // if an html file was changed reload it
     /* requires node-watch 0.5.0 or newer */
     watch(['./website', './website/pages'], function(evt, filename){
@@ -121,7 +119,6 @@ module.exports = function(logger){
                 var res = portalApi.liveStatConnections[uid];
                 res.write(statData);
             }
-
         });
     };
 
@@ -140,7 +137,7 @@ module.exports = function(logger){
 			address = address.split(".")[0];
             portalStats.getBalanceByAddress(address, function(){
                 processTemplates();
-		res.header('Content-Type', 'text/html');
+		        res.header('Content-Type', 'text/html');
                 res.end(indexesProcessed['miner_stats']);
             });
         }
@@ -164,7 +161,6 @@ module.exports = function(logger){
         portalStats.getCoins(function(){
             processTemplates();
             res.end(indexesProcessed['user_shares']);
-
         });
     };
 
@@ -220,6 +216,7 @@ module.exports = function(logger){
         portalApi.handleApiRequest(req, res, next);
     });
 
+    /*
     app.post('/api/admin/:method', function(req, res, next){
         if (portalConfig.website
             && portalConfig.website.adminCenter
@@ -234,6 +231,7 @@ module.exports = function(logger){
             next();
 
     });
+    */
 
     app.use(compress());
     app.use('/static', express.static('website/static'));
@@ -264,6 +262,4 @@ module.exports = function(logger){
         logger.error(logSystem, 'Server', 'Could not start website on ' + portalConfig.website.host + ':' + portalConfig.website.port
             +  ' - its either in use or you do not have permission');
     }
-
-
 };

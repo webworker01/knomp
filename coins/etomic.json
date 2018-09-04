@@ -1,0 +1,7 @@
+{
+    "name": "etomic",
+    "symbol": "ETOMIC",
+    "algorithm": "equihash",
+    "peerMagic": "072a90e8",
+    "txfee": 0.0001
+}

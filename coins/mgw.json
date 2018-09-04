@@ -1,0 +1,7 @@
+{
+    "name": "mgw",
+    "symbol": "MGW",
+    "algorithm": "equihash",
+    "peerMagic": "7c1596a7",
+    "txfee": 0.0001
+}

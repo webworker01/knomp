@@ -103,6 +103,7 @@ module.exports = function(logger){
         var logSystem = 'Pool';
         var logComponent = coin;
         var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
+        var trackShares = (typeof poolOptions.trackShares !== 'undefined' && typeof poolOptions.trackShares.disable !== 'undefined') ? !poolOptions.trackShares.disable : true;
 
         var handlers = {
             auth: function(){},
@@ -191,7 +192,7 @@ module.exports = function(logger){
             handlers.share(isValidShare, isValidBlock, data);
             
             // send to master for pplnt time tracking
-            process.send({type: 'shareTrack', thread:(parseInt(forkId)+1), coin:poolOptions.coin.name, isValidShare:isValidShare, isValidBlock:isValidBlock, data:data});
+            process.send({type: 'shareTrack', thread:(parseInt(forkId)+1), coin:poolOptions.coin.name, isValidShare:isValidShare, isValidBlock:isValidBlock, data:data, trackShares:trackShares});
             
         }).on('difficultyUpdate', function(workerName, diff){
             logger.debug(logSystem, logComponent, logSubCat, 'Difficulty update to diff ' + diff + ' workerName=' + JSON.stringify(workerName));

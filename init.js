@@ -14,6 +14,7 @@ var PoolWorker = require('./libs/poolWorker.js');
 var PaymentProcessor = require('./libs/paymentProcessor.js');
 var Website = require('./libs/website.js');
 var ProfitSwitch = require('./libs/profitSwitch.js');
+var NetworkStats = require('./libs/networkStats.js');
 
 var algos = require('stratum-pool/lib/algoProperties.js');
 
@@ -80,6 +81,9 @@ if (cluster.isWorker){
         case 'profitSwitch':
             new ProfitSwitch(logger);
             break;
+        case 'networkStats':
+            new NetworkStats(logger);
+            break;
     }
 
     return;
@@ -93,7 +97,6 @@ var buildPoolConfigs = function(){
 
     var poolConfigFiles = [];
 
-
     /* Get filenames of pool config json files that are enabled */
     fs.readdirSync(configDir).forEach(function(file){
         if (!fs.existsSync(configDir + file) || path.extname(configDir + file) !== '.json') return;
@@ -102,7 +105,6 @@ var buildPoolConfigs = function(){
         poolOptions.fileName = file;
         poolConfigFiles.push(poolOptions);
     });
-
 
     /* Ensure no pool uses any of the same ports as another pool */
     for (var i = 0; i < poolConfigFiles.length; i++){
@@ -126,7 +128,6 @@ var buildPoolConfigs = function(){
 
         }
     }
-
 
     poolConfigFiles.forEach(function(poolOptions){
 
@@ -164,7 +165,6 @@ var buildPoolConfigs = function(){
                 poolOptions[option] = clonedOption;
             }
         }
-
 
         configs[poolOptions.coin.name] = poolOptions;
 
@@ -214,7 +214,6 @@ var spawnPoolWorkers = function(){
         logger.warning('Master', 'PoolSpawner', 'No pool configs exists or are enabled in pool_configs folder. No pools spawned.');
         return;
     }
-
 
     var serializedConfigs = JSON.stringify(poolConfigs);
 
@@ -287,7 +286,7 @@ var spawnPoolWorkers = function(){
                         // if its been less than 15 minutes since last share was submitted
                         var timeChangeSec = roundTo(Math.max(now - lastShareTime, 0) / 1000, 4);
                         //var timeChangeTotal = roundTo(Math.max(now - lastStartTime, 0) / 1000, 4);
-                        if (timeChangeSec < 900) {
+                        if (timeChangeSec < 900 && msg.trackShares) {
                             // loyal miner keeps mining :)
                             redisCommands.push(['hincrbyfloat', msg.coin + ':shares:timesCurrent', workerAddress + "." + poolConfigs[msg.coin].poolId, timeChangeSec]);                            
                             //logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+':{totalTimeSec:'+timeChangeTotal+', timeChangeSec:'+timeChangeSec+'}');
@@ -296,7 +295,7 @@ var spawnPoolWorkers = function(){
                                     logger.error('PPLNT', msg.coin, 'Thread '+msg.thread, 'Error with time share processor call to redis ' + JSON.stringify(err));
                             });
                         } else {
-                            // they just re-joined the pool
+                            // they just re-joined the pool or we aren't tracking it
                             _lastStartTimes[workerAddress] = now;
                             logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+' re-joined.');
                         }
@@ -325,7 +324,6 @@ var spawnPoolWorkers = function(){
     }, 250);
 
 };
-
 
 var startCliListener = function(){
 
@@ -358,7 +356,6 @@ var startCliListener = function(){
         }
     }).start();
 };
-
 
 var processCoinSwitchCommand = function(params, options, reply){
 
@@ -400,13 +397,11 @@ var processCoinSwitchCommand = function(params, options, reply){
         return;
     }
 
-
     var switchNames = [];
 
     if (params[1]) {
         switchNames.push(params[1]);
-    }
-    else{
+    } else {
         for (var name in portalConfig.switching){
             if (portalConfig.switching[name].enabled && portalConfig.switching[name].algorithm === options.algorithm)
                 switchNames.push(name);
@@ -427,10 +422,7 @@ var processCoinSwitchCommand = function(params, options, reply){
     });
 
     reply('Switch message sent to pool workers');
-
 };
-
-
 
 var startPaymentProcessor = function(){
 
@@ -459,7 +451,6 @@ var startPaymentProcessor = function(){
     });
 };
 
-
 var startWebsite = function(){
 
     if (!portalConfig.website.enabled) return;
@@ -477,7 +468,6 @@ var startWebsite = function(){
     });
 };
 
-
 var startProfitSwitch = function(){
 
     if (!portalConfig.profitSwitch || !portalConfig.profitSwitch.enabled){
@@ -493,12 +483,27 @@ var startProfitSwitch = function(){
     worker.on('exit', function(code, signal){
         logger.error('Master', 'Profit', 'Profit switching process died, spawning replacement...');
         setTimeout(function(){
-            startWebsite(portalConfig, poolConfigs);
+            startProfitSwitch(portalConfig, poolConfigs);
         }, 2000);
     });
 };
 
+var startNetworkStats = function(){
 
+    if (!portalConfig.website.enabled) return;
+
+    var worker = cluster.fork({
+        workerType: 'networkStats',
+        pools: JSON.stringify(poolConfigs),
+        portalConfig: JSON.stringify(portalConfig)
+    });
+    worker.on('exit', function(code, signal){
+        logger.error('Master', 'NetworkStats', 'NetworkStats process died, spawning replacement...');
+        setTimeout(function(){
+            startNetworkStats(portalConfig, poolConfigs);
+        }, 2000);
+    });
+};
 
 (function init(){
 
@@ -507,6 +512,8 @@ var startProfitSwitch = function(){
     spawnPoolWorkers();
 
     startPaymentProcessor();
+
+    startNetworkStats();
 
     startWebsite();
 

@@ -1,0 +1,7 @@
+{
+    "name": "mesh",
+    "symbol": "MESH",
+    "algorithm": "equihash",
+    "peerMagic": "4d6bbfb6",
+    "txfee": 0.0001
+}

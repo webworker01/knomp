@@ -1,0 +1,7 @@
+{
+    "name": "glxt",
+    "symbol": "GLXT",
+    "algorithm": "equihash",
+    "peerMagic": "2bac6518",
+    "txfee": 0.0001
+}
