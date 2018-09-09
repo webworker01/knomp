@@ -1,7 +1,0 @@
-{
-    "name": "dsec",
-    "symbol": "DSEC",
-    "algorithm": "equihash",
-    "peerMagic": "99a6b2c7",
-    "txfee": 0.0001
-}

@@ -1,7 +1,0 @@
-{
-    "name": "kv",
-    "symbol": "KV",
-    "algorithm": "equihash",
-    "peerMagic": "f434f1c5",
-    "txfee": 0.0001
-}

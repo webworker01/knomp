@@ -1,7 +1,0 @@
-{
-    "name": "eql",
-    "symbol": "EQL",
-    "algorithm": "equihash",
-    "peerMagic": "b890e458",
-    "txfee": 0.0001
-}

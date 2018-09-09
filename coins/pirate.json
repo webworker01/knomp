@@ -1,7 +1,0 @@
-{
-    "name": "pirate",
-    "symbol": "PIRATE",
-    "algorithm": "equihash",
-    "peerMagic": "58e0b617",
-    "txfee": 0.0001
-}

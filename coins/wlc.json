@@ -1,7 +1,0 @@
-{
-    "name": "wlc",
-    "symbol": "WLC",
-    "algorithm": "equihash",
-    "peerMagic": "d52e5900",
-    "txfee": 0.0001
-}

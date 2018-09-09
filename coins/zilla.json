@@ -1,7 +1,0 @@
-{
-    "name": "zilla",
-    "symbol": "ZILLA",
-    "algorithm": "equihash",
-    "peerMagic": "91db4d20",
-    "txfee": 0.0001
-}

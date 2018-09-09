@@ -1,7 +1,0 @@
-{
-    "name": "Axo",
-    "symbol": "AXO",
-    "algorithm": "equihash",
-    "peerMagic": "ba009d17",
-    "txfee": 0.0001
-}
