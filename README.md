@@ -23,34 +23,27 @@ sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoco
 ```
 Now, let's build Komodo
 ```shell
-git clone https://github.com/jl777/komodo -b dev
+git clone https://github.com/StakedChain/komodo
 cd komodo
 zcutil/fetch-params.sh
 zcutil/build.sh -j8
-strip src/komodod
-strip src/komodo-cli
-```
- Now, let's run the assets.
- - This will start ALL of the assets might take a day or so to sync, depending on system speed/network connection.
-```shell
-cd ~/komodo/src
-./assetchains.old
 ```
 
- Once all these chains have synced up we can configure the stratum.
+https://raw.githubusercontent.com/StakedChain/PoS_scripts/master/pool_cfg_generator/gencfg.sh
 
- We need node and npm installed
+That script will generate the pool config for you. Edit the address to the address you want to mine to and check the folders point to wher Knomp is installed. The default directories are already there. There is also the stratum port, each coin needs a diffrent port. 
+
+ We need node and npminstalled
 
 ```shell
 cd ~
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 ```
 Now, let's build our stratum and run it (this stage assumes you already have Redis properly installed and running)
-This will install the stratum and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
+
 ```shell
-git clone https://github.com/webworker01/knomp
+git clone https://github.com/blackjok3rtt/knomp
 cd knomp
-./gencfg.sh
 npm install
 npm start
 ```
