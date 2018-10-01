@@ -59,6 +59,15 @@ npm install
 npm start
 ```
 
+Full Z Transaction Support
+-------------
+This is an option to force miners to use a Z address as their username for payouts
+
+In your coins file add: 
+```
+"privateChain": true
+```
+
 [Further info on config](https://github.com/zone117x/node-open-mining-portal)
 
 License
