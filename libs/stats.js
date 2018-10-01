@@ -16,7 +16,6 @@ function rediscreateClient(port, host, pass) {
     return client;
 }
 
-
 /**
  * Sort object properties (only own properties will be sorted).
  * @param {object} obj object to sort properties
@@ -648,8 +647,10 @@ module.exports = function(logger, portalConfig, poolConfigs){
                 }
 				
 				// sort workers by name
-				coinStats.workers = sortWorkersByName(coinStats.workers);
-				
+                coinStats.workers = sortWorkersByName(coinStats.workers);
+
+                coinStats.miners = sortMinersByHashrate(coinStats.miners);
+
                 delete coinStats.hashrates;
                 delete coinStats.shares;
             });
@@ -756,7 +757,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
 	
 	function sortMinersByHashrate(objects) {
 		var newObject = {};
-		var sortedArray = sortProperties(objects, 'shares', true, true);
+		var sortedArray = sortProperties(objects, 'hashrate', true, true);
 		for (var i = 0; i < sortedArray.length; i++) {
 			var key = sortedArray[i][0];
 			var value = sortedArray[i][1];
