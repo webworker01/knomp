@@ -1,0 +1,98 @@
+<div class="pure-g-r" id="boxWelcome">
+    <div class="pure-u-1" style="text-align:center; padding:10px 0;">
+        <div class="pure-u-1-2">
+            <img src="/static/skull256.png" style="float:left; width:128px;" alt="zz nomp"> 
+            <div>
+                <div style="font-size: 2em; text-align:center; margin-bottom:10px; font-weight:900; color:#1F152A;">zz nomp</div>
+
+                <div style="text-align:center;" class="pure-g-r">
+                    <div class="pure-u-1-2" style="text-align:right;">
+                        For Pirate Chain »&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div class="pure-u-1-2" style="text-align:left;">
+                        <div class="pure-g-r">
+                            <div class="pure-u-1-2" style="text-align:left;">
+                                <a href="https://pirate.black/" target="_blank"><i class="fa fa-globe fa-fw"></i> Website</a><br>
+                                <a href="https://github.com/PirateNetwork" target="_blank"><i class="fab fa-github fa-fw"></i> Github</a><br>
+                                <a href="https://bitcointalk.org/index.php?topic=4979549" target="_blank"><i class="fab fa-bitcoin fa-fw"></i> BTT</a>
+                            </div>
+                            <div class="pure-u-1-2" style="text-align:left;">
+                                <a href="http://pirate.explorer.dexstats.info/" target="_blank"><i class="fas fa-map fa-fw"></i> Explorer</a><br>
+                                <a href="https://discord.gg/NWn2whS" target="_blank"><i class="fab fa-discord fa-fw"></i> Discord</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pure-g-r" id="boxesLower">
+    <div class="pure-u-1-2">
+        <div class="boxStats" id="boxStatsLeft">
+            <div class="boxLowerHeader">Network Stats</div>
+            <div class="boxStatsList">
+                {{ for(var pool in it.stats.pools) { }}
+                    <div>
+                        <div><i class="fas fa-coins fa-fw"></i> {{=pool}}</div>
+                        <div><i class="fas fa-link fa-fw" aria-hidden="true"></i> Block Height: <span id="statsNetworkBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.networkBlocks}}</span></div>
+                        <div><i class="fas fa-tachometer-alt fa-fw"></i> Network Hash/s: <span id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span></div>
+                        <div><i class="fas fa-unlock-alt fa-fw" aria-hidden="true"></i> Difficulty: <span id="statsNetworkDiff{{=pool}}">{{=it.stats.pools[pool].poolStats.networkDiff}}</span></div>
+                        <div><i class="fas fa-users fa-fw"></i> Node Connections: <span id="statsNetworkConnections{{=pool}}">{{=it.stats.pools[pool].poolStats.networkConnections}}</span></div>
+                    </div>
+                {{ } }}
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="pure-u-1-2">
+        <div class="boxStats" id="boxStatsRight">
+            <div class="boxLowerHeader">Pools / Coins</div>
+            <div class="boxStatsList">
+                {{ for(var pool in it.stats.pools) { }}
+                    <div>
+                        <div><i class="fas fa-coins fa-fw"></i> {{=pool}}</div>
+                        <div><i class="fas fa-users fa-fw"></i> <span id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners</div>
+                        <div><i class="fas fa-rocket fa-fw"></i> <span id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span> Workers</div>
+                        <div><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrate{{=pool}}">{{=it.stats.pools[pool].hashrateString}}</span> (Now)</div>
+                        <div><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrateAvg{{=pool}}">...</span> (Avg)</div>
+                        <div><i class="fas fa-dice fa-fw"></i> Luck <span id="statsLuckDays{{=pool}}">{{=it.stats.pools[pool].luckDays}}</span> Days</div>
+                    </div>
+                {{ } }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/static/home.js" />
+<script>
+    //document.querySelector('main').appendChild(document.createElement('script')).src = '/static/stats.js';
+
+    $(function() {
+        window.statsSource = new EventSource("/api/live_stats");
+
+        statsSource.addEventListener('message', function (e) {
+            var stats = JSON.parse(e.data);
+            for (var pool in stats.pools) {
+				$('#statsMiners' + pool).text(stats.pools[pool].minerCount);
+                $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
+                $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
+				$('#statsHashrateAvg' + pool).text(getReadableHashRateString(calculateAverageHashrate(pool)));
+				$('#statsLuckDays' + pool).text(stats.pools[pool].luckDays);
+				$('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
+				$('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
+				$('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
+				$('#statsNetworkDiff' + pool).text(stats.pools[pool].poolStats.networkDiff);
+				$('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats.networkSols));
+				$('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
+            }
+            
+            for (algo in stats.algos) {
+                $('#statsMiners' + algo).text(stats.algos[algo].workers);
+                $('#statsHashrate' + algo).text(stats.algos[algo].hashrateString);
+            }
+        });
+    });
+</script>

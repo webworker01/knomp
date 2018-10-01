@@ -1,0 +1,238 @@
+<div id="holder">
+    <div class="pure-menu pure-menu-open gettingStartedMenu">
+        <span class="pure-menu-heading">Getting Started</span>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="#poolDetails" class="pure-menu-link">Pool Details</a></li>
+            <li class="pure-menu-item"><a href="#createWallet" class="pure-menu-link">Create Wallet</a></li>
+            <li class="pure-menu-item"><a href="#gpuMining" class="pure-menu-link">GPU Mining Software</a></li>
+            <li class="pure-menu-item"><a href="#cpuMining" class="pure-menu-link">CPU Mining Software</a></li>
+        </ul>
+    </div>
+
+    <div id="menu">
+        {{? (function(){
+                if (!it.portalConfig.switching) return false;
+                for (var p in it.portalConfig.switching){
+                    if (it.portalConfig.switching[p].enabled)
+                        return true;
+                }
+                return false;
+            })()
+        }}
+        <div class="menuHeader">Coin-Switching Ports</div>
+        {{?}}
+
+        <div class="menuList">
+        {{ for (var p in it.portalConfig.switching){
+            if (!it.portalConfig.switching[p].enabled) continue;
+            var info = {
+                algo: p,
+                ports: {},
+                host: it.portalConfig.website.stratumHost
+            };
+            info.ports[it.portalConfig.switching[p].port] = {diff: it.portalConfig.switching[p].diff};
+            info = JSON.stringify(info).replace(/"/g, '&quot;');
+        }}
+            <a href="#" class="poolOption" data-info="{{=info}}">{{=p}}</a>
+        {{ } }}
+        </div>
+
+        <div class="menuHeader" id="poolDetails">Miner Configuration</div>
+        <div class="menuList" id="coinList">
+            {{ if (it.portalConfig.gettingStartedPopups) { }}
+                {{ for (var pool in it.poolsConfigs) {
+                    var info = JSON.stringify({
+                        coin: it.poolsConfigs[pool].coin,
+                        algo: it.poolsConfigs[pool].coin.algorithm,
+                        ports: it.poolsConfigs[pool].ports,
+                        host: it.portalConfig.website.stratumHost
+                    }).replace(/"/g, '&quot;');
+                }}
+                <a href="#" class="poolOption" data-info="{{=info}}">{{=pool}}</a>
+                {{ } }}
+            {{ } else { }}
+                {{ for (var pool in it.poolsConfigs) { }}
+                    <code>
+                        <div class="coinInfoHeader"><span class="coinInfoName">{{=it.poolsConfigs[pool].coin.name}}</span> Configuration:</div>
+                        <div class="coinInfoRows">
+                            <div class="coinInfoRowKeys">
+                                <div>Username:</div>
+                                <div>Password:</div>
+                                <div>Algorithm:</div>
+                                {{ for (var port in it.poolsConfigs[pool].ports) { }}
+                                    <div class="coinInfoData">{{= it.poolsConfigs[pool].ports[port].label ? it.poolsConfigs[pool].ports[port].label : 'URL'}} <span class="coinInfoSubtle">(diff {{=it.poolsConfigs[pool].ports[port].diff}})</span></div>
+                                {{ } }}
+                            </div>
+                            <div class="coinInfoRowValues">
+                                <div class="coinInfoUsername">
+                                    {{ if (it.poolsConfigs[pool].coin && it.poolsConfigs[pool].coin.privateChain) { }}
+                                        your {{=it.poolsConfigs[pool].coin.name}} wallet <b style="color:#C99631;">Z</b> address<br>
+                                       
+                                    {{ } else if (it.poolsConfigs[pool].coin) { }}
+                                        your {{=it.poolsConfigs[pool].coin.name}} wallet address
+                                    {{ } else { }}
+                                        your public key
+                                    {{ } }}
+                                </div>
+                                <div>anything</div>
+                                <div>{{=it.poolsConfigs[pool].coin.algorithm}}</div>
+                                {{ for (var port in it.poolsConfigs[pool].ports) { }}
+                                    <div class="coinInfoData">stratum+tcp://{{=it.portalConfig.website.stratumHost}}:{{=port}}</div>
+                                {{ } }}
+                            </div>
+                        </div>
+                    </code>
+                {{ } }}
+
+                <div class="content">
+                    If you have multiple mining rigs you can add a label at the end of your username to see stats broken down by rig on the worker stats page.
+                </div>
+                <code>
+                    zm --server {{=it.portalConfig.website.stratumHost}} --port {{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} --user RWEBo1Yp4uGkeXPi1ZGQARfLPkGmoW1MwY.rig1
+                </code>
+            {{ } }}
+        </div>
+
+        <div class="menuHeader" id="createWallet">Generate Wallet and Address</div>
+        <div class="content">
+            <ol>
+                <li><a href="https://docs.komodoplatform.com/komodo/install-Komodo-manually.html" target="_blank">Build Komodo</a></li>
+                <li>Launch PIRATE chain:
+                    <code>
+                        ./komodod -ac_name=PIRATE -ac_supply=0 -ac_reward=25600000000 -ac_halving=77777 -ac_private=1 -addnode=136.243.102.225
+                    </code>
+                </li>
+                <li>Generate Z address:
+                    <code>
+                        ./komodo-cli -ac_name=PIRATE z_getnewaddress
+                    </code>
+                </li>
+                <li>Securely backup your private key:
+                    <code>
+                        ./komodo-cli -ac_name=PIRATE z_exportkey "zaddr"
+                    </code>
+                </li>
+                <li>Check your balance:
+                    <code>
+                        ./komodo-cli -ac_name=PIRATE z_gettotalbalance
+                    </code>
+                <li>
+                    For more information visit the <a href="https://pirate.black/" target="_blank">project website</a>
+                </li>
+            </ol>
+        </div>
+
+        <div class="menuHeader" id="gpuMining">GPU Mining</div>
+        <div class="content">
+            <p>
+                There are a few decent GPU miners available. You will need to experiment to find which one works best for you.  DYOR on this and be sure to virus scan all the things!
+            </p>
+            <p>
+                Here are a couple well-known GPU miners:
+            </p>
+            <ul>
+                <li><a href="https://bitcointalk.org/index.php?topic=2021765.0" target="_blank">dstm's ZCash / Equihash Nvidia Miner</a></li>
+                <li><a href="https://bitcointalk.org/index.php?topic=1670733.0" target="_blank">Claymore's ZCash/BTG AMD GPU Miner</a></li>
+            </ul>
+        </div>
+
+        <div class="menuHeader" id="cpuMining">CPU Mining</div>
+        <div class="content">
+            <p>While it is possible to CPU mine with <b>komodod</b> directly like so:</p>
+            <code>
+                ./komodo-cli -ac_name=PIRATE setgenerate true
+            </code>
+            <p>The chances to find a block solo with CPU mining only are already fairly low and most likely the reason you are here at all 🐸</p>
+            <p>The well-known CPU miner that can be used with the pool is <b>nheqminer</b>. This does <i>not</i> require a Nicehash account and can be used to connect to any equihash stratum.</p>
+
+            <h4>Linux</h4>
+            <p>It is suggested that you attempt to build the CPU miner instead of using the pre-compiled binary so that optimizations for your CPU can be made during the build process</p>
+            <code>
+                sudo apt-get install cmake build-essential libboost-all-dev<br>
+                cd ~<br>
+                git clone -b Linux https://github.com/nicehash/nheqminer.git<br>
+                cd ~/nheqminer/cpu_xenoncat/Linux/asm/<br>
+                sh assemble.sh<br>
+                cd /home/zcash/nheqminer/Linux_cmake/nheqminer_cpuv
+                cmake . && make<br>
+                ln -s /home/zcash/nheqminer/Linux_cmake/nheqminer_cpu/nheqminer_cpu /usr/local/bin/nheqminer_cpu
+            </code>
+            <p>Now you can launch your miner! (replace the values as indicated changing the number of threads (-t) and your address for payouts (-u)</p>
+            <code>
+                nheqminer_cpu -t <i>numberofthreads</i> -l <i>stratumhost</i>:<i>stratumport</i> -u <i>youraddress</i>
+            </code>
+
+            <h4>Windows</h4>
+            <p>Download and install the latest release for windows from <a href="https://github.com/nicehash/nheqminer/releases">the github repo</a></p>
+            <p>Replace the placeholders below as needed and start mining!</p>
+            <code>
+                nheqminer -t <i>numberofthreads</i> -l <i>stratumhost</i>:<i>stratumport</i> -u <i>youraddress</i>
+            </code>
+
+            <h4>Additional Resources</h4>
+            <ul>
+                <li><a href="https://github.com/nicehash/nheqminer" target="_blank">nheqminer repo</a></li>
+                <li><a href="https://steemit.com/mining/@bobinson/zcash-cpu-mining-setup-on-linux" target="_blank">CPU Mining</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{{ if (it.portalConfig.gettingStartedPopups) { }}
+    <a href="#" id="coinInfoBackground" class="hidden"></a>
+
+    <div id="coinInfo" class="hidden">
+        <a href="#" id="coinInfoClose">×</a>
+        <div><span class="coinInfoName"></span> Configuration:</div>
+        <div id="coinInfoRows">
+            <div id="coinInfoRowKeys">
+                <div>Username:</div>
+                <div>Password:</div>
+            </div>
+            <div id="coinInfoRowValues">
+                <div id="coinInfoUsername"></div>
+                <div>anything</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCoinConfig(info){
+
+            var htmlKeys = '<div class="coinInfoData">Algorithm:</div>';
+            var htmlValues = '<div class="coinInfoData">' + info.algo + '</div>';
+
+            for (var port in info.ports){
+                htmlKeys += '<div class="coinInfoData">URL <span class="coinInfoSubtle">(difficulty ' + info.ports[port].diff + ')</span>:</div>';
+                htmlValues += '<div class="coinInfoData">stratum+tcp://' + info.host + ':' + port + '</div>';
+            }
+
+            if (info.coin && info.coin.privateChain) {
+                $('#coinInfoUsername').html('your ' + info.coin.name + ' <b style="color:#C99631;">Z</b> wallet address');
+            } else if (info.coin) {
+                $('#coinInfoUsername').text('your ' + info.coin.name + ' wallet address');
+            } else {
+                $('#coinInfoUsername').text('your public key');
+            }
+            $('.coinInfoData').remove();
+            $('#coinInfoRowKeys').append(htmlKeys);
+            $('#coinInfoRowValues').append(htmlValues);
+        }
+
+        $('.poolOption').click(function(event){
+            event.preventDefault();
+            showCoinConfig($(this).data('info'));
+            $('#coinInfoBackground,#coinInfo').removeClass('hidden');
+            $('#coinInfoBackground').css('opacity', 0.7);
+            return false;
+        });
+
+        $('#coinInfoBackground,#coinInfoClose').click(function(event){
+            event.preventDefault();
+            $('#coinInfoBackground,#coinInfo').addClass('hidden');
+            $('#coinInfoBackground').css('opacity', 0.0);
+            return false;
+        });
+    </script>
+{{ } }}
