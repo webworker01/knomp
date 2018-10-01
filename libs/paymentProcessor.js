@@ -1473,6 +1473,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         });
     };
 
+    //@todo better validation on Z address format
     var getProperAddress = function(address){
         if (privateChain && address.length == 95) {
             return address;
