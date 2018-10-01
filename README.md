@@ -65,7 +65,8 @@ This is an option to force miners to use a Z address as their username for payou
 
 In your coins file add: 
 ```
-"privateChain": true
+"privateChain": true,
+"burnFees": true
 ```
 
 [Further info on config](https://github.com/zone117x/node-open-mining-portal)
