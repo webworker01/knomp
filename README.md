@@ -13,6 +13,10 @@ Differences between this and Z-NOMP
 * This is meant for Komodo mining
 * Founders, Treasury, and other ZEC/ZEN specific stuff is removed
 
+Upgrade
+-------------
+* Please be sure to backup your `./coins` directory before upgrading
+
 Install
 -------------
 Some initial setup
