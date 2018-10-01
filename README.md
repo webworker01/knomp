@@ -65,4 +65,4 @@ Forked from ComputerGenie repo (deleted)
 Released under the GNU General Public License v2
 http://www.gnu.org/licenses/gpl-2.0.html
 
-_Forked from [z-classic/z-nomp](https://github.com/z-classic/z-nomp) which is licensed under MIT License (See Old/LICENSE file)_
+_Forked from [z-classic/z-nomp](https://github.com/z-classic/z-nomp) which is incorrectly licensed under MIT License - see [zone117x/node-open-mining-portal](https://github.com/zone117x/node-open-mining-portal)_ 
