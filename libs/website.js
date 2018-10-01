@@ -76,7 +76,7 @@ module.exports = function(logger){
 
     var readPageFiles = function(files){
         async.each(files, function(fileName, callback){
-            var filePath = './' + websiteTemplate + (fileName === 'index.html' ? '/' : '/pages/') + fileName;
+            var filePath = websiteTemplate + (fileName === 'index.html' ? '/' : '/pages/') + fileName;
             fs.readFile(filePath, 'utf8', function(err, data){
                 var pTemp = dot.template(data);
                 pageTemplates[pageFiles[fileName]] = pTemp
