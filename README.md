@@ -15,7 +15,7 @@ Differences between this and Z-NOMP
 
 Upgrade
 -------------
-* Please be sure to backup your `./coins` directory before upgrading
+* Please be sure to backup your `./coins` and `./pool_configs` directory before upgrading
 
 Install
 -------------
