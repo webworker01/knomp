@@ -201,13 +201,14 @@ module.exports = function(logger){
         next();
     });
 
+    //Don't think these were used at all
     // app.get('/key.html', function(req, res, next){
     //     res.end(keyScriptProcessed);
     // });
-
     //app.get('/stats/shares/:coin', usershares);
     //app.get('/stats/shares', shares);
 	//app.get('/payout/:address', payout);
+
     app.use(compress());
     app.get('/workers/:address', minerpage);
     app.get('/:page', route);
@@ -217,7 +218,7 @@ module.exports = function(logger){
         portalApi.handleApiRequest(req, res, next);
     });
 
-    /*
+    /* Don't see what this was really doing
     app.post('/api/admin/:method', function(req, res, next){
         if (portalConfig.website
             && portalConfig.website.adminCenter
