@@ -70,7 +70,7 @@ In your coins file add:
 
 For the moment a different dependency is required, in package.json change the last dependency to: 
 ```
-"stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#notxfee
+"stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#notxfee"
 ```
 
 [Further info on config](https://github.com/zone117x/node-open-mining-portal)
