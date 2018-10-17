@@ -66,8 +66,10 @@ This is an option to force miners to use a Z address as their username for payou
 In your coins file add: 
 ```
 "privateChain": true,
+"burnFees": true
 ```
 
+Edit: *This may be resolved and unneccesary now*
 For the moment a different dependency is required, in package.json change the last dependency to: 
 ```
 "stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#notxfee"
