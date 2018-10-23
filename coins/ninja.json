@@ -1,7 +1,0 @@
-{
-    "name": "ninja",
-    "symbol": "NINJA",
-    "algorithm": "equihash",
-    "peerMagic": "b38e6fb2",
-    "txfee": 0.0001
-}

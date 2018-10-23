@@ -1,7 +1,0 @@
-{
-    "name": "coqui",
-    "symbol": "COQUI",
-    "algorithm": "equihash",
-    "peerMagic": "44f323df",
-    "txfee": 0.0001
-}

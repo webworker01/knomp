@@ -1,7 +1,0 @@
-{
-    "name": "supernet",
-    "symbol": "SUPERNET",
-    "algorithm": "equihash",
-    "peerMagic": "562411b9",
-    "txfee": 0.0001
-}

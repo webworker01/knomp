@@ -1,7 +1,0 @@
-{
-    "name": "bntn",
-    "symbol": "BNTN",
-    "algorithm": "equihash",
-    "peerMagic": "9918328e",
-    "txfee": 0.0001
-}

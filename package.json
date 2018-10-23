@@ -1,7 +1,7 @@
 {
     "name": "knomp",
-    "version": "0.0.1",
-    "description": "High performance Stratum poolserver in Node.js",
+    "version": "0.1.0",
+    "description": "High performance Stratum poolserver for the Komodo ecosystem in Node.js",
     "keywords": [
         "stratum",
         "mining",
@@ -17,7 +17,8 @@
     "author": "webworker01",
     "contributors": [
         "z-classic",
-        "ComputerGenie"
+        "ComputerGenie",
+        "webworker01"
     ],
     "main": "init.js",
     "bin": {

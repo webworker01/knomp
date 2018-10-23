@@ -1,6 +1,6 @@
 #!/bin/bash
 # Put the address to mine to here
-walletaddress=RFrCkbL9sS4nDjPgj4Di2DqyAnnHfyrj6W
+walletaddress=RWEBo1Yp4uGkeXPi1ZGQARfLPkGmoW1MwY
 
 # Any coins you would like to skip go here
 declare -a skip=("BEER" "PIZZA")

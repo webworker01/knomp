@@ -13,13 +13,17 @@ Differences between this and Z-NOMP
 * This is meant for Komodo mining
 * Founders, Treasury, and other ZEC/ZEN specific stuff is removed
 
+Upgrade
+-------------
+* Please be sure to backup your `./coins` and `./pool_configs` directory before upgrading
+
 Install
 -------------
 Some initial setup
 ```shell
 # The following packages are needed to build both Komodo and this stratum:
 sudo apt-get update
-sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoconf libtool ncurses-dev unzip git python python-zmq zlib1g-dev wget libcurl4-openssl-dev bsdmainutils automake curl libboost-dev libboost-system-dev libsodium-dev -y
+sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoconf libtool ncurses-dev unzip git python python-zmq zlib1g-dev wget libcurl4-openssl-dev bsdmainutils automake curl libboost-dev libboost-system-dev libsodium-dev jq redis-server -y
 ```
 Now, let's build Komodo
 ```shell
@@ -48,6 +52,24 @@ npm install
 npm start
 ```
 
+Full Z Transaction Support
+-------------
+This is an option to force miners to use a Z address as their username for payouts
+
+In your coins file add: 
+```
+"privateChain": true,
+"burnFees": true
+```
+
+For the moment a different dependency is required, in package.json change the last dependency to: 
+Edit: *This may be resolved and unneccesary now*
+```
+"stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#notxfee"
+```
+
+Do this before running `npm install` above or stop your running instance and run `npm install` `npm start` again after making this change.
+
 [Further info on config](https://github.com/zone117x/node-open-mining-portal)
 
 License
@@ -58,4 +80,4 @@ Forked from ComputerGenie repo (deleted)
 Released under the GNU General Public License v2
 http://www.gnu.org/licenses/gpl-2.0.html
 
-_Forked from [z-classic/z-nomp](https://github.com/z-classic/z-nomp) which is licensed under MIT License (See Old/LICENSE file)_
+_Forked from [z-classic/z-nomp](https://github.com/z-classic/z-nomp) which is incorrectly licensed under MIT License - see [zone117x/node-open-mining-portal](https://github.com/zone117x/node-open-mining-portal)_ 

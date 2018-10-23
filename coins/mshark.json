@@ -1,7 +1,0 @@
-{
-    "name": "mshark",
-    "symbol": "MSHARK",
-    "algorithm": "equihash",
-    "peerMagic": "f0e9f49e",
-    "txfee": 0.0001
-}

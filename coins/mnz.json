@@ -1,7 +1,0 @@
-{
-    "name": "mnz",
-    "symbol": "MNZ",
-    "algorithm": "equihash",
-    "peerMagic": "53d06fde",
-    "txfee": 0.0001
-}

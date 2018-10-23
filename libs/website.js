@@ -24,6 +24,7 @@ module.exports = function(logger){
     var poolConfigs = JSON.parse(process.env.pools);
 
     var websiteConfig = portalConfig.website;
+    var websiteTemplate = 'website/' + (typeof websiteConfig.template !== 'undefined' && websiteConfig.template ? websiteConfig.template : 'default');
 
     var portalApi = new api(logger, portalConfig, poolConfigs);
     var portalStats = portalApi.stats;
@@ -75,7 +76,7 @@ module.exports = function(logger){
 
     var readPageFiles = function(files){
         async.each(files, function(fileName, callback){
-            var filePath = 'website/' + (fileName === 'index.html' ? '' : 'pages/') + fileName;
+            var filePath = websiteTemplate + (fileName === 'index.html' ? '/' : '/pages/') + fileName;
             fs.readFile(filePath, 'utf8', function(err, data){
                 var pTemp = dot.template(data);
                 pageTemplates[pageFiles[fileName]] = pTemp
@@ -92,7 +93,7 @@ module.exports = function(logger){
 
     // if an html file was changed reload it
     /* requires node-watch 0.5.0 or newer */
-    watch(['./website', './website/pages'], function(evt, filename){
+    watch(['./'+websiteTemplate, './'+websiteTemplate+'/pages'], function(evt, filename){
         var basename;
         // support older versions of node-watch automatically
         if (!filename && evt)
@@ -200,13 +201,14 @@ module.exports = function(logger){
         next();
     });
 
+    //Don't think these were used at all
     // app.get('/key.html', function(req, res, next){
     //     res.end(keyScriptProcessed);
     // });
-
     //app.get('/stats/shares/:coin', usershares);
     //app.get('/stats/shares', shares);
 	//app.get('/payout/:address', payout);
+
     app.use(compress());
     app.get('/workers/:address', minerpage);
     app.get('/:page', route);
@@ -216,7 +218,7 @@ module.exports = function(logger){
         portalApi.handleApiRequest(req, res, next);
     });
 
-    /*
+    /* Don't see what this was really doing
     app.post('/api/admin/:method', function(req, res, next){
         if (portalConfig.website
             && portalConfig.website.adminCenter
@@ -234,7 +236,7 @@ module.exports = function(logger){
     */
 
     app.use(compress());
-    app.use('/static', express.static('website/static'));
+    app.use('/static', express.static(websiteTemplate + '/static'));
 
     app.use(function(err, req, res, next){
         console.error(err.stack);

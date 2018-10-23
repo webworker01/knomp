@@ -1,7 +1,0 @@
-{
-    "name": "bet",
-    "symbol": "BET",
-    "algorithm": "equihash",
-    "peerMagic": "7961f507",
-    "txfee": 0.0001
-}

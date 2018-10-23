@@ -1,7 +1,0 @@
-{
-    "name": "komodo",
-    "symbol": "KMD",
-    "algorithm": "equihash",
-    "peerMagic": "f9eee48d",
-    "txfee": 0.0001
-} 

@@ -105,6 +105,14 @@ module.exports = function(logger){
         var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
         var trackShares = (typeof poolOptions.trackShares !== 'undefined' && typeof poolOptions.trackShares.disable !== 'undefined') ? !poolOptions.trackShares.disable : true;
 
+        if (typeof poolOptions.coin.privateChain !== 'undefined' && poolOptions.coin.privateChain === true) {
+            var privateChain = poolOptions.coin.privateChain === true;
+            // var requireShielding = true;
+        } else {
+            var privateChain = false;
+            // var requireShielding = poolOptions.coin.requireShielding === true;
+        }
+
         var handlers = {
             auth: function(){},
             share: function(){},
@@ -137,6 +145,14 @@ module.exports = function(logger){
                 if (poolOptions.validateWorkerUsername !== true)
                     authCallback(true);
                 else {
+                    if (privateChain) {
+                        pool.daemon.cmd('z_validateaddress', [String(workerName).split(".")[0]], function (results) {
+                            var isValid = results.filter(function (r) {
+                                return r.response.isvalid
+                            }).length > 0;
+                            authCallback(isValid);
+                        });
+                    } else {
                         pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
                             var isValid = results.filter(function (r) {
                                 return r.response.isvalid
@@ -144,6 +160,7 @@ module.exports = function(logger){
                             authCallback(isValid);
                         });
                     }
+                }
             };
 
             handlers.share = function(isValidShare, isValidBlock, data){

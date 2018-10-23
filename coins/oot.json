@@ -1,7 +1,0 @@
-{
-    "name": "oot",
-    "symbol": "OOT",
-    "algorithm": "equihash",
-    "peerMagic": "a75b4bad",
-    "txfee": 0.0001
-}
