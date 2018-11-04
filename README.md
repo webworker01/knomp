@@ -71,7 +71,7 @@ In your coins file add:
 ```
 
 ~~For the moment a different dependency is required, in package.json change the last dependency to: ~~
-Edit: *This may be resolved and unneccesary now*~~
+Edit: *This may be resolved and unneccesary now*
 ~~```
 "stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#notxfee"
 ```~~
