@@ -38,7 +38,7 @@ strip src/komodo-cli
  - This will start ALL of the assets might take a day or so to sync, depending on system speed/network connection.
 ```shell
 cd ~/komodo/src
-./assetchains.old
+./assetchains
 ```
 
  Once all these chains have synced up we can configure the stratum.
