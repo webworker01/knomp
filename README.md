@@ -56,6 +56,7 @@ git clone https://github.com/webworker01/knomp
 cd knomp
 ./gencfg.sh
 npm install
+cp config_example.json config.json (and configure it)
 npm start
 ```
 
