@@ -70,11 +70,8 @@ In your coins file add:
 "burnFees": true
 ```
 
-~~For the moment a different dependency is required, in package.json change the last dependency to: ~~
-Edit: *This may be resolved and unneccesary now*
-~~```
-"stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#notxfee"
-```~~
+Edit: *The following should be resolved and may be unneccesary now*
+~~For the moment a different dependency is required, in package.json change the last dependency to: `"stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#notxfee"`~~
 
 Do this before running `npm install` above or stop your running instance and run `npm install` `npm start` again after making this change.
 
