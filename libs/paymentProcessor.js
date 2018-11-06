@@ -1473,19 +1473,15 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         });
     };
 
-    //@todo better validation on Z address format
     var getProperAddress = function(address){
-        if (privateChain && address.length == 95) {
+        if (privateChain && address.length.replace(/[^0-9a-z]/gi, '') == 95 && address.charAt(0) == 'z') {
+            return address;
+        } else if (privateChain || address.length >= 40 || address.length <= 30) {
+            logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
+            return (poolOptions.invalidAddress || poolOptions.address);
+        } else {
             return address;
         }
-        if (address.length >= 40){
-            logger.warning(logSystem, logComponent, 'Invalid address '+address+', convert to address '+(poolOptions.invalidAddress || poolOptions.address));
-            return (poolOptions.invalidAddress || poolOptions.address);
-        }
-        if (address.length <= 30) {
-            logger.warning(logSystem, logComponent, 'Invalid address '+address+', convert to address '+(poolOptions.invalidAddress || poolOptions.address));
-            return (poolOptions.invalidAddress || poolOptions.address);
-        }
-        return address;
     };
+
 }
