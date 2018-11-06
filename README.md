@@ -60,6 +60,14 @@ cp config_example.json config.json (and configure it)
 npm start
 ```
 
+Invalid Worker Addresses
+-------------
+
+You can add an option to your pool_config to have any miners that mine with an invalid address (if they somehow get through) to pay out to an address of your choosing
+```
+"invalidAddress":"zcVALIDADDRESSOFYOURCHOOSING"
+```
+
 Full Z Transaction Support
 -------------
 This is an option to force miners to use a Z address as their username for payouts
