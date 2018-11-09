@@ -83,7 +83,7 @@ Edit: *The following should be resolved and may be unneccesary now*
 
 Do this before running `npm install` above or stop your running instance and run `npm install` `npm start` again after making this change.
 
-[Further info on config](https://github.com/zone117x/node-open-mining-portal)
+[Further info on config](https://github.com/zone117x/node-open-mining-portal) and [sample configs](https://github.com/z-classic/z-nomp)
 
 License
 -------
