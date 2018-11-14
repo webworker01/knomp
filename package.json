@@ -1,7 +1,7 @@
 {
     "name": "knomp",
-    "version": "0.0.1",
-    "description": "High performance Stratum poolserver in Node.js",
+    "version": "0.1.0",
+    "description": "High performance Stratum poolserver for the Komodo ecosystem in Node.js",
     "keywords": [
         "stratum",
         "mining",
@@ -17,7 +17,8 @@
     "author": "webworker01",
     "contributors": [
         "z-classic",
-        "ComputerGenie"
+        "ComputerGenie",
+        "webworker01"
     ],
     "main": "init.js",
     "bin": {
@@ -43,12 +44,13 @@
         "nonce": "1.0.4",
         "redis": "2.8.0",
         "request": "^2.88.0",
-        "stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git"
+        "stratum-pool": "git+https://github.com/blackjok3rtt/node-stratum-pool.git"
     },
     "engines": {
         "node": ">=0.10"
     },
     "scripts": {
-        "start": "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/node_modules/stratum-pool/node_modules/equihashverify/build/Release/:$PWD/node_modules/equihashverify/build/Release/ node --max-old-space-size=8192 init.js"
+        "start": "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/node_modules/stratum-pool/node_modules/equihashverify/build/Release/:$PWD/node_modules/equihashverify/build/Release/ node init.js",
+        "debug": "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/node_modules/stratum-pool/node_modules/equihashverify/build/Release/:$PWD/node_modules/equihashverify/build/Release/ node --inspect init.js"
     }
 }

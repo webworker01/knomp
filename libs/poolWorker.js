@@ -103,6 +103,15 @@ module.exports = function(logger){
         var logSystem = 'Pool';
         var logComponent = coin;
         var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
+        var trackShares = (typeof poolOptions.trackShares !== 'undefined' && typeof poolOptions.trackShares.disable !== 'undefined') ? !poolOptions.trackShares.disable : true;
+
+        if (typeof poolOptions.coin.privateChain !== 'undefined' && poolOptions.coin.privateChain === true) {
+            var privateChain = poolOptions.coin.privateChain === true;
+            // var requireShielding = true;
+        } else {
+            var privateChain = false;
+            // var requireShielding = poolOptions.coin.requireShielding === true;
+        }
 
         var handlers = {
             auth: function(){},
@@ -136,6 +145,14 @@ module.exports = function(logger){
                 if (poolOptions.validateWorkerUsername !== true)
                     authCallback(true);
                 else {
+                    if (privateChain) {
+                        pool.daemon.cmd('z_validateaddress', [String(workerName).split(".")[0]], function (results) {
+                            var isValid = results.filter(function (r) {
+                                return r.response.isvalid
+                            }).length > 0;
+                            authCallback(isValid);
+                        });
+                    } else {
                         pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
                             var isValid = results.filter(function (r) {
                                 return r.response.isvalid
@@ -143,6 +160,7 @@ module.exports = function(logger){
                             authCallback(isValid);
                         });
                     }
+                }
             };
 
             handlers.share = function(isValidShare, isValidBlock, data){
@@ -191,7 +209,7 @@ module.exports = function(logger){
             handlers.share(isValidShare, isValidBlock, data);
             
             // send to master for pplnt time tracking
-            process.send({type: 'shareTrack', thread:(parseInt(forkId)+1), coin:poolOptions.coin.name, isValidShare:isValidShare, isValidBlock:isValidBlock, data:data});
+            process.send({type: 'shareTrack', thread:(parseInt(forkId)+1), coin:poolOptions.coin.name, isValidShare:isValidShare, isValidBlock:isValidBlock, data:data, trackShares:trackShares});
             
         }).on('difficultyUpdate', function(workerName, diff){
             logger.debug(logSystem, logComponent, logSubCat, 'Difficulty update to diff ' + diff + ' workerName=' + JSON.stringify(workerName));

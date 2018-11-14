@@ -1,0 +1,611 @@
+html, body, button, input, select, textarea, .pure-g [class *= "pure-u"], .pure-g-r [class *= "pure-u"]{
+    font-family: 'Open Sans', sans-serif;
+}
+
+body{
+    background-color:#000;
+    display: flex;
+    flex-direction: column;
+    max-width: 1160px;
+    margin: 0 auto;
+}
+
+header > .home-menu {
+    background: inherit !important;
+    /* height: 54px; */
+    padding: 10px 0;
+    display: flex;
+}
+
+header > .home-menu > a.pure-menu-heading, header > .home-menu > ul, header > .home-menu > ul > li{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: normal !important;
+    flex-wrap:wrap;
+}
+
+header > .home-menu a {
+    outline:none;
+}
+
+header > .home-menu > a.pure-menu-heading {
+    color: #b1de5a;
+    font-size: 1.5em;
+}
+
+header > .home-menu > ul > li > a {
+    color: #b1de5a;
+}
+
+header > .home-menu > ul > li > a:hover, 
+header > .home-menu > ul > li > a:focus{
+    background: inherit !important;
+}
+
+header > .home-menu > a.pure-menu-heading.pure-menu-selected,
+header > .home-menu > ul > li > a:hover, 
+header > .home-menu > ul > li.pure-menu-selected > a {
+    color: #FCAD4C;
+}
+
+a, a:link, a:visited {
+    color:#FFF;
+}
+
+main{
+    background-color: #2d2d2d;
+    color:#FFF;
+    position: relative;
+}
+
+footer{
+    text-align: center;
+    color: #b3b3b3;
+    text-decoration: none;
+    font-size: 0.8em;
+    padding: 15px;
+    line-height: 24px;
+}
+
+footer a{
+    color: #fff;
+    text-decoration: none;
+}
+
+footer iframe{
+    vertical-align: middle;
+}
+
+code {
+    font-family: monospace, serif;
+    display:block;
+    margin:15px;
+    padding:20px;
+    background-color:#725F49;
+}
+
+input, button {
+    color:#000;
+}
+
+.content {
+    margin:15px;
+}
+
+/* PURE TABLE */
+.pure-table thead {
+    background-color:#C99631;
+}
+
+.pure-table-odd td,
+.pure-table-even td {
+    background-color: #1F152A
+}
+
+
+/* PAGE STYLES */
+
+/* HOME */
+#boxWelcome{
+    background-color: #887705;
+    color: white;
+    margin: 18px;
+}
+#logoImg{
+    height: 285px;
+    margin: 55px;
+}
+#welcomeText{
+    font-size: 2.7em;
+    margin: 50px 18px 10px 18px;
+}
+#welcomeItems{
+    list-style-type: none;
+    font-size: 1.3em;
+    padding: 0 !important;
+    margin: 0 0 0 18px !important;
+}
+#welcomeItems > li{
+    margin: 30px !important;
+}
+#boxesLower {
+    margin: 0 9px;
+}
+#boxesLower > div {
+    display: flex;
+}
+#boxesLower > div > div {
+    flex: 1 1 auto;
+    margin: 0 9px 18px 9px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.boxLowerHeader{
+    font-size: 1.3em;
+    margin: 0 0 5px 10px;
+}
+
+#boxStatsLeft, #boxStatsRight{
+    background-color: #1F152A;
+}
+.boxStats{
+    color: white;
+}
+.boxStatsList{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    opacity: 0.77;
+    margin-bottom: 5px;
+    flex: 1 1 auto;
+    /* align-content: center; */
+}
+.boxStatsList i.fa{
+    height: 15px;
+    width: 33px;
+    text-align: center;
+}
+.boxStatsList > div{
+    padding: 5px 20px;
+}
+.boxStatsList > div > div{
+    padding: 3px;
+}
+
+/* GETTING STARTED */
+#holder{
+    display: flex;
+    flex-direction: row;
+}
+
+.glow{
+    box-shadow: inset 0 0 12px 4px #ff6c00;
+}
+
+.hidden{
+    display: none !important;
+}
+
+#menu{
+    background-color: #3d3d3d;
+    min-width: 170px;
+    width:100%;
+}
+
+#menu > .menuHeader{
+    color: #FFF;
+    font-weight:900;
+    border-bottom: 1px solid #7f878b;
+    font-size: 1.2em;
+    padding: 16px 16px 4px 15px;
+}
+
+.menuList{
+    transition-duration: 200ms;
+}
+
+.menuList > a:first-child{
+    margin-top: 10px;
+}
+
+.menuList > a{
+    display: inline-block;
+    color: #e3f7ff;
+    text-decoration: none;
+    padding: 7px;
+    padding-left: 25px;
+    width:40px;
+}
+
+#main{
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    margin: 18px;
+}
+.miningOption{
+    color: white;
+    /* display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap; */
+    min-height: 215px;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+a.miningOption:hover{
+    color: #f69b3a;
+}
+
+.miningOption:first-child{
+    background-color: #C99631;
+}
+.miningOption:last-child{
+    background-color: #b064e1;
+}
+.miningOptionNum{
+    font-size: 6em;
+    padding-right: 20px;
+    width: 140px;
+    text-align: center;
+}
+
+.gettingStartedMenu,
+.gettingStartedMenu.pure-menu-open {
+    display: inline-block;
+    background-color: #887705;
+    width:30%;
+}
+
+.pure-menu.pure-menu-open, .pure-menu.pure-menu-horizontal li .pure-menu-children {
+    border:none;
+}
+
+.pure-menu .pure-menu-heading {
+    color: #FFF;
+}
+
+.pure-menu li a:hover, 
+.pure-menu li a:focus {
+    background-color:#FCAD4C;
+    color:#1F152A;
+}
+
+#orHolder{
+    height: 37px;
+    text-align: center;
+}
+#orLine{
+    border-bottom: 1px solid #c2cacf;
+    height: 19px;
+    margin-bottom: -13px;
+}
+#orText{
+    background-color: #ebf4fa;
+    color: #5c5c5c;
+    display: inline-block;
+    width: 35px;
+    font-style: italic;
+}
+
+#coinList code {
+    background-color:#1F152A;
+}
+
+#coinInfoBackground{
+    transition-duration: 400ms;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.0;
+}
+#coinInfo{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 750px;
+    min-height: 400px;
+    top: 50px;
+    left: 50%;
+    margin-left: -375px;
+    position: absolute;
+    background-color: #1F152A;
+}
+#coinInfo > div:first-of-type{
+    font-size: 1.8em;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 35px;
+}
+.coinInfoHeader {
+    color: #FCAD4C;
+    font-weight:900;
+    font-family: 'Open Sans', sans-serif;
+    font-size:1.2em;
+}
+#coinInfoRows,
+.coinInfoRows {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex: 1 1 auto;
+    margin-bottom: 70px;
+}
+code #coinInfoRows,
+code .coinInfoRows {
+    margin-bottom:inherit;
+}
+#coinInfoRows > div,
+.coinInfoRows > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#coinInfoRows > div > div,
+.coinInfoRows > div > div {
+    padding: 3px;
+}
+#coinInfoRowKeys,
+.coinInfoRowKeys {
+    font-weight: bold;
+    padding-right: 30px;
+}
+#coinInfoRowKeys .coinInfoSubtle,
+.coinInfoRowKeys .coinInfoSubtle {
+    font-weight: normal;
+}
+#coinInfoClose{
+    position: absolute;
+    font-size: 3em;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+}
+#coinInfoClose:hover{
+    color: #50f0e3;
+}
+
+/* STATS */
+#topCharts{
+    color:#000;
+    padding: 18px;
+}
+#topCharts > div > div > svg{
+    display: block;
+    height: 280px;
+}
+.chartWrapper{
+    background-color:#7e7e7e;
+    border: solid 1px #c7c7c7;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 18px;
+}
+.chartLabel{
+    font-size: 1.2em;
+    text-align: center;
+    padding: 4px;
+}
+#boxesLower {
+    margin: 0 9px;
+}
+#boxesLower > div {
+    display: flex;
+}
+#boxesLower > div > div {
+    flex: 1 1 auto;
+    margin: 0 9px 18px 9px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.boxLowerHeader{
+    font-size: 1.3em;
+    margin: 0 0 5px 10px;
+}
+#boxStatsLeft{
+    color: #FFF;
+    background-color: #1F152A;
+}
+#boxStatsRight{
+    color: #FFF;
+    background-color: #1F152A;
+}
+.boxStats{
+    color: white;
+}
+.boxStatsList{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    opacity: 0.77;
+    margin-bottom: 5px;
+    flex: 1 1 auto;
+    align-content: center;
+}
+.boxStatsList i.fa{
+    height: 15px;
+    width: 33px;
+    text-align: center;
+}
+.boxStatsList > div{
+    padding: 5px 20px;
+}
+.boxStatsList > div > div{
+    padding: 3px;
+}
+
+div.tooltip {
+    /*position: absolute; */
+    text-align: center;
+    padding: 2px 10px;
+    /* font: 12px sans-serif; */
+    background: #000;
+    color: #EBEBEB;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+#tooltip.hidden {
+    opacity: 0;
+}
+
+/* TAB STATS */
+#topCharts {
+    padding: 18px;
+}
+
+#topCharts > div > div > svg {
+    display: block;
+    height: 280px;
+}
+
+.chartWrapper {
+    border: solid 1px #c7c7c7;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 18px;
+}
+
+.chartLabel {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 4px;
+}
+
+table {
+    width: 100%;
+}
+
+/* WORKERS */
+#bottomNotes {
+    display: block;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: 18px;
+}
+#topPool > div > div > svg {
+    display: block;
+    height: 280px;
+}
+.poolWrapper {
+    border: solid 1px #c7c7c7;
+    padding: 5px;
+    margin-bottom: 18px;
+}
+.poolLabel {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 4px;
+}
+.poolMinerTable {
+
+}
+table {
+    width: 100%;
+}
+
+/* PAYMENTS */
+.paymentblocks {
+    max-width:500px;
+    word-wrap:break-word;
+}
+
+#bottomNotes {
+    display: block;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: 18px;
+}
+#topPool > div > div > svg {
+    display: block;
+    height: 280px;
+}
+.poolLabel {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 4px;
+}
+
+table {
+    width: 100%;
+}
+
+/* WORKER STATS */
+#topCharts{
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 18px;
+    padding-bottom: 0px;
+}
+#topCharts > div > div > svg{
+    display: block;
+    height: 280px;
+}
+.chartWrapper{
+    border: solid 1px #c7c7c7;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 18px;
+}
+.chartLabel{
+    font-size: 1.2em;
+    text-align: center;
+    padding: 4px;
+}
+.chartHolder{
+
+}
+
+#boxesWorkers {
+    margin: 0 9px;
+}
+#boxesWorkers > div {
+    display: flex;
+}
+#boxesWorkers > div > div {
+    flex: 1 1 auto;
+    margin: 0 9px 18px 9px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.boxLowerHeader{
+    font-size: 1.3em;
+    margin: 0 0 5px 10px;
+}
+
+.boxStats{
+    color: white;
+}
+.boxStatsList{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    opacity: 0.77;
+    margin-bottom: 5px;
+    flex: 1 1 auto;
+    align-content: center;
+}
+.boxStatsList i.fa{
+    height: 15px;
+    width: 33px;
+    text-align: center;
+}
+.boxStatsList > div{
+    padding: 5px 20px;
+}
+.boxStatsList > div > div{
+    padding: 3px;
+}

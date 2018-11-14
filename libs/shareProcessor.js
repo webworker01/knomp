@@ -1,7 +1,5 @@
 var redis = require('redis');
-var Stratum = require('stratum-pool');
-
-
+// var Stratum = require('stratum-pool');
 
 /*
 This module deals with handling shares when in internal payment processing mode. It connects to a redis
@@ -13,13 +11,11 @@ value: a hash with..
 
  */
 
-
-
 module.exports = function(logger, poolConfig){
 
     var redisConfig = poolConfig.redis;
     var coin = poolConfig.coin.name;
-
+    var trackShares = (typeof poolConfig.trackShares !== 'undefined' && typeof poolConfig.trackShares.disable !== 'undefined') ? !poolConfig.trackShares.disable : true;
 
     var forkId = process.env.forkId;
     var logSystem = 'Pool';
@@ -71,7 +67,9 @@ module.exports = function(logger, poolConfig){
         var redisCommands = [];
 
         if (isValidShare) {
-            redisCommands.push(['hincrbyfloat', coin + ':shares:roundCurrent', shareData.worker, shareData.difficulty]);
+            if (trackShares) {
+                redisCommands.push(['hincrbyfloat', coin + ':shares:roundCurrent', shareData.worker, shareData.difficulty]);
+            }
             redisCommands.push(['hincrby', coin + ':stats', 'validShares', 1]);
         } else {
             redisCommands.push(['hincrby', coin + ':stats', 'invalidShares', 1]);
@@ -85,9 +83,11 @@ module.exports = function(logger, poolConfig){
         redisCommands.push(['zadd', coin + ':hashrate', dateNow / 1000 | 0, hashrateData.join(':')]);
 
         if (isValidBlock){
-            redisCommands.push(['rename', coin + ':shares:roundCurrent', coin + ':shares:round' + shareData.height]);
-            redisCommands.push(['rename', coin + ':shares:timesCurrent', coin + ':shares:times' + shareData.height]);
-            redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, shareData.worker, dateNow].join(':')]);
+            if (trackShares) {
+                redisCommands.push(['rename', coin + ':shares:roundCurrent', coin + ':shares:round' + shareData.height]);
+                redisCommands.push(['rename', coin + ':shares:timesCurrent', coin + ':shares:times' + shareData.height]);
+                redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, shareData.worker, dateNow].join(':')]);
+            }
             redisCommands.push(['hincrby', coin + ':stats', 'validBlocks', 1]);
         }
         else if (shareData.blockHash){
