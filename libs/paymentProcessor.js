@@ -555,8 +555,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
         var startPaymentProcess = Date.now();
 
-        var poolfee = 0;
-
         var timeSpentRPC = 0;
         var timeSpentRedis = 0;
 
@@ -708,7 +706,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         callback(true);
                         return;
                     }
-			console.log("got transactions");
+
                     var addressAccount = "";
 
                     // check for transaction errors and generated coins
@@ -716,7 +714,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         if (i === txDetails.length - 1){
                             if (tx.result && tx.result.toString().length > 0) {
                                 addressAccount = tx.result.toString();
-				console.log(addressAccount);
                             }
                             return;
                         }
@@ -751,14 +748,19 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             logger.error(logSystem, logComponent, 'Missing output details to pool address for transaction ' + round.txHash);
                             return;
                         }
-			console.log(round.catagory);
                         // get transaction category for round
+                        round.category = generationTx.category;
+                        // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
-                            if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
-                                poolfee = parseFloat(generationTx.amount*(poolOptions.rewardRecipients.percent/100) || generationTx.value*(poolOptions.rewardRecipients.percent/100));
-                            }
-                            round.reward = coinsRound(parseFloat(generationTx.amount-poolfee || generationTx.value-poolfee));
-			    console.log(round.reward);
+			   var  poolFee = 0;
+			   if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
+				for (var r in poolOptions.rewardRecipients) {
+         			    poolFee = poolFee + poolOptions.rewardRecipients[r]/100;
+                		    console.log(r);
+        		        }
+			    }
+			    console.log(poolFee);
+                            round.reward = coinsRound(parseFloat(generationTx.amount || generationTx.value));
                         }
                     });
 
@@ -969,11 +971,11 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                             totalShares += shares;
                                         }
 
-                                       console.log('--IMMATURE DEBUG--------------');
-                                       console.log('performPayment: '+performPayment);
-                                       console.log('blockHeight: '+round.height);
-                                       console.log('blockReward: '+Math.round(immature));
-                                       console.log('blockConfirmations: '+round.confirmations);
+                                        //console.log('--IMMATURE DEBUG--------------');
+                                        //console.log('performPayment: '+performPayment);
+                                        //console.log('blockHeight: '+round.height);
+                                        //console.log('blockReward: '+Math.round(immature));
+                                        //console.log('blockConfirmations: '+round.confirmations);
 
                                         // calculate rewards for round
                                         var totalAmount = 0;
@@ -986,7 +988,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                             totalAmount += workerImmatureTotal;
                                         }
 
-                                        console.log('----------------------------');
+                                        //console.log('----------------------------');
                                         break;
 
                                     /* calculate reward balances */
@@ -1029,11 +1031,11 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                             totalShares += shares;
                                         }
 
-                                        console.log('--REWARD DEBUG--------------');
-                                        console.log('performPayment: '+performPayment);
-                                        console.log('blockHeight: '+round.height);
-                                        console.log('blockReward: ' + Math.round(reward));
-                                        console.log('blockConfirmations: '+round.confirmations);
+                                        //console.log('--REWARD DEBUG--------------');
+                                        //console.log('performPayment: '+performPayment);
+                                        //console.log('blockHeight: '+round.height);
+                                        //console.log('blockReward: ' + Math.round(reward));
+                                        //console.log('blockConfirmations: '+round.confirmations);
 
                                         // calculate rewards for round
                                         var totalAmount = 0;
@@ -1051,7 +1053,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                             totalAmount += workerRewardTotal;
                                         }
 
-                                        console.log('----------------------------');
+                                        //console.log('----------------------------');
                                         break;
                                 }
                             });
@@ -1153,11 +1155,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         callback(null, workers, rounds, []);
                         return;
                     }
-			console.log(poolOptions.rewardRecipients.address);
-                    if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
-                      addressAmounts[poolOptions.rewardRecipients.address] = poolfee;
-                      console.log("added the recipeint address to the sendmany.");
-                    }
 
                     // do final rounding of payments per address
                     // this forces amounts to be valid (0.12345678)
@@ -1241,7 +1238,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     } else {
                         // perform the sendmany operation .. addressAccount
                         var rpccallTracking = 'sendmany "" '+JSON.stringify(addressAmounts);
-                        console.log(rpccallTracking);
+                        //console.log(rpccallTracking);
 
                         daemon.cmd('sendmany', ["", addressAmounts], function (result) {
                             // check for failed payments, there are many reasons
