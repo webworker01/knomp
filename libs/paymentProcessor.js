@@ -72,10 +72,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     var pplntEnabled = processingConfig.paymentMode === "pplnt" || false;
     var pplntTimeQualify = processingConfig.pplnt || 0.51; // 51%
 
-<<<<<<< HEAD
-    var getMarketStats = poolOptions.coin.getMarketStats === true;
-    var requireShielding = poolOptions.coin.requireShielding === true;
-=======
     if (typeof poolOptions.coin.privateChain !== 'undefined' && poolOptions.coin.privateChain === true) {
         var privateChain = poolOptions.coin.privateChain === true;
         var requireShielding = true;
@@ -84,7 +80,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         var requireShielding = poolOptions.coin.requireShielding === true;
     }
 
->>>>>>> cf51a4413b3528a93df4c3e7aee359970adf6c16
     var fee = parseFloat(poolOptions.coin.txfee) || parseFloat(0.0004);
 
     logger.debug(logSystem, logComponent, logComponent + ' requireShielding: ' + requireShielding);
@@ -197,16 +192,14 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         async.parallel([validateAddress, validateTAddress, getBalance], asyncComplete);
     }
 
-<<<<<<< HEAD
-=======
     /**
      * Specify with first param if using normal listunspent or listunspentZ
      * @param {String} type (T | Z)
-     * @param {*} addr 
-     * @param {*} notAddr 
-     * @param {*} minConf 
-     * @param {*} displayBool 
-     * @param {*} callback 
+     * @param {*} addr
+     * @param {*} notAddr
+     * @param {*} minConf
+     * @param {*} displayBool
+     * @param {*} callback
      */
     function listUnspentType(type, zaddr, notAddr, minConf, displayBool, callback) {
         if (type == 'Z') {
@@ -216,7 +209,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         }
     }
 
->>>>>>> cf51a4413b3528a93df4c3e7aee359970adf6c16
     //get t_address coinbalance
     function listUnspent (addr, notAddr, minConf, displayBool, callback) {
         if (addr !== null) {
@@ -354,98 +346,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
             }
         );
     }
-<<<<<<< HEAD
-
-    function cacheMarketStats() {
-        var marketStatsUpdate = [];
-        var coin = logComponent.replace('_testnet', '').toLowerCase();
-        if (coin == 'zen')
-            coin = 'zencash';
-
-        request('https://api.coinmarketcap.com/v1/ticker/'+coin+'/', function (error, response, body) {
-            if (error) {
-                logger.error(logSystem, logComponent, 'Error with http request to https://api.coinmarketcap.com/ ' + JSON.stringify(error));
-                return;
-            }
-            if (response && response.statusCode) {
-                if (response.statusCode == 200) {
-                    if (body) {
-                        var data = JSON.parse(body);
-                        if (data.length > 0) {
-                            marketStatsUpdate.push(['hset', logComponent + ':stats', 'coinmarketcap', JSON.stringify(data)]);
-                            redisClient.multi(marketStatsUpdate).exec(function(err, results){
-                                if (err){
-                                    logger.error(logSystem, logComponent, 'Error with redis during call to cacheMarketStats() ' + JSON.stringify(error));
-                                    return;
-                                }
-                            });
-                        }
-                    }
-                } else {
-                    logger.error(logSystem, logComponent, 'Error, unexpected http status code during call to cacheMarketStats() ' + JSON.stringify(response.statusCode));
-                }
-            }
-        });
-    }
-
-    function cacheNetworkStats () {
-        var params = null;
-        daemon.cmd('getmininginfo', params,
-            function (result) {
-                if (!result || result.error || result[0].error || !result[0].response) {
-                    logger.error(logSystem, logComponent, 'Error with RPC call getmininginfo '+JSON.stringify(result[0].error));
-                    return;
-                }
-
-                var coin = logComponent;
-                var finalRedisCommands = [];
-
-                if (result[0].response.blocks !== null) {
-                    finalRedisCommands.push(['hset', coin + ':stats', 'networkBlocks', result[0].response.blocks]);
-                }
-                if (result[0].response.difficulty !== null) {
-                    finalRedisCommands.push(['hset', coin + ':stats', 'networkDiff', result[0].response.difficulty]);
-                }
-                if (result[0].response.networkhashps !== null) {
-                    finalRedisCommands.push(['hset', coin + ':stats', 'networkSols', result[0].response.networkhashps]);
-                }
-
-                daemon.cmd('getnetworkinfo', params,
-                    function (result) {
-                        if (!result || result.error || result[0].error || !result[0].response) {
-                            logger.error(logSystem, logComponent, 'Error with RPC call getnetworkinfo '+JSON.stringify(result[0].error));
-                            return;
-                        }
-
-                        if (result[0].response.connections !== null) {
-                            finalRedisCommands.push(['hset', coin + ':stats', 'networkConnections', result[0].response.connections]);
-                        }
-                        if (result[0].response.version !== null) {
-                            finalRedisCommands.push(['hset', coin + ':stats', 'networkVersion', result[0].response.version]);
-                        }
-                        if (result[0].response.subversion !== null) {
-                            finalRedisCommands.push(['hset', coin + ':stats', 'networkSubVersion', result[0].response.subversion]);
-                        }
-                        if (result[0].response.protocolversion !== null) {
-                            finalRedisCommands.push(['hset', coin + ':stats', 'networkProtocolVersion', result[0].response.protocolversion]);
-                        }
-
-                        if (finalRedisCommands.length <= 0)
-                            return;
-
-                        redisClient.multi(finalRedisCommands).exec(function(error, results){
-                            if (error){
-                                logger.error(logSystem, logComponent, 'Error with redis during call to cacheNetworkStats() ' + JSON.stringify(error));
-                                return;
-                            }
-                        });
-                    }
-                );
-            }
-        );
-    }
-=======
->>>>>>> cf51a4413b3528a93df4c3e7aee359970adf6c16
 
     // run shielding process every x minutes
     var shieldIntervalState = 0; // do not send ZtoT and TtoZ and same time, this results in operation failed!
@@ -465,25 +365,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
             }
         }, shielding_interval);
     }
-<<<<<<< HEAD
-
-    // network stats caching every 58 seconds
-    var stats_interval = 58 * 1000;
-    var statsInterval = setInterval(function() {
-        // update network stats using coin daemon
-        cacheNetworkStats();
-    }, stats_interval);
-
-    // market stats caching every 5 minutes
-    if (getMarketStats === true) {
-        var market_stats_interval = 300 * 1000;
-        var marketStatsInterval = setInterval(function() {
-            // update market stats using coinmarketcap
-            cacheMarketStats();
-        }, market_stats_interval);
-    }
-=======
->>>>>>> cf51a4413b3528a93df4c3e7aee359970adf6c16
 
     // check operation statuses every 57 seconds
     var opid_interval =  57 * 1000;
@@ -676,8 +557,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
         var timeSpentRPC = 0;
         var timeSpentRedis = 0;
-
-        var poolfee = 0;
 
         var startTimeRedis;
         var startTimeRPC;
@@ -873,10 +752,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         round.category = generationTx.category;
                         // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
-                            if (poolOptions.coin.disablecb) {
-                                poolfee = parseFloat(generationTx.amount*(poolOptions.rewardRecipients.percent/100) || generationTx.value*(poolOptions.rewardRecipients.percent/100))
-                            }
-                            round.reward = coinsRound(parseFloat(generationTx.amount-poolfee || generationTx.value-poolfee));
+                            round.reward = coinsRound(parseFloat(generationTx.amount || generationTx.value));
                         }
                     });
 
@@ -1272,11 +1148,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         return;
                     }
 
-                    if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
-                      addressAmounts[poolOptions.rewardRecipients.address] = poolfee;
-                      console.log("added the recipeint address to the sendmany.");
-                    }
-
                     // do final rounding of payments per address
                     // this forces amounts to be valid (0.12345678)
                     for (var a in addressAmounts) {
@@ -1286,24 +1157,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     // POINT OF NO RETURN! GOOD LUCK!
                     // WE ARE SENDING PAYMENT CMD TO DAEMON
 
-<<<<<<< HEAD
-                    // perform the sendmany operation .. addressAccount
-                    var rpccallTracking = 'sendmany "" '+JSON.stringify(addressAmounts);
-                    console.log(rpccallTracking);
-
-                    daemon.cmd('sendmany', ["", addressAmounts], function (result) {
-                        // check for failed payments, there are many reasons
-                        if (result.error && result.error.code === -6) {
-                            // check if it is because we don't have enough funds
-                            if (result.error.message && result.error.message.includes("insufficient funds")) {
-                                // only try up to XX times (Max, 0.5%)
-                                if (tries < 5) {
-                                    // we thought we had enough funds to send payments, but apparently not...
-                                    // try decreasing payments by a small percent to cover unexpected tx fees?
-                                    var higherPercent = withholdPercent + 0.001; // 0.1%
-                                    logger.warning(logSystem, logComponent, 'Insufficient funds (??) for payments ('+satoshisToCoins(totalSent)+'), decreasing rewards by ' + (higherPercent * 100).toFixed(1) + '% and retrying');
-                                    trySend(higherPercent);
-=======
                     if (privateChain) {
                         // perform z_sendmany
 
@@ -1333,7 +1186,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                     // payment failed, prevent updates to redis
                                     callback(true);
                                     return;
->>>>>>> cf51a4413b3528a93df4c3e7aee359970adf6c16
                                 } else {
                                     // make sure z_sendmany gives us back a opid
                                     var opid = null;
@@ -1438,22 +1290,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                 }
                                 if (txid != null) {
 
-<<<<<<< HEAD
-                                // save payments data to redis
-                                var paymentBlocks = rounds.filter(function(r){ return r.category == 'generate'; }).map(function(r){
-                                    return parseInt(r.height);
-                                });
-
-                                var paymentsUpdate = [];
-                                var paymentsData = {time:Date.now(), txid:txid, shares:totalShares, paid:satoshisToCoins(totalSent),  miners:Object.keys(addressAmounts).length, blocks: paymentBlocks, amounts: addressAmounts, balances: balanceAmounts, work:shareAmounts};
-                                paymentsUpdate.push(['zadd', logComponent + ':payments', Date.now(), JSON.stringify(paymentsData)]);
-
-                                callback(null, workers, rounds, paymentsUpdate);
-=======
                                     // it worked, congrats on your pools payout ;)
                                     logger.special(logSystem, logComponent, 'Sent ' + satoshisToCoins(totalSent)
                                         + ' to ' + Object.keys(addressAmounts).length + ' miners; txid: '+txid);
->>>>>>> cf51a4413b3528a93df4c3e7aee359970adf6c16
 
                                     if (withholdPercent > 0) {
                                         logger.warning(logSystem, logComponent, 'Had to withhold ' + (withholdPercent * 100)
@@ -1465,11 +1304,11 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                     var paymentBlocks = rounds.filter(function(r){ return r.category == 'generate'; }).map(function(r){
                                         return parseInt(r.height);
                                     });
-                                    
+
                                     var paymentsUpdate = [];
                                     var paymentsData = {time:Date.now(), txid:txid, shares:totalShares, paid:satoshisToCoins(totalSent),  miners:Object.keys(addressAmounts).length, blocks: paymentBlocks, amounts: addressAmounts, balances: balanceAmounts, work:shareAmounts};
                                     paymentsUpdate.push(['zadd', logComponent + ':payments', Date.now(), JSON.stringify(paymentsData)]);
-                                    
+
                                     callback(null, workers, rounds, paymentsUpdate);
 
                                 } else {
