@@ -1238,7 +1238,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     } else {
                         // perform the sendmany operation .. addressAccount
                         var rpccallTracking = 'sendmany "" '+JSON.stringify(addressAmounts);
-                        //console.log(rpccallTracking);
+                        console.log(rpccallTracking);
 
                         daemon.cmd('sendmany', ["", addressAmounts], function (result) {
                             // check for failed payments, there are many reasons
