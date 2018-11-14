@@ -555,6 +555,8 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
         var startPaymentProcess = Date.now();
 
+        var poolfee = 0;
+
         var timeSpentRPC = 0;
         var timeSpentRedis = 0;
 
@@ -749,10 +751,11 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             return;
                         }
                         // get transaction category for round
-                        round.category = generationTx.category;
-                        // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
-                            round.reward = coinsRound(parseFloat(generationTx.amount || generationTx.value));
+                            if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
+                                poolfee = parseFloat(generationTx.amount*(poolOptions.rewardRecipients.percent/100) || generationTx.value*(poolOptions.rewardRecipients.percent/100))
+                            }
+                            round.reward = coinsRound(parseFloat(generationTx.amount-poolfee || generationTx.value-poolfee));
                         }
                     });
 
@@ -1146,6 +1149,11 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     if (Object.keys(addressAmounts).length === 0){
                         callback(null, workers, rounds, []);
                         return;
+                    }
+
+                    if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
+                      addressAmounts[poolOptions.rewardRecipients.address] = poolfee;
+                      console.log("added the recipeint address to the sendmany.");
                     }
 
                     // do final rounding of payments per address
