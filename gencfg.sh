@@ -1,6 +1,6 @@
 #!/bin/bash
 # Put the address to mine to here
-walletaddress=RWEBo1Yp4uGkeXPi1ZGQARfLPkGmoW1MwY
+walletaddress=RPym8YEujHqvZJ3HTFj8NMs2xhMe2ZuVva
 
 # Any coins you would like to skip go here
 declare -a skip=("BEER" "PIZZA")
@@ -25,7 +25,7 @@ mkdir -p $poolconfigdir
 rm $ufwenablefile
 rm $ufwdisablefile
 
-~/komodo/src/listassetchains | while read chain; do
+echo "TZEX4" | while read chain; do
   if [[ " ${skip[@]} " =~ " ${chain} " ]]; then
     pointless=0
   else
