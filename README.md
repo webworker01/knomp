@@ -27,7 +27,7 @@ sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoco
 ```
 Now, let's build Komodo
 ```shell
-git clone https://github.com/StakedChain/komodo
+git clone https://github.com/jl777/komodo -b FSM
 cd komodo
 zcutil/fetch-params.sh
 zcutil/build.sh -j8
