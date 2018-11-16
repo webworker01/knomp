@@ -869,7 +869,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         }
 
                         // check if we have enough tAddress funds to begin payment processing
-                        liunspenttype = privateChain ? 'Z' : 'T';
+                        listunspenttype = privateChain ? 'Z' : 'T';
                         listUnspentType(listunspenttype, poolOptions.zAddress, notAddr, minConfPayout, displayBalances, function (error, tBalance) {
                             if (error) {
                                 logger.error(logSystem, logComponent, 'Error checking pool balance before processing payments.');
