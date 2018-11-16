@@ -33,11 +33,11 @@ zcutil/fetch-params.sh
 zcutil/build.sh -j8
 ```
 
-https://raw.githubusercontent.com/StakedChain/PoS_scripts/master/pool_cfg_generator/gencfg.sh
+We need to generate the coins files (coin daemon must be running!): `gencfg.sh <coin name>`
 
-That script will generate the pool config for you. Edit the address to the address you want to mine to and check the folders point to wher Knomp is installed. The default directories are already there. There is also the stratum port, each coin needs a diffrent port. 
+You can run just gencfg.sh with no coin name to use the assetchains.json in komodo/src directory for all coins. Make sure you edit the template with the correct values you want before running the config generator.
 
- We need node and npminstalled
+We need node and npminstalled
 
 ```shell
 cd ~
@@ -51,6 +51,14 @@ cd knomp
 npm install
 npm start
 ```
+
+## Disable Coinbase Mode 
+This mode is enabled by default in the coins.template with`"disablecb" : true` 
+
+To disable it, change the value to false. This mode uses -pubkey to tell the daemon where the coinbase should be sent, and uses the daemons coinbase transaction rather then having the pool create the coinabse transaction. This enables special coinbase transactions, such as ac_founders and ac_script or new modes with CC vouts in the coinbase not yet created, it will work with all coins, except Full Z support described below. 
+
+The pool fee is taken in the payment processor using this mode, and might not be 100% accurate down to the single satoshi, so the pool address may end up with some small amount of coins over time. To use the pool fee, just change `rewardRecipents` value in the `poolconfig.template` before running the `gencfg.sh` script as you normally would for the standard mode.
+
 
 Full Z Transaction Support
 -------------
