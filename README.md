@@ -1,5 +1,4 @@
 ## Mining stratum for Komodo and Komodo assetchains.
-### (READY FOR TESTING - Share distribution needs testing)
 
 Requirements
 ------------
