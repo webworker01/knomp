@@ -555,6 +555,8 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
         var startPaymentProcess = Date.now();
 
+        var poolperc = 0;
+
         var timeSpentRPC = 0;
         var timeSpentRedis = 0;
 
@@ -752,16 +754,16 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         round.category = generationTx.category;
                         // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
-			   var  poolFee = 0;
+			   var minerperc = 1;
 			   if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
 				for (var r in poolOptions.rewardRecipients) {
-         			    poolFee = poolFee + poolOptions.rewardRecipients[r]/100;
-                		    console.log(r);
+         			    minerperc = minerperc - (poolOptions.rewardRecipients[r]/100);
         		        }
 			    }
-			    console.log(poolFee);
-                            round.reward = coinsRound(parseFloat(generationTx.amount || generationTx.value));
-                        }
+			    poolperc = roundTo(1 - minerperc,4);
+                            round.reward = coinsRound(parseFloat(generationTx.amount*minerperc || generationTx.value*minerperc));
+			}
+			//console.log(round.reward);
                     });
 
                     var canDeleteShares = function(r){
@@ -867,7 +869,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         }
 
                         // check if we have enough tAddress funds to begin payment processing
-                        listunspenttype = privateChain ? 'Z' : 'T';
+                        liunspenttype = privateChain ? 'Z' : 'T';
                         listUnspentType(listunspenttype, poolOptions.zAddress, notAddr, minConfPayout, displayBalances, function (error, tBalance) {
                             if (error) {
                                 logger.error(logSystem, logComponent, 'Error checking pool balance before processing payments.');
@@ -1158,9 +1160,23 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
                     // do final rounding of payments per address
                     // this forces amounts to be valid (0.12345678)
-                    for (var a in addressAmounts) {
+                    var totalcoinstosend = 0;
+		    for (var a in addressAmounts) {
                         addressAmounts[a] = coinsRound(addressAmounts[a]);
+			totalcoinstosend = totalcoinstosend + addressAmounts[a];
                     }
+
+		    if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
+		        var totalbr = coinsRound(totalcoinstosend*(poolperc+1));
+			console.log(totalbr);
+			for (var r in poolOptions.rewardRecipients) {
+        		     var feetopay = coinsRound(totalbr*(poolOptions.rewardRecipients[r]/100));
+			     addressAmounts[r] = feetopay;
+			}
+		    }
+
+		    console.log(addressAmounts);
+
 
                     // POINT OF NO RETURN! GOOD LUCK!
                     // WE ARE SENDING PAYMENT CMD TO DAEMON
@@ -1238,7 +1254,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     } else {
                         // perform the sendmany operation .. addressAccount
                         var rpccallTracking = 'sendmany "" '+JSON.stringify(addressAmounts);
-                        //console.log(rpccallTracking);
+                        console.log(rpccallTracking);
 
                         daemon.cmd('sendmany', ["", addressAmounts], function (result) {
                             // check for failed payments, there are many reasons

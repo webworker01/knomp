@@ -1,6 +1,6 @@
 #!/bin/bash
 # Put the address to mine to here
-walletaddress=RPym8YEujHqvZJ3HTFj8NMs2xhMe2ZuVva
+walletaddress=RUfNVCZrbHGgspLcDWbGdBiSLfRgCNgE9M
 
 # Any coins you would like to skip go here
 declare -a skip=("BEER" "PIZZA")
@@ -8,6 +8,7 @@ declare -a skip=("BEER" "PIZZA")
 # Stratum port to start with
 stratumport=3030
 
+cli="komodo-cli"
 coinsdir=./coins
 poolconfigdir=./pool_configs
 coinstpl=coins.template
@@ -25,15 +26,39 @@ mkdir -p $poolconfigdir
 rm $ufwenablefile
 rm $ufwdisablefile
 
-echo "TZEX4" | while read chain; do
+if [[ -z $1 ]]; then
+  specificchain=0
+else
+  specificchain=$1
+fi
+
+
+listassetchains () {
+  if [[ $specificchain = "0" ]]; then
+    ~/komodo/src/listassetchains
+  else
+    echo $specificchain
+  fi
+}
+
+listassetchains | while read chain; do
   if [[ " ${skip[@]} " =~ " ${chain} " ]]; then
     pointless=0
   else
-    string=$(printf '%08x\n' $(komodo-cli -ac_name=$chain getinfo | jq '.magic'))
+    echo  "[$chain] Generating config files"
+    getinfo=$(${cli} -ac_name=$chain getinfo 2>/dev/null)
+    outcome=$(echo $?)
+
+    if [[ $outcome != 0 ]]; then
+       echo "[$chain] Daemon for is not running skipped."
+       continue
+    fi
+
+    string=$(printf '%08x\n' $(echo $getinfo | jq '.magic'))
     magic=${string: -8}
     magicrev=$(echo ${magic:6:2}${magic:4:2}${magic:2:2}${magic:0:2})
 
-    p2pport=$(komodo-cli -ac_name=$chain getinfo | jq '.p2pport')
+    p2pport=$(echo $getinfo | jq '.p2pport')
     thisconf=$(<~/.komodo/$chain/$chain.conf)
 
     rpcuser=$(echo $thisconf | grep -Po "rpcuser=(\S*)" | sed 's/rpcuser=//')
