@@ -1168,14 +1168,14 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
 		    if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
 		        var totalbr = coinsRound(totalcoinstosend*(poolperc+1));
-			console.log(totalbr);
+			//console.log(totalbr);
 			for (var r in poolOptions.rewardRecipients) {
         		     var feetopay = coinsRound(totalbr*(poolOptions.rewardRecipients[r]/100));
 			     addressAmounts[r] = feetopay;
 			}
 		    }
 
-		    console.log(addressAmounts);
+		    //console.log(addressAmounts);
 
 
                     // POINT OF NO RETURN! GOOD LUCK!
@@ -1254,7 +1254,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     } else {
                         // perform the sendmany operation .. addressAccount
                         var rpccallTracking = 'sendmany "" '+JSON.stringify(addressAmounts);
-                        console.log(rpccallTracking);
+                        //console.log(rpccallTracking);
 
                         daemon.cmd('sendmany', ["", addressAmounts], function (result) {
                             // check for failed payments, there are many reasons
