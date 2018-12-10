@@ -1474,7 +1474,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     };
 
     var getProperAddress = function(address){
-        if (privateChain && address.replace(/[^0-9a-z]/gi, '').length == 95 && address.charAt(0) == 'z') {
+        if (privateChain && [78,95].indexOf(address.replace(/[^0-9a-z]/gi, '').length) > -1 && address.charAt(0) == 'z') {
             return address;
         } else if (privateChain || address.length >= 40 || address.length <= 30) {
             logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
