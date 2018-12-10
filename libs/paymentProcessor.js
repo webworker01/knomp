@@ -421,13 +421,13 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                                 });
                                             } else {
                                                 logger.special(logSystem, logComponent, 'Found payment opid ' + op.id );
-                                                // redisClient.multi([ ['zremrangebyscore', coin + ':payments', apresult.time, apresult.time] ]).exec(function(error, results) {
-                                                //     if (error) {
-                                                //         logger.error(logSystem, logComponent, "Removed old payment failed OPID:" + op.id + " " + error);
-                                                //     } else {
-                                                //         logger.special(logSystem, logComponent, "Removed old payment success! OPID:" + op.id);
-                                                //     }
-                                                // });
+                                                redisClient.multi([ ['zremrangebyscore', coin + ':payments', apresult.time, apresult.time] ]).exec(function(error, results) {
+                                                    if (error) {
+                                                        logger.error(logSystem, logComponent, "Removed old payment failed OPID:" + op.id + " " + error);
+                                                    } else {
+                                                        logger.special(logSystem, logComponent, "Removed old payment success! OPID:" + op.id);
+                                                    }
+                                                });
 
                                                 redisClient.multi([ ['zadd', coin + ':payments', apresult.time, JSON.stringify(apresult)]]).exec(function(error, results) {
                                                     if (error) {
@@ -465,7 +465,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     }
                 });
 
-                /* @todo - Not sure if this is needed but call this to clear out operations (some seemed to get stuck) */
+                /* Not sure if this is needed but call this to clear out operations (some seemed to get stuck) */
                 if (privateChain) {
                     batchRPC.push(['z_getoperationresult']);
                 }
@@ -1210,7 +1210,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                         });
 
                                         var paymentsUpdate = [];
-                                        var paymentsData = {time:Date.now(), opid:opid, txid:'', shares:totalShares, paid:satoshisToCoins(totalSent),  miners:Object.keys(addressAmounts).length, blocks: paymentBlocks, amounts: addressAmounts, balances: balanceAmounts, work:shareAmounts};
+                                        var paymentsData = {time:Date.now(), opid:opid, shares:totalShares, paid:satoshisToCoins(totalSent),  miners:Object.keys(addressAmounts).length, blocks: paymentBlocks, amounts: addressAmounts, balances: balanceAmounts, work:shareAmounts};
                                         paymentsUpdate.push(['zadd', logComponent + ':payments', Date.now(), JSON.stringify(paymentsData)]);
 
                                         callback(null, workers, rounds, paymentsUpdate);
