@@ -368,7 +368,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
     // check operation statuses every 57 seconds
     //var opid_interval =  57 * 1000;
-    var opid_interval = (typeof poolOptions.sapling !== 'undefined' && ( poolOptions.sapling  || poolOptions > 0 )) ? 15 * 1000 : 57 * 1000;
+    var opid_interval = (typeof poolOptions.sapling !== 'undefined' && ( poolOptions.sapling  || poolOptions.sapling > 0 )) ? 15 * 1000 : 57 * 1000;
 
     // shielding not required for some equihash coins
     if (requireShielding === true) {
