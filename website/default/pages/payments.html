@@ -31,6 +31,9 @@
     table {
         width: 100%;
     }
+    table td {
+        padding: 6px 12px;
+    }
 </style>
 <script type="text/javascript">
   $(function () {
@@ -57,7 +60,7 @@
 </script>
 {{ function readableDate(a){ return new Date(parseInt(a)).toISOString(); } }}
 {{ for(var pool in it.stats.pools) { }}
-<table>
+<table class="puretable">
     <thead>
     <tr>
         <th>Blocks</th>
