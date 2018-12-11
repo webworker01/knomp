@@ -367,7 +367,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     }
 
     // check operation statuses every 57 seconds
-    var opid_interval =  57 * 1000;
+    //var opid_interval =  57 * 1000;
+    var opid_interval = (typeof poolOptions.sapling !== 'undefined' && ( poolOptions.sapling  || poolOptions > 0 )) ? 15 * 1000 : 57 * 1000;
+
     // shielding not required for some equihash coins
     if (requireShielding === true) {
         var checkOpids = function() {
@@ -753,12 +755,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         // get transaction category for round
                         round.category = generationTx.category;
 
-                        // Don't count for payout before minConfirmations from config
-                        if (round.confirmations < minConfPayout) {
-                            round.category = 'immature';
-                            return;
-                        }
-
                         // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
                             round.reward = coinsRound(parseFloat(generationTx.amount || generationTx.value));
@@ -781,6 +777,12 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     // only pay max blocks at a time
                     var payingBlocks = 0;
                     rounds = rounds.filter(function(r){
+                        // Don't count for payout before minConfirmations from config
+                        if ( r.confirmations < (minConfPayout*2) ) {
+                            r.category = 'immature';
+                            return true;
+                        }
+
                         switch (r.category) {
                             case 'orphan':
                             case 'kicked':

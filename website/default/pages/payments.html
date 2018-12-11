@@ -55,7 +55,7 @@
     });
 });
 </script>
-{{ function readableDate(a){ return new Date(parseInt(a)).toString(); } }}
+{{ function readableDate(a){ return new Date(parseInt(a)).toISOString(); } }}
 {{ for(var pool in it.stats.pools) { }}
 <table>
     <thead>
@@ -69,7 +69,7 @@
     </thead>
       {{ for(var p in it.stats.pools[pool].payments) { }}
 <tr>
-          <td>
+          <td style="max-width: 475px; word-wrap: break-word;">
           {{if (String(it.stats.pools[pool].name).startsWith("zcash")) { }}
           <a href="https://explorer.zcha.in/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
           {{ } else if (String(it.stats.pools[pool].name).startsWith("zclassic")) { }}
