@@ -658,7 +658,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             // filter out all duplicates to prevent double payments
                             rounds = rounds.filter(function(round){ return !round.duplicate; });
                             // if we detected the invalid duplicates, move them
-                            if (invalidBlocks.length > 0) {                                
+                            if (invalidBlocks.length > 0) {
                                 // move invalid duplicate blocks in redis
                                 startRedisTimer();
                                 redisClient.multi(invalidBlocks).exec(function(error, kicked){
@@ -719,9 +719,10 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         }
                         var round = rounds[i];
                         // update confirmations for round
-                        if (tx && tx.result)
+                        if (tx && tx.result) {
                             round.confirmations = parseInt((tx.result.confirmations || 0));
-                        
+                        }
+
                         // look for transaction errors
                         if (tx.error && tx.error.code === -5){
                             logger.warning(logSystem, logComponent, 'Daemon reports invalid transaction: ' + round.txHash);
@@ -748,8 +749,16 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             logger.error(logSystem, logComponent, 'Missing output details to pool address for transaction ' + round.txHash);
                             return;
                         }
+
                         // get transaction category for round
                         round.category = generationTx.category;
+
+                        // Don't count for payout before minConfirmations from config
+                        if (round.confirmations < minConfPayout) {
+                            round.category = 'immature';
+                            return;
+                        }
+
                         // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
                             round.reward = coinsRound(parseFloat(generationTx.amount || generationTx.value));
