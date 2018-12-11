@@ -421,15 +421,10 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                                 });
                                             } else {
                                                 logger.special(logSystem, logComponent, 'Found payment opid ' + op.id );
-                                                redisClient.multi([ ['zremrangebyscore', coin + ':payments', apresult.time, apresult.time] ]).exec(function(error, results) {
-                                                    if (error) {
-                                                        logger.error(logSystem, logComponent, "Removed old payment failed OPID:" + op.id + " " + error);
-                                                    } else {
-                                                        logger.special(logSystem, logComponent, "Removed old payment success! OPID:" + op.id);
-                                                    }
-                                                });
-
-                                                redisClient.multi([ ['zadd', coin + ':payments', apresult.time, JSON.stringify(apresult)]]).exec(function(error, results) {
+                                                redisClient.multi([ 
+                                                    ['zremrangebyscore', coin + ':payments', apresult.time, apresult.time],
+                                                    ['zadd', coin + ':payments', apresult.time, JSON.stringify(apresult)]
+                                                ]).exec(function(error, results) {
                                                     if (error) {
                                                         logger.error(logSystem, logComponent, "Updating txid for ztransaction failed OPID:" + op.id + " " + error);
                                                     } else {
