@@ -1205,8 +1205,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                         });
 
                                         var paymentsUpdate = [];
-                                        var paymentsData = {time:Date.now(), opid:opid, shares:totalShares, paid:satoshisToCoins(totalSent),  miners:Object.keys(addressAmounts).length, blocks: paymentBlocks, amounts: addressAmounts, balances: balanceAmounts, work:shareAmounts};
-                                        paymentsUpdate.push(['zadd', logComponent + ':payments', Date.now(), JSON.stringify(paymentsData)]);
+                                        let paymentTime = Date.now();
+                                        var paymentsData = {time:paymentTime, opid:opid, shares:totalShares, paid:satoshisToCoins(totalSent),  miners:Object.keys(addressAmounts).length, blocks: paymentBlocks, amounts: addressAmounts, balances: balanceAmounts, work:shareAmounts};
+                                        paymentsUpdate.push(['zadd', logComponent + ':payments', paymentTime, JSON.stringify(paymentsData)]);
 
                                         callback(null, workers, rounds, paymentsUpdate);
                                     } else {
