@@ -77,10 +77,24 @@ In your coins file add:
 "burnFees": true
 ```
 
-Edit: *The following should be resolved and may be unneccesary now*
-~~For the moment a different dependency is required, in package.json change the last dependency to: `"stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#notxfee"`~~
+Sapling and Sapling Payment Support
+-------------
+In coins/pirate.json file:
+```
+"privateChain": true,
+"burnFees": true,
+"sapling": 153250
+```
+Please note, KMD sapling becomes active on 2018-12-15 01:00UTC. We won't know the block height until that time and the above number is just my best guess. Alternatively this can just be set to "sapling":true but this could have problems before sapling activation date.
 
-Do this before running `npm install` above or stop your running instance and run `npm install` `npm start` again after making this change.
+In pool_config:
+```
+"zAddress": "zsPoolsSaplingAddress",
+"invalidAddress": "zsPoolsSaplingAddress",
+"validateWorkerUsername": true,
+```
+
+`invalidAddress` will take any miners rewards that slip through the address validation cracks  redirect their rewards to this address
 
 [Further info on config](https://github.com/zone117x/node-open-mining-portal) and [sample configs](https://github.com/z-classic/z-nomp)
 
