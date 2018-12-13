@@ -773,7 +773,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     var payingBlocks = 0;
                     rounds = rounds.filter(function(r){
                         // Don't count for payout before minConfirmations from config
-                        if ( r.confirmations < (minConfPayout*2) ) {
+                        if ( r.confirmations > -1 && r.confirmations < (minConfPayout*2) ) {
                             r.category = 'immature';
                             return true;
                         }
