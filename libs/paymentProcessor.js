@@ -1480,7 +1480,11 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     };
 
     var getProperAddress = function(address){
-        if (privateChain && [78,95].indexOf(address.replace(/[^0-9a-z]/gi, '').length) > -1 && address.charAt(0) == 'z') {
+        if (privateChain && poolOptions.zAddress.substring(0,2) == 'zs' && address.replace(/[^0-9a-z]/gi, '').length == 78 && address.substring(0,2) == 'zs') {
+            //validate as sapling
+            return address;
+        } else if (privateChain && poolOptions.zAddress.substring(0,2) == zc && address.replace(/[^0-9a-z]/gi, '').length == 95 && address.substring(0,2) == 'zc') {
+            //validate as sprout
             return address;
         } else if (privateChain || address.length >= 40 || address.length <= 30) {
             logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
