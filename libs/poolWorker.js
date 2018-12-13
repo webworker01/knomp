@@ -143,14 +143,15 @@ module.exports = function(logger){
 
             handlers.auth = function(port, workerName, password, authCallback){
                 let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
+
                 if (poolOptions.validateWorkerUsername !== true)
                     authCallback(true);
                 else {
                     if (privateChain) {
                         pool.daemon.cmd('z_validateaddress', [String(workerName).split(".")[0]], function (results) {
                             var isValid = results.filter(function (r) {
-                                if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs' && r.response.type == 'sprout') {
-                                    return true;
+                                if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs') {
+                                    return (r.response.isvalid && r.response.type == 'sapling');
                                 } else {
                                     return r.response.isvalid
                                 }
