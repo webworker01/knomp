@@ -1480,10 +1480,18 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     };
 
     var getProperAddress = function(address){
-        if (privateChain && poolOptions.zAddress.substring(0,2) == 'zs' && address.replace(/[^0-9a-z]/gi, '').length == 78 && address.substring(0,2) == 'zs') {
+        let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
+        let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
+        let minerAddressPrefix = address.substring(0,2);
+
+        logger.special(logSystem, logComponent, 'poolZAddressPrefix:' + poolZAddressPrefix);
+        logger.special(logSystem, logComponent, 'minerAddressLength:' + minerAddressLength);
+        logger.special(logSystem, logComponent, 'minerAddressPrefix:' + minerAddressPrefix);
+
+        if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
             //validate as sapling
             return address;
-        } else if (privateChain && poolOptions.zAddress.substring(0,2) == zc && address.replace(/[^0-9a-z]/gi, '').length == 95 && address.substring(0,2) == 'zc') {
+        } else if (privateChain && poolZAddressPrefix == 'zc' && minerAddressLength == 95 && minerAddressPrefix == 'zc') {
             //validate as sprout
             return address;
         } else if (privateChain || address.length >= 40 || address.length <= 30) {
