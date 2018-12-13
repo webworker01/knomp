@@ -462,6 +462,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
                 /* Not sure if this is needed but call this to clear out operations (some seemed to get stuck) */
                 if (privateChain) {
+                    logger.special(logSystem, logComponent, "Running z_operationresult for privateChain - TEST");
                     batchRPC.push(['z_getoperationresult']);
                 }
 
