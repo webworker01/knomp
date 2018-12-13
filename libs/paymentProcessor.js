@@ -1486,10 +1486,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
         let minerAddressPrefix = address.substring(0,2);
 
-        logger.special(logSystem, logComponent, 'poolZAddressPrefix:' + poolZAddressPrefix);
-        logger.special(logSystem, logComponent, 'minerAddressLength:' + minerAddressLength);
-        logger.special(logSystem, logComponent, 'minerAddressPrefix:' + minerAddressPrefix);
-
         if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
             //validate as sapling
             return address;

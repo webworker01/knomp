@@ -153,7 +153,7 @@ module.exports = function(logger){
                                 if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs') {
                                     return (r.response.isvalid && r.response.type == 'sapling');
                                 } else {
-                                    return r.response.isvalid
+                                    return r.response.isvalid;
                                 }
                             }).length > 0;
                             authCallback(isValid);
