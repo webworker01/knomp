@@ -367,7 +367,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     }
 
     // check operation statuses every 57 seconds
-    var opid_interval =  57 * 1000;
+    //var opid_interval =  57 * 1000;
+    var opid_interval = (typeof poolOptions.sapling !== 'undefined' && ( poolOptions.sapling  || poolOptions.sapling > 0 )) ? 15 * 1000 : 57 * 1000;
+
     // shielding not required for some equihash coins
     if (requireShielding === true) {
         var checkOpids = function() {
@@ -654,7 +656,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             // filter out all duplicates to prevent double payments
                             rounds = rounds.filter(function(round){ return !round.duplicate; });
                             // if we detected the invalid duplicates, move them
-                            if (invalidBlocks.length > 0) {                                
+                            if (invalidBlocks.length > 0) {
                                 // move invalid duplicate blocks in redis
                                 startRedisTimer();
                                 redisClient.multi(invalidBlocks).exec(function(error, kicked){
@@ -715,9 +717,10 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         }
                         var round = rounds[i];
                         // update confirmations for round
-                        if (tx && tx.result)
+                        if (tx && tx.result) {
                             round.confirmations = parseInt((tx.result.confirmations || 0));
-                        
+                        }
+
                         // look for transaction errors
                         if (tx.error && tx.error.code === -5){
                             logger.warning(logSystem, logComponent, 'Daemon reports invalid transaction: ' + round.txHash);
@@ -744,8 +747,10 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             logger.error(logSystem, logComponent, 'Missing output details to pool address for transaction ' + round.txHash);
                             return;
                         }
+
                         // get transaction category for round
                         round.category = generationTx.category;
+
                         // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
                             round.reward = coinsRound(parseFloat(generationTx.amount || generationTx.value));
@@ -768,6 +773,12 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     // only pay max blocks at a time
                     var payingBlocks = 0;
                     rounds = rounds.filter(function(r){
+                        // Don't count for payout before minConfirmations from config
+                        if ( r.confirmations > -1 && r.confirmations < (minConfPayout*2) ) {
+                            r.category = 'immature';
+                            return true;
+                        }
+
                         switch (r.category) {
                             case 'orphan':
                             case 'kicked':
@@ -1471,7 +1482,19 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     };
 
     var getProperAddress = function(address){
-        if (privateChain && address.replace(/[^0-9a-z]/gi, '').length == 95 && address.charAt(0) == 'z') {
+        let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
+        let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
+        let minerAddressPrefix = address.substring(0,2);
+
+        logger.special(logSystem, logComponent, 'poolZAddressPrefix:' + poolZAddressPrefix);
+        logger.special(logSystem, logComponent, 'minerAddressLength:' + minerAddressLength);
+        logger.special(logSystem, logComponent, 'minerAddressPrefix:' + minerAddressPrefix);
+
+        if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
+            //validate as sapling
+            return address;
+        } else if (privateChain && poolZAddressPrefix == 'zc' && minerAddressLength == 95 && minerAddressPrefix == 'zc') {
+            //validate as sprout
             return address;
         } else if (privateChain || address.length >= 40 || address.length <= 30) {
             logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
