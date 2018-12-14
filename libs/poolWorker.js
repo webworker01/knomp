@@ -147,7 +147,7 @@ module.exports = function(logger){
                     authCallback(true);
                 else {
                     if (privateChain) {
-                      let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
+                        let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
                         pool.daemon.cmd('z_validateaddress', [String(workerName).split(".")[0]], function (results) {
                             var isValid = results.filter(function (r) {
                                 if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs') {
