@@ -142,12 +142,12 @@ module.exports = function(logger){
             var shareProcessor = new ShareProcessor(logger, poolOptions);
 
             handlers.auth = function(port, workerName, password, authCallback){
-                let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
 
                 if (poolOptions.validateWorkerUsername !== true)
                     authCallback(true);
                 else {
                     if (privateChain) {
+                    let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
                         pool.daemon.cmd('z_validateaddress', [String(workerName).split(".")[0]], function (results) {
                             var isValid = results.filter(function (r) {
                                 if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs') {
