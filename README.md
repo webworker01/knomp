@@ -67,7 +67,7 @@ You can add an option to your pool_config to have any miners that mine with an i
 "invalidAddress":"zcVALIDADDRESSOFYOURCHOOSING"
 ```
 
-Full Z Transaction Support
+Full Z Transaction Support (Sprout)
 -------------
 This is an option to force miners to use a Z address as their username for payouts
 
