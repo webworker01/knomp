@@ -90,7 +90,6 @@ Please note, KMD sapling becomes active on 2018-12-15 01:00UTC. We won't know th
 In pool_config:
 ```
 "zAddress": "zsPoolsSaplingAddress",
-"invalidAddress": "zsPoolsSaplingAddress",
 "walletInterval": 2,
 "validateWorkerUsername": true,
 "paymentProcessing": {
@@ -98,8 +97,6 @@ In pool_config:
         "paymentInterval": 180,
         "maxBlocksPerPayment": 20,
 ```
-
-`invalidAddress` will take any miners rewards that slip through the address validation cracks  redirect their rewards to this address
 
 [Further info on config](https://github.com/zone117x/node-open-mining-portal) and [sample configs](https://github.com/z-classic/z-nomp)
 
