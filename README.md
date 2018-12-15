@@ -83,7 +83,7 @@ In coins/pirate.json file:
 ```
 "privateChain": true,
 "burnFees": true,
-"sapling": 153250
+"sapling": 152855
 ```
 Please note, KMD sapling becomes active on 2018-12-15 01:00UTC. We won't know the block height until that time and the above number is just my best guess. Alternatively this can just be set to "sapling":true but this could have problems before sapling activation date.
 
