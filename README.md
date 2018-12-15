@@ -85,7 +85,7 @@ In coins/pirate.json file:
 "burnFees": true,
 "sapling": 152855
 ```
-Please note, PIRATE sapling became active around 2018-12-15 01:15UTC at block 152855 Now that this has past this can just be set to `"sapling":true` 
+Please note, PIRATE sapling became active around 2018-12-15 01:15UTC at block 152855 Now that this has passed this can just be set to `"sapling":true` 
 
 In pool_config:
 ```
