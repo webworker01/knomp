@@ -1,3 +1,4 @@
+
 html, body, button, input, select, textarea, .pure-g [class *= "pure-u"], .pure-g-r [class *= "pure-u"]{
     font-family: 'Open Sans', sans-serif;
 }
@@ -518,7 +519,7 @@ table {
 
 /* PAYMENTS */
 .paymentblocks {
-    max-width:500px;
+    max-width:475px;
     word-wrap:break-word;
 }
 

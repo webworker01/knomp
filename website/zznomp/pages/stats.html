@@ -66,7 +66,7 @@
                                 {{ } else if (String(it.stats.pools[pool].name).startsWith("hush")) { }}
                                     <a href="https://explorer.myhush.org/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
                                 {{ } else { }}
-                                    {{=block[2]}}
+                                    <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
                                 {{ } }}
 
                                 {{if (block[4] != null) { }}
@@ -99,7 +99,7 @@
                                     {{ } else if (String(it.stats.pools[pool].name).startsWith("zclassic")) { }}
                                         <a href="https://classic.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
                                     {{ } else { }}
-                                        {{=block[2]}}
+                                        <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
                                     {{ } }}
                                     {{if (block[4] != null) { }}
                                         <span style="padding-left: 18px;"><small>{{=readableDate(block[4])}}</small></span>

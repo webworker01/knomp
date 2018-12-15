@@ -28,7 +28,7 @@ $(document).ready(function(){
 						<button class="btn btn-default btn-lg" type="button">Lookup</button>
 				</span>
 				</small>
-			</span>					
+			</span>
             {{=capitalizeFirstLetter(it.stats.pools[pool].name)}} Top Miners &nbsp;&nbsp;
 			<small><i class="fas fa-users fa-fw"></i> <span id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners &nbsp;&nbsp;
 			<i class="fas fa-rocket fa-fw"></i> <span id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span> Workers &nbsp;&nbsp;

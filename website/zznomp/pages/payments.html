@@ -44,8 +44,8 @@
                         <a href="https://explorer.myhush.org/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
                     {{ } else if (String(it.stats.pools[pool].name).startsWith("zen")) { }}
                         <a href="http://node1.zenchain.info:8886/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
-                    {{ } else if (typeof it.stats.pools[pool].payments[p].txid !== 'undefined' && String(it.stats.pools[pool].name).startsWith("pirate")) { }}
-                    <a href="http://pirate.explorer.dexstats.info/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
+                    {{ } else if (typeof it.stats.pools[pool].payments[p].txid !== 'undefined' && (String(it.stats.pools[pool].name).startsWith("pirate") || String(it.stats.pools[pool].name).startsWith("arrr")) ) { }}
+                    <a href="https://explorer.pirate.black/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
                     {{ } else { }}
                         {{=it.stats.pools[pool].payments[p].blocks}}
                     {{ } }}
