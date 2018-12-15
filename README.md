@@ -85,7 +85,7 @@ In coins/pirate.json file:
 "burnFees": true,
 "sapling": 152855
 ```
-Please note, KMD sapling becomes active on 2018-12-15 01:00UTC. We won't know the block height until that time and the above number is just my best guess. Alternatively this can just be set to "sapling":true but this could have problems before sapling activation date.
+Please note, PIRATE sapling became active around 2018-12-15 01:15UTC at block 152855 Now that this has past this can just be set to `"sapling":true` 
 
 In pool_config:
 ```
