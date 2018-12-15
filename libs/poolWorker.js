@@ -152,6 +152,8 @@ module.exports = function(logger){
                             var isValid = results.filter(function (r) {
                                 if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs') {
                                     return (r.response.isvalid && r.response.type == 'sapling');
+                                } else if ( poolZAddressPrefix == 'zc') {
+                                    return (r.response.isvalid && r.response.type == 'sprout');
                                 } else {
                                     return r.response.isvalid;
                                 }
