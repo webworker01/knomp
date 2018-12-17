@@ -140,7 +140,8 @@
                     <!--<div id="{{=it.stats.pools[pool].name}}NewBlocks"></div>-->
                     {{ for(var b in it.stats.pools[pool].pending.blocks) { }}
                         {{ var block = it.stats.pools[pool].pending.blocks[b].split(":"); }}
-                        <div style="margin-bottom: 9px; background-color: #eeeeee; min-width:600px;"><i class="fa fa-bars"></i>
+                        <div style="margin-bottom: 9px; background-color: #eeeeee; min-width:600px;" title="{{if (it.stats.pools[pool].pending.confirms && it.stats.pools[pool].pending.confirms[block[0]]) { }}{{if (it.stats.pools[pool].pending.confirms[block[0]] == 1) { }}Waiting for dPoW notarization{{} else if (it.stats.pools[pool].pending.confirms[block[0]] < it.poolsConfigs[pool].paymentProcessing.minConf*2) { }}Waiting for min confirmations{{ } else { }}Queued for payment{{ } }}{{ } else { }}Waiting for payment processor to review{{ } }}">
+                            <i class="fa fa-bars"></i>
                             <small>Block:</small>
                             {{if (String(it.stats.pools[pool].name) == "kmd") { }}
                                 <a href="https://kmdexplorer.io/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
