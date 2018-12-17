@@ -21,7 +21,7 @@
     });
 });
 </script>
-{{ function readableDate(a){ return new Date(parseInt(a)).toString(); } }}
+{{ function readableDate(a){ return new Date(parseInt(a)).toISOString().substring(0, 16).replace('T', ' ') + ' UTC'; } }}
 {{ for(var pool in it.stats.pools) { }}
     <table class="pure-table">
         <thead>

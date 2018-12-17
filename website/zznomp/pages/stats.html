@@ -6,7 +6,7 @@
 </div>
 
 {{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
-{{ function readableDate(a){ return new Date(parseInt(a)).toString(); } }}
+{{ function readableDate(a){ return new Date(parseInt(a)).toISOString().substring(0, 16).replace('T', ' ') + ' UTC'; } }}
 
 <div class="pure-g-r" id="boxesLower">
     {{ for(var pool in it.stats.pools) { }}
@@ -55,28 +55,20 @@
                     <!--<div id="{{=it.stats.pools[pool].name}}NewBlocks"></div>-->
                     {{ for(var b in it.stats.pools[pool].pending.blocks) { }}
                         {{ var block = it.stats.pools[pool].pending.blocks[b].split(":"); }}
-                        <div style="margin-bottom: 9px; background-color: #773938; min-width:600px;">
+                        <div style="margin-bottom: 9px; background-color: #773938; min-width:600px;" title="{{if (it.stats.pools[pool].pending.confirms && it.stats.pools[pool].pending.confirms[block[0]]) { }}{{if (it.stats.pools[pool].pending.confirms[block[0]] == 1) { }}Waiting for dPoW notarization{{} else if (it.stats.pools[pool].pending.confirms[block[0]] < it.poolsConfigs[pool].paymentProcessing.minConf*2) { }}Waiting for min confirmations{{ } else { }}Queued for payment{{ } }}{{ } else { }}Waiting for payment processor to review{{ } }}">
                             <div>
                                 <i class="fas fa-link fa-fw"></i>
                                 <small>Block:</small>
-                                {{if (String(it.stats.pools[pool].name).startsWith("zcash")) { }}
-                                    <a href="https://explorer.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                                {{ } else if (String(it.stats.pools[pool].name).startsWith("zclassic")) { }}
-                                    <a href="https://classic.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                                {{ } else if (String(it.stats.pools[pool].name).startsWith("hush")) { }}
-                                    <a href="https://explorer.myhush.org/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                                {{ } else { }}
-                                    <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
-                                {{ } }}
+                                <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
 
                                 {{if (block[4] != null) { }}
                                     <span style="padding-left: 18px;"><small>{{=readableDate(block[4])}}</small></span>
                                 {{ } }}
-                                {{if (it.stats.pools[pool].pending.confirms) { }}
-                                    {{if (it.stats.pools[pool].pending.confirms[block[0]]) { }}
-                                    <span style="float:right; color: red;"><small>{{=it.stats.pools[pool].pending.confirms[block[0]]}} of 100</small></span>
+                                {{if (it.stats.pools[pool].pending.confirms && it.stats.pools[pool].pending.confirms[block[0]]) { }}
+                                    {{if (it.stats.pools[pool].pending.confirms[block[0]] == 1) { }}
+                                        <span style="float:right; color: red;"><small>Waiting for Notarization</small></span>
                                     {{ } else { }}
-                                    <span style="float:right; color: red;"><small>*PENDING*</small></span>
+                                        <span style="float:right; color: red;"><small>{{=it.stats.pools[pool].pending.confirms[block[0]]}} of {{=it.poolsConfigs[pool].paymentProcessing.minConf*2}} Confirmations</small></span>
                                     {{ } }}
                                 {{ } else { }}
                                     <span style="float:right; color: red;"><small>*PENDING*</small></span>
@@ -90,17 +82,11 @@
                     {{ var i=0; for(var b in it.stats.pools[pool].confirmed.blocks) { }}
                         {{ if (i < 8) { i++; }}
                             {{ var block = it.stats.pools[pool].confirmed.blocks[b].split(":"); }}
-                            <div style="margin-bottom: 9px; background-color: #C99631; min-width:600px;">
+                            <div style="margin-bottom: 9px; background-color: #C99631; min-width:600px;" title="Payment sent, please check payments page">
                                 <div>
                                     <i class="fas fa-link fa-fw"></i>
                                     <small>Block:</small>
-                                    {{if (String(it.stats.pools[pool].name).startsWith("zcash")) { }}
-                                        <a href="https://explorer.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                                    {{ } else if (String(it.stats.pools[pool].name).startsWith("zclassic")) { }}
-                                        <a href="https://classic.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                                    {{ } else { }}
-                                        <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
-                                    {{ } }}
+                                    <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
                                     {{if (block[4] != null) { }}
                                         <span style="padding-left: 18px;"><small>{{=readableDate(block[4])}}</small></span>
                                     {{ } }}
