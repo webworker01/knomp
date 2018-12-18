@@ -308,7 +308,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                                 workers[workerName] = (workers[workerName] || {});
                             } else {
                                 paidAmount = parseFloat(pays[1][i]);
-                                workers[workerName].paid = coinsRound(paidAmount);
+                                // workers[workerName].paid = coinsRound(paidAmount);
+                                workers[workerName].paid = paidAmount.toFixed(8);
                                 totalPaid += paidAmount;
                             }
                         }
@@ -318,7 +319,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                                 workers[workerName] = (workers[workerName] || {});
                             } else {
                                 balAmount = parseFloat(bals[1][b]);
-                                workers[workerName].balance = coinsRound(balAmount);
+                                // workers[workerName].balance = coinsRound(balAmount);
+                                workers[workerName].balance = balAmount.toFixed(8);
                                 totalHeld += balAmount;
                             }
                         }
@@ -328,7 +330,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                                 workers[workerName] = (workers[workerName] || {});
                             } else {
                                 pendingAmount = parseFloat(pends[1][b]);
-                                workers[workerName].immature = coinsRound(pendingAmount);
+                                // workers[workerName].immature = coinsRound(pendingAmount);
+                                workers[workerName].immature = pendingAmount.toFixed(8);
                                 totalImmature += pendingAmount;
                             }
                         }
