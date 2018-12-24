@@ -29,7 +29,7 @@ Some initial setup
 ```shell
 # The following packages are needed to build both Komodo and this stratum:
 sudo apt-get update
-sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoconf libtool ncurses-dev unzip git python python-zmq zlib1g-dev wget libcurl4-openssl-dev bsdmainutils automake curl libboost-dev libboost-system-dev libsodium-dev jq redis-server -y
+sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoconf libtool ncurses-dev unzip git python python-zmq zlib1g-dev wget libcurl4-openssl-dev bsdmainutils automake curl libboost-dev libboost-system-dev libsodium-dev jq redis-server nano -y
 ```
 Now, let's build Komodo
 ```shell
@@ -62,8 +62,9 @@ This will install the stratum and configure it for all the assetchains on your s
 ```shell
 git clone https://github.com/webworker01/knomp
 cd knomp
+nano gencfg.sh
 ```
-Edit line 3 in `gencfg.sh` so that it has your own KMD based address, save and exit.
+Edit line 3 in so that it has your own KMD based address, CTRL-X then Y to save and exit
 ```shell
 ./gencfg.sh
 npm install
