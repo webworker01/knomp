@@ -33,7 +33,9 @@ zcutil/build.sh -j8
 strip src/komodod
 strip src/komodo-cli
 ```
- Now, let's run the assets.
+
+
+Now, let's run the assets. _If you don't know what pubkey is skip this step and start up your komodod daemon as instructed by the individual coin's team_
  - This will start ALL of the assets might take a day or so to sync, depending on system speed/network connection.
 ```shell
 cd ~/komodo/src
