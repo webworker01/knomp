@@ -62,6 +62,9 @@ This will install the stratum and configure it for all the assetchains on your s
 ```shell
 git clone https://github.com/webworker01/knomp
 cd knomp
+```
+Edit line 3 in gencfg so that it has your own KMD based address, save and exit.
+```shell
 ./gencfg.sh
 npm install
 cp config_example.json config.json (and configure it)
