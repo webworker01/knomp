@@ -34,7 +34,6 @@ strip src/komodod
 strip src/komodo-cli
 ```
 
-
 Now, let's run the assets. This will start ALL of the assets might take a day or so to sync, depending on system speed/network connection.
 
 _If you don't know what pubkey is, skip this step and use the startup params for the komodod daemon as provided by the individual coin's team._
@@ -61,6 +60,11 @@ npm install
 cp config_example.json config.json (and configure it)
 npm start
 ```
+
+Payment Processing
+-------------
+
+Please note that the default configs generated are for solo mining. If you wish to create a public pool please modify the configs like in this [example config](https://github.com/z-classic/z-nomp/blob/master/pool_configs/komodo_example.json)
 
 Invalid Worker Addresses
 -------------
