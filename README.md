@@ -74,6 +74,8 @@ cp config_example.json config.json (and configure it)
 npm start
 ```
 
+If all went well the program should start without error and you should be able to browse to your pool website on your server via port 8080.
+
 Payment Processing
 -------------
 Please note that the default configs generated are for solo mining. If you wish to create a public pool please modify the configs like in this [example config](https://github.com/z-classic/z-nomp/blob/master/pool_configs/komodo_example.json)
