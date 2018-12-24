@@ -14,7 +14,7 @@ Differences between this and Z-NOMP
 
 Upgrade
 -------------
-* Please be sure to backup your `./coins` and `./pool_configs` directory before upgrading
+Please be sure to backup your `./coins` and `./pool_configs` directory before upgrading
 
 Install
 -------------
@@ -63,12 +63,10 @@ npm start
 
 Payment Processing
 -------------
-
 Please note that the default configs generated are for solo mining. If you wish to create a public pool please modify the configs like in this [example config](https://github.com/z-classic/z-nomp/blob/master/pool_configs/komodo_example.json)
 
 Invalid Worker Addresses
 -------------
-
 You can add an option to your pool_config to have any miners that mine with an invalid address (if they somehow get through) to pay out to an address of your choosing
 ```
 "invalidAddress":"zsValidAddressOfYourChoosingThatsNotThePoolZAddress"
@@ -105,11 +103,12 @@ In pool_config:
         "maxBlocksPerPayment": 20,
 ```
 
-[Further info on config](https://github.com/zone117x/node-open-mining-portal) and [sample configs](https://github.com/z-classic/z-nomp)
+More Resources
+-------------
+[Further info on config](https://github.com/zone117x/node-open-mining-portal#2-configuration) and some [sample configs](https://github.com/z-classic/z-nomp)
 
 License
--------
-
+-------------
 Forked from ComputerGenie repo (deleted)
 
 Released under the GNU General Public License v2
