@@ -14,14 +14,15 @@ Differences between this and Z-NOMP
 
 Upgrade
 -------------
+Please be sure to backup your `./coins` and `./pool_configs` directory before upgrading
+
+Kill your running pool (CTRL-C)
 ```shell
-ctrl-C on your running pool
 cd knomp
 git pull
 npm install
 npm start
 ```
-Please be sure to backup your `./coins` and `./pool_configs` directory before upgrading
 
 Install
 -------------
