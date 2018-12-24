@@ -35,16 +35,16 @@ strip src/komodo-cli
 ```
 
 
-Now, let's run the assets. _If you don't know what pubkey is skip this step and start up your komodod daemon as instructed by the individual coin's team_
- - This will start ALL of the assets might take a day or so to sync, depending on system speed/network connection.
+Now, let's run the assets. This will start ALL of the assets might take a day or so to sync, depending on system speed/network connection.
+_If you don't know what pubkey is skip this step and start up your komodod daemon as instructed by the individual coin's team_
 ```shell
 cd ~/komodo/src
 ./assetchains
 ```
 
- Once all these chains have synced up we can configure the stratum.
+Once all these chains have synced up we can configure the stratum.
 
- We need node and npm installed
+We need node and npm installed
 
 ```shell
 cd ~
