@@ -60,8 +60,7 @@ We need node and npm installed
 cd ~
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 ```
-Now, let's build our stratum and run it (this stage assumes you already have Redis properly installed and running)
-This will install the stratum and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
+Now, let's build our stratum and run it. This will install the pool and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
 ```shell
 git clone https://github.com/webworker01/knomp
 cd knomp
