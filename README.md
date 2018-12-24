@@ -24,7 +24,7 @@ npm install
 npm start
 ```
 
-Install
+Install Daemon
 -------------
 Some initial setup
 ```shell
@@ -50,7 +50,9 @@ cd ~/komodo/src
 ./assetchains
 ```
 
-Once all these chains have synced up we can configure the stratum.
+Install Pool
+-------------
+Once all the chains you want on your pool have synced up we can configure the stratum.
 
 We need node and npm installed
 
