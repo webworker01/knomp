@@ -25,8 +25,12 @@ mkdir -p $coinsdir
 mkdir -p $poolconfigdir
 
 #clean old up
-rm $ufwenablefile
-rm $ufwdisablefile
+if [ -f $ufwenablefile ]; then
+    rm $ufwenablefile
+fi
+if [ -f $ufwdisablefile ]; then
+    rm $ufwdisablefile
+fi
 
 ~/komodo/src/listassetchains | while read chain; do
     conffile="~/.komodo/$chain/$chain.conf"
