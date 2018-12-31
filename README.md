@@ -44,7 +44,7 @@ strip src/komodo-cli
 
 Now, let's run the assets. This will start ALL of the assets might take a day or so to sync, depending on system speed/network connection.
 
-_If you don't know what pubkey is, skip this step and use the startup params for the komodod daemon as provided by the individual coin's team._
+_If you are setting up a single chain to mine and/or don't know what pubkey is, skip this step and use the startup params for the komodod daemon as provided by the individual coin's team._
 ```shell
 cd ~/komodo/src
 ./assetchains
