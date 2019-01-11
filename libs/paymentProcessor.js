@@ -181,6 +181,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         if (paymentInterval) {
             clearInterval(paymentInterval);
         }
+        processPayments();
         paymentInterval = setInterval(processPayments, paymentIntervalSecs * 1000);
         //setTimeout(processPayments, 100);
         setupFinished(true);
