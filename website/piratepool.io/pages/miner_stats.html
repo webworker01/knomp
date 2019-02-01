@@ -1,0 +1,28 @@
+{{ function middleEllipsis(x) { return x.length > 40 ? x.substring(0, 20) + '...' + x.substring(x.length-20, x.length): x; } }}
+<div id="pageMiner">
+    <div id="topCharts">
+        <div class="chartWrapper">
+            <div class="chartLabel">
+                <div class="workerStatsChartHeaderLeft" title="{{=String(it.stats.address)}}">{{=middleEllipsis(String(it.stats.address).split(".")[0])}}</div>
+                <div class="workerStatsChartHeaderRight"><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrateAvg">...</span> (Avg)</div>
+                <div class="workerStatsChartHeaderRight"><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrate">...</span> (Now)</div>
+                <div class="workerStatsChartHeaderRight"><i class="fas fa-dice fa-fw"></i> Luck <span id="statsLuckDays">...</span> Days</div>
+            </div>
+            <div class="chartHolder"><svg id="workerHashrate"></svg></div>
+            <div class="workerStatsChartFooter">
+                <div title="Lifetime Amount Paid"><i class="fas fa-money-bill-wave fa-fw"></i> Paid: <span id="statsTotalPaid">...</span></div>
+                <div title="Accrued Balance Waiting for Min-Payout"><i class="fas fa-piggy-bank fa-fw"></i> Balance: <span id="statsTotalBal">...</span></div>
+                <div title="Estimated Balance Waiting for dPoW/Min Confirmations"><i class="far fa-clock fa-fw"></i> Pending: <span id="statsTotalImmature">...</span></div>
+                <div title="Current Mining Round Shares"><i class="fas fa-cog fa-fw"></i> Shares: <span id="statsTotalShares">...</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="boxesWorkers" class="pure-g boxStats"> </div>
+
+    <script>
+        var _miner = "{{=String(it.stats.address).split(".")[0]}}";
+        var _workerCount = 0;
+        document.querySelector('main').appendChild(document.createElement('script')).src = '/static/miner_stats.js';
+    </script>
+</div>

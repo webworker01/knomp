@@ -1,0 +1,216 @@
+<div class="pure-g gettingStarted">
+    <div class="pure-u-1-4" style="display:flex; flex:2;">
+        <div class="pure-menu pure-menu-open gettingStartedMenu">
+            <h1 class="pure-menu-heading">Getting Started</h1>
+
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="#poolDetails" class="pure-menu-link">Pool Details</a></li>
+                <li class="pure-menu-item"><a href="#payments" class="pure-menu-link">Payout Information</a></li>
+                <li class="pure-menu-item"><a href="#createWallet" class="pure-menu-link">Create Wallet</a></li>
+                <li class="pure-menu-item"><a href="#gpuMining" class="pure-menu-link">GPU Mining Software</a></li>
+                <li class="pure-menu-item"><a href="#cpuMining" class="pure-menu-link">CPU Mining Software</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="pure-u-3-4 pure-responsive-disable">
+        {{? (function(){
+                if (!it.portalConfig.switching) return false;
+                for (var p in it.portalConfig.switching){
+                    if (it.portalConfig.switching[p].enabled)
+                        return true;
+                }
+                return false;
+            })()
+        }}
+        <div class="menuHeader">Coin-Switching Ports</div>
+        {{?}}
+
+        <div class="menuList">
+        {{ for (var p in it.portalConfig.switching){
+            if (!it.portalConfig.switching[p].enabled) continue;
+            var info = {
+                algo: p,
+                ports: {},
+                host: it.portalConfig.website.stratumHost
+            };
+            info.ports[it.portalConfig.switching[p].port] = {diff: it.portalConfig.switching[p].diff};
+            info = JSON.stringify(info).replace(/"/g, '&quot;');
+        }}
+            <a href="#" class="poolOption" data-info="{{=info}}">{{=p}}</a>
+        {{ } }}
+        </div>
+
+        <h1 class="menuHeader" id="poolDetails">Miner Configuration</h1>
+        <div class="menuList" id="coinList">
+            {{ if (it.portalConfig.gettingStartedPopups) { }}
+                {{ for (var pool in it.poolsConfigs) {
+                    var info = JSON.stringify({
+                        coin: it.poolsConfigs[pool].coin,
+                        algo: it.poolsConfigs[pool].coin.algorithm,
+                        ports: it.poolsConfigs[pool].ports,
+                        host: it.portalConfig.website.stratumHost
+                    }).replace(/"/g, '&quot;');
+                }}
+                <a href="#" class="poolOption" data-info="{{=info}}">{{=pool}}</a>
+                {{ } }}
+            {{ } else { }}
+                {{ for (var pool in it.poolsConfigs) { }}
+                    {{if (String(pool) == 'pirate') { continue; } }}
+                    <code>
+                        <h2 class="coinInfoHeader">{{=it.poolsConfigs[pool].coin.name}} Configuration:</h2>
+                        <p class="highlight">&#161;&#161;&#161;Do not mine to an exchange address!!! <a href="#createWallet">Create a wallet to mine to!</a></p>
+                        <table style="margin-top:10px;">
+                            <tr>
+                                <td>Username: </td>
+                                <td>{{ if (it.poolsConfigs[pool].coin && it.poolsConfigs[pool].coin.privateChain) { }}
+                                        your {{=it.poolsConfigs[pool].coin.name}} <span class="highlight">zs1</span> sapling address
+                                    {{ } else if (it.poolsConfigs[pool].coin) { }}
+                                        your {{=it.poolsConfigs[pool].coin.name}} wallet address
+                                    {{ } else { }}
+                                        your public key
+                                    {{ } }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Password: </td>
+                                <td>anything</td>
+                            </tr>
+                            <tr>
+                                <td>Algorithm: </td>
+                                <td>{{=it.poolsConfigs[pool].coin.algorithm}}</td>
+                            </tr>
+                            {{ for (var port in it.poolsConfigs[pool].ports) { }}
+                            <tr>
+                                <td class="coinInfoData">{{= it.poolsConfigs[pool].ports[port].label ? it.poolsConfigs[pool].ports[port].label : 'URL'}} <span class="muted">(diff {{=it.poolsConfigs[pool].ports[port].diff}})</span>: </td>
+                                <td>stratum+tcp://{{=it.portalConfig.website.stratumHost}}:{{=port}}</td>
+                            </tr>
+                            {{ } }}
+                        </table>
+                    </code>
+                {{ } }}
+
+                <div class="gettingStartedContent">
+                    If you have multiple mining rigs you can add a label at the end of your username to see stats broken down by rig on the worker stats page.
+                </div>
+                <code>
+                    <h3 class="coinInfoHeader">DSTM</h3>
+                    zm --server {{=it.portalConfig.website.stratumHost}} --port {{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} --user zs1nrn7h684wq4429pz8a20r49dmmhd3ey07u38f8m2n9du33ashd0xcnls3lfz0spdvn26z3r4jrv<span class="highlight">.myrigname</span> --pass x -dev 0 1 --temp-target=0:70,1:70 --intensity=0:0.5,1:0.5 --color --time
+                </code>
+                <code>
+                    <h3 class="coinInfoHeader">EWBF</h3>
+                    miner --server {{=it.portalConfig.website.stratumHost}} --user zs1nrn7h684wq4429pz8a20r49dmmhd3ey07u38f8m2n9du33ashd0xcnls3lfz0spdvn26z3r4jrv<span class="highlight">.myrigname</span> --pass x --port {{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} --fee 0 --pec --templimit 70 --intensity 50
+                </code>
+                <code>
+                    <h3 class="coinInfoHeader">Bminer</h3>
+                    bminer -uri stratum://zs1nrn7h684wq4429pz8a20r49dmmhd3ey07u38f8m2n9du33ashd0xcnls3lfz0spdvn26z3r4jrv<span class="highlight">.myrigname</span>@{{=it.portalConfig.website.stratumHost}}:{{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} -max-temperature 70 -nofee
+                </code>
+                <code>
+                    <h3 class="coinInfoHeader">Claymore's</h3>
+                    ZecMiner64.exe -zpool {{=it.portalConfig.website.stratumHost}}:{{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} -zwal zs1nrn7h684wq4429pz8a20r49dmmhd3ey07u38f8m2n9du33ashd0xcnls3lfz0spdvn26z3r4jrv<span class="highlight">.myrigname</span> -zpsw x -allpools 1
+                </code>
+                <code>
+                    <h3 class="coinInfoHeader">Optiminer</h3>
+                    optiminer-zcash -s {{=it.portalConfig.website.stratumHost}}:{{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} -u zs1nrn7h684wq4429pz8a20r49dmmhd3ey07u38f8m2n9du33ashd0xcnls3lfz0spdvn26z3r4jrv<span class="highlight">.myrigname</span> -p x 
+                </code>
+            {{ } }}
+        </div>
+
+        <h1 class="menuHeader" id="payments">Payments</h1>
+        <div class="gettingStartedContent">
+            <p>Payouts are currently scheduled once every 4 hours with a minimum payout of 42 ARRR.</p>
+            <p>There is a limit of ~200 recipients that can be included in a single payout, so the pool payouts are monitored and the min payout adjusted accordingly to ensure a constant flow of payments.</p>
+            <p>If payments stop going out, do not worry! Funds are safu! Blocks can still be found and will be credited to your worker! Please check the <a href="https://discord.gg/rZCXtCC">#pools-and-operators channel in discord</a> to see if it's already being worked on.</p>
+            <p>Pending blocks have not yet been scanned by the payment processor. After being scanned, blocks will need to receive both <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/" target="_blank" rel="noopener noreferrer">dPoW notarization</a> and 10 confirmations before being actually paid out.</p>
+            <p>On your worker stats page, <em class="highlight">pending</em> balance is the remaining estimated amount to be paid for blocks that were scanned but not yet eligible for payout either because of <a href="https://komodoplatform.com/new-feature-to-verify-dpow-notarizations/
+" target="_blank" rel="noopener noreferrer">dPoW</a> or min confirmations. <em class="highlight">Balance</em> includes blocks that were scanned and already paid out but you have not yet met the min payout.</p>
+            <p>Payments that show up on the payments page initially are in the process of constructing the z transaction. Once the transaction actually broadcasts to the network, the blocks paid out will become hyperlinked to the explorer and then should arrive in your wallet in the next block or two.</p>
+        </div>
+
+        <h1 class="menuHeader" id="createWallet">Generate Wallet and Address</h1>
+        <div class="gettingStartedContent">
+            <p><a href="https://pirate.black/wallets/" target="_blank" rel="noopener noreferrer">The Agama GUI Wallet for PIRATE</a> is available. For Agama support please visit <a href="https://discord.gg/qReShun">#newpirates on Discord</a></p>
+
+            <h4>CLI Wallet:</h4>
+            <ol>
+                <li><a href="https://docs.komodoplatform.com/komodo/install-Komodo-manually.html" target="_blank">Build Komodo</a></li>
+                <li>Launch PIRATE chain:
+                    <code>
+                        ./komodod -ac_name=PIRATE -ac_supply=0 -ac_reward=25600000000 -ac_halving=77777 -ac_private=1 -addnode=136.243.102.225
+                    </code>
+                </li>
+                <li>Generate Z address:
+                    <code>
+                        ./komodo-cli -ac_name=PIRATE z_getnewaddress
+                    </code>
+                </li>
+                <li>Securely backup your private key:
+                    <code>
+                        ./komodo-cli -ac_name=PIRATE z_exportkey "zaddr"
+                    </code>
+                </li>
+                <li>Check your balance:
+                    <code>
+                        ./komodo-cli -ac_name=PIRATE z_gettotalbalance
+                    </code>
+                </li>
+                <li>
+                    For more information visit the <a href="https://pirate.black/" target="_blank">project website</a>
+                </li>
+            </ol>
+        </div>
+
+        <h1 class="menuHeader" id="gpuMining">GPU Mining</h1>
+        <div class="gettingStartedContent">
+            <p>There are a few decent GPU miners available. You will need to experiment to find which one works best for you.  DYOR on this and be sure to virus scan all the things!</p>
+            <p>Here are a couple well-known GPU miners:</p>
+            <ul>
+                <li><a href="https://bitcointalk.org/index.php?topic=2021765.0" target="_blank" rel="noopener noreferrer">dstm's ZCash / Equihash Nvidia Miner</a></li>
+                <li><a href="https://bitcointalk.org/index.php?topic=1707546.0" target="_blank" rel="noopener noreferrer">EWBF's CUDA Zcash miner 0.3.4b</a></li>
+                <li><a href="https://www.bminer.me/releases/" target="_blank" rel="noopener noreferrer">Bminer Lite</a></li>
+                <li><a href="https://bitcointalk.org/index.php?topic=1670733.0" target="_blank" rel="noopener noreferrer">Claymore's ZCash/BTG AMD GPU Miner</a></li>
+                <li><a href="https://github.com/Optiminer/OptiminerZcash" target="_blank" rel="noopener noreferrer">Optiminer AMD</a></li>
+                
+            </ul>
+        </div>
+
+        <h1 class="menuHeader" id="cpuMining">CPU Mining</h1>
+        <div class="gettingStartedContent">
+            <p>While it is possible to CPU mine with <b>komodod</b> directly like so:</p>
+            <code>
+                ./komodo-cli -ac_name=PIRATE setgenerate true
+            </code>
+            <p>The chances to find a block solo with CPU mining only are already fairly low and most likely the reason you are here at all 🐸</p>
+            <p>The well-known CPU miner that can be used with the pool is <b>nheqminer</b>. This does <i>not</i> require a Nicehash account and can be used to connect to any equihash stratum.</p>
+
+            <h4>Linux</h4>
+            <p>It is suggested that you attempt to build the CPU miner instead of using the pre-compiled binary so that optimizations for your CPU can be made during the build process</p>
+            <code>
+                sudo apt-get install cmake build-essential libboost-all-dev<br />
+                cd ~<br />
+                git clone -b Linux https://github.com/nicehash/nheqminer.git<br />
+                cd ~/nheqminer/cpu_xenoncat/Linux/asm/<br />
+                sh assemble.sh<br />
+                cd ~/nheqminer/Linux_cmake/nheqminer_cpu<br />
+                cmake . &amp;&amp; make<br />
+                sudo ln -s ~/nheqminer/Linux_cmake/nheqminer_cpu/nheqminer_cpu /usr/local/bin/nheqminer_cpu
+            </code>
+            <p>Now you can launch your miner! (replace the values as indicated changing the number of threads (-t) and your address for payouts (-u)</p>
+            <code>
+                nheqminer_cpu -t <i>numberofthreads</i> -l <i>stratumhost</i>:<i>stratumport</i> -u <i>youraddress</i>
+            </code>
+
+            <h4>Windows</h4>
+            <p>Download and install the latest release for windows from <a href="https://github.com/nicehash/nheqminer/releases" target="_blank" rel="noopener noreferrer">the github repo</a></p>
+            <p>Replace the placeholders below as needed and start mining!</p>
+            <code>
+                nheqminer -t <i>numberofthreads</i> -l <i>stratumhost</i>:<i>stratumport</i> -u <i>youraddress</i>
+            </code>
+
+            <h4>Additional Resources</h4>
+            <ul>
+                <li><a href="https://github.com/nicehash/nheqminer" target="_blank" rel="noopener noreferrer">nheqminer repo</a></li>
+                <li><a href="https://steemit.com/mining/@bobinson/zcash-cpu-mining-setup-on-linux" target="_blank" rel="noopener noreferrer">CPU Mining</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
