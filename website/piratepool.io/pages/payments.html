@@ -6,7 +6,7 @@ function bigNumber(x){
     return (x > 1000000000000) ? (x / 1000000000000).toFixed(1) + 'T' : (x > 1000000000) ? (x / 1000000000).toFixed(1) + 'B' : (x > 1000000) ? (x / 1000000).toFixed(1) + 'M' : (x > 1000) ? (x / 1000).toFixed(1) + 'K' : x.toFixed(1); 
 }
 function timeTil(x){ 
-    return (x > 86400) ? (x/86400).toFixed(1) + ' Days' : (x > 3600) ? (x/3600).toFixed(1) + ' Hours' : (x > 60) ? (x / 60).toFixed(1) + ' Minutes' : x + ' Seconds'; 
+    return (x < 0) ? 'Now' : (x > 86400) ? (x/86400).toFixed(1) + ' Days' : (x > 3600) ? (x/3600).toFixed(1) + ' Hours' : (x > 60) ? (x / 60).toFixed(1) + ' Minutes' : x + ' Seconds';
 }
 function timeTilNumbers(timestamp) {
     return new Date(timestamp * 1000).toISOString().substr(11, 8);
