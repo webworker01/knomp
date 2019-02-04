@@ -34,7 +34,7 @@ module.exports = function(logger){
 
             logger.debug(logSystem, logComponent, 'Payment processing setup with daemon ('
                 + processingConfig.daemon.user + '@' + processingConfig.daemon.host + ':' + processingConfig.daemon.port
-                + ') and redis (' + poolOptions.redis.host + ':' + poolOptions.redis.port + ')');                
+                + ') and redis (' + poolOptions.redis.host + ':' + poolOptions.redis.port + ')');
         });
     });
 };
@@ -181,7 +181,12 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         if (paymentInterval) {
             clearInterval(paymentInterval);
         }
-        processPayments();
+
+        //Make payment on startup if "paymentProcessing" : { "payOnStart": true } is set
+        if (typeof processingConfig.payOnStart !== 'undefined' && processingConfig.payOnStart) {
+            processPayments();
+        }
+
         paymentInterval = setInterval(processPayments, paymentIntervalSecs * 1000);
         //setTimeout(processPayments, 100);
         setupFinished(true);
