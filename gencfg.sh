@@ -1,6 +1,9 @@
 #!/bin/bash
 # Put the address to mine to here
-walletaddress=RUfNVCZrbHGgspLcDWbGdBiSLfRgCNgE9M
+walletaddress=
+
+#Change to path of komodo-cli here
+komodoexec=~/komodo/src/komodo-cli
 
 # Any coins you would like to skip go here
 declare -a skip=("BEER" "PIZZA")
@@ -23,15 +26,18 @@ mkdir -p $coinsdir
 mkdir -p $poolconfigdir
 
 #clean old up
-rm $ufwenablefile
-rm $ufwdisablefile
+if [ -f $ufwenablefile ]; then
+    rm $ufwenablefile
+fi
+if [ -f $ufwdisablefile ]; then
+    rm $ufwdisablefile
+fi
 
 if [[ -z $1 ]]; then
   specificchain=0
 else
   specificchain=$1
 fi
-
 
 listassetchains () {
   if [[ $specificchain = "0" ]]; then
@@ -50,7 +56,7 @@ listassetchains | while read chain; do
     outcome=$(echo $?)
 
     if [[ $outcome != 0 ]]; then
-       echo "[$chain] Daemon for is not running skipped."
+       echo "[$chain] Daemon is not running skipped."
        continue
     fi
 
@@ -61,18 +67,18 @@ listassetchains | while read chain; do
     p2pport=$(echo $getinfo | jq '.p2pport')
     thisconf=$(<~/.komodo/$chain/$chain.conf)
 
-    rpcuser=$(echo $thisconf | grep -Po "rpcuser=(\S*)" | sed 's/rpcuser=//')
-    rpcpass=$(echo $thisconf | grep -Po "rpcpassword=(\S*)" | sed 's/rpcpassword=//')
-    rpcport=$(echo $thisconf | grep -Po "rpcport=(\S*)" | sed 's/rpcport=//')
+        rpcuser=$(echo $thisconf | grep -Po "rpcuser=(\S*)" | sed 's/rpcuser=//')
+        rpcpass=$(echo $thisconf | grep -Po "rpcpassword=(\S*)" | sed 's/rpcpassword=//')
+        rpcport=$(echo $thisconf | grep -Po "rpcport=(\S*)" | sed 's/rpcport=//')
 
-    echo "$cointemplate" | sed "s/COINNAMEVAR/$chain/" | sed "s/MAGICREVVAR/$magicrev/" > $coinsdir/$chain.json
-    echo "$pooltemplate" | sed "s/P2PPORTVAR/$p2pport/" | sed "s/COINNAMEVAR/$chain/" | sed "s/WALLETADDRVAR/$walletaddress/" | sed "s/STRATUMPORTVAR/$stratumport/" | sed "s/RPCPORTVAR/$rpcport/" | sed "s/RPCUSERVAR/$rpcuser/" | sed "s/RPCPASSVAR/$rpcpass/" > $poolconfigdir/$chain.json
+        echo "$cointemplate" | sed "s/COINNAMEVAR/$chain/" | sed "s/MAGICREVVAR/$magicrev/" > $coinsdir/$chain.json
+        echo "$pooltemplate" | sed "s/P2PPORTVAR/$p2pport/" | sed "s/COINNAMEVAR/$chain/" | sed "s/WALLETADDRVAR/$walletaddress/" | sed "s/STRATUMPORTVAR/$stratumport/" | sed "s/RPCPORTVAR/$rpcport/" | sed "s/RPCUSERVAR/$rpcuser/" | sed "s/RPCPASSVAR/$rpcpass/" > $poolconfigdir/$chain.json
 
-    echo "sudo ufw allow $stratumport comment 'Stratum $chain'" >> $ufwenablefile
-    echo "sudo ufw delete allow $stratumport" >> $ufwdisablefile
+        echo "sudo ufw allow $stratumport comment 'Stratum $chain'" >> $ufwenablefile
+        echo "sudo ufw delete allow $stratumport" >> $ufwdisablefile
 
-    let "stratumport = $stratumport + 1"
-  fi
+        let "stratumport = $stratumport + 1"
+    fi
 done
 
 chmod +x $ufwenablefile

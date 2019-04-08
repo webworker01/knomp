@@ -1,0 +1,87 @@
+{{ function bigNumber(x){ return (x > 1000000000000) ? (x / 1000000000000).toFixed(1) + 'T' : (x > 1000000000) ? (x / 1000000000).toFixed(1) + 'B' : (x > 1000000) ? (x / 1000000).toFixed(1) + 'M' : (x > 1000) ? (x / 1000).toFixed(1) + 'K' : x.toFixed(1); } }}
+<div>
+    <div class="alertbar">Stop mining to exchange addresses&#8230;</div>
+    <div class="pure-g boxWelcome">
+        <div class="pure-u-1-3 pure-responsive-disable" style="display:flex; justify-content:center; align-items:center;">
+            <img src="/static/pirate128.png" style="width:128px; -webkit-filter: drop-shadow(-1px -1px 0 #000); filter: drop-shadow(-1px -1px 0 #000);" alt="piratepool.io - knomp" /> 
+        </div>
+        <div class="pure-u-2-3 pure-responsive-disable">
+            <h1 style="font-size: 2em; text-align:left; font-weight:900; color:#BB9645; margin:5px 0 10px;" class="textshadow">piratepool.io</h1>
+            <h2 style="color:#FFF; font-weight:900; font-size:1.5em; margin:0 0 10px;">Mining Pool For Pirate (ARRR)</h2>
+            <table style="width: 100%; margin: 15px auto; text-align: left;">
+                <tr><td style="width:50%;">Algorithm: </td><td>Equihash</td></tr>
+                <tr><td>Payout Frequency: </td><td>{{=it.poolsConfigs['arrr'].paymentProcessing.paymentInterval/60/60}} Hours</td></tr>
+                <tr><td>Min Payout: </td><td>{{=it.poolsConfigs['arrr'].paymentProcessing.minimumPayment}} ARRR</td></tr>
+                <tr><td>Pool Fee: </td><td>1%</td></tr>
+            </table>
+            <p>Pirate chain, the most private and anonymous cryptocurrency, is mineable here. Learn more:</p>
+            <div class="pure-g">
+                <div class="pure-u-1-2 pure-responsive-disable">
+                    <a href="https://pirate.black/" target="_blank" rel="noopener noreferrer"><i class="fa fa-globe fa-fw"></i> Website</a><br />
+                    <a href="https://github.com/PirateNetwork" target="_blank" rel="noopener noreferrer"><i class="fab fa-github fa-fw"></i> Github</a><br />
+                    <a href="https://bitcointalk.org/index.php?topic=4979549" target="_blank" rel="noopener noreferrer"><i class="fab fa-bitcoin fa-fw"></i> Bitcoin Talk</a><br />
+                    <a href="https://miningpoolstats.stream/pirate" target="_blank" rel="noopener noreferrer"><i class="fas fa-swimmer"></i> Alternative Pools</a>
+                </div>
+                <div class="pure-u-1-2 pure-responsive-disable">
+                    <a href="https://explorer.pirate.black" target="_blank" rel="noopener noreferrer"><i class="fas fa-map fa-fw"></i> Explorer</a><br />
+                    <a href="https://discord.gg/qReShun" target="_blank" rel="noopener noreferrer"><i class="fab fa-discord fa-fw"></i> Discord</a><br />
+                    <a href="https://twitter.com/PirateChain" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter fa-fw"></i> Twitter</a><br />
+                    <a href="https://digitalprice.io/?inviter=4fdaf7" target="_blank" rel="noopener noreferrer"><i class="fas fa-chart-line fa-fw"></i> Trading at DigitalPrice.io</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="max-width:640px; margin:10px auto; padding: 10px 10px 0;">
+        <p>
+        <em>1/3rd of the pool fee is donated to the PIRATE <a href="https://dexstats.info/onboarding.php" target="_blank" rel="noopener noreferrer">onboarding</a> <a href="https://explorer.pirate.black/address/RAzq6y7dsUKgfuzNjpzyGiuFzvrwuDheQw" target="_blank" rel="noopener noreferrer">fund</a> and <br />
+        1/3rd is donated to <a href="https://explorer.pirate.black/address/RD5PhyAUhapsvj5ps2cCHozsXZfQSvDdrZ" target="_blank" rel="noopener noreferrer">PIRATE Marketing</a>!</em>
+        </p>
+        <p>
+        <span style="font-weight:900;">Sprout stratum has been retired! <a href="https://piratepool.io/static/sproutfinal.txt" target="_blank" style=" text-decoration:underline; text-decoration-color:#BB9645">Final Sprout Payouts Report</a></span>
+        </p>
+        <p>
+        <a href="https://github.com/KomodoPlatform/Agama/releases" target="_blank" rel="noopener noreferrer">Download the latest Agama wallet</a> and create a sapling address (<span class="highlight">starts with zs1</span>) and connect to the new stratum ports labeled as <strong><em>arrr</em></strong> on <a href="/getting_started" class="hot-swapper">Getting Started</a>.
+        </p>
+        <p>
+        You need to migrate sprout funds in your own zc wallet address by <span class="highlight">2019-02-01</span>. A quick guide on how to migrate can be <a href="https://github.com/PirateNetwork/docs/wiki/How-to-Migrate-Pirate-(ARRR)-from-sprout-address-to-sapling-address" target="_blank" rel="noopener noreferrer">found here</a>. 
+        You could also try <a href="https://dexstats.info/pirateswap.php" target="_blank" rel="noopener noreferrer">this service to swap your coins</a>.
+        </p>
+    </div>
+
+    <div class="pure-g boxStats">
+    {{ for(var pool in it.stats.pools) { }}
+        <div class="pure-u-1-2 pure-responsive-disable">
+            <div class="l-box">
+                <h3>{{=it.stats.pools[pool].name}} Pool Stats</h3>
+                <div class="boxStatsList">
+                    <ul>
+                        <li><i class="fas fa-users fa-fw"></i> <span id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners</li>
+                        <li><i class="fas fa-rocket fa-fw"></i> <span id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span> Workers</li>
+                        <li><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrate{{=pool}}">{{=it.stats.pools[pool].hashrateString}}</span> (Now)</li>
+                        <li><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrateAvg{{=pool}}">...</span> (Avg)</li>
+                        <li><i class="fas fa-dice fa-fw"></i> Luck <span id="statsLuckDays{{=pool}}">{{=it.stats.pools[pool].luckDays}}</span> Days</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="pure-u-1-2 pure-responsive-disable">
+            <div class="l-box">
+                <h3>{{=it.stats.pools[pool].name}} Network Stats</h3>
+                <div class="boxStatsList">
+                    <ul>
+                        <li><i class="fas fa-link fa-fw" aria-hidden="true"></i> Block Height: <span id="statsNetworkBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.networkBlocks}}</span></li>
+                        <li><i class="fas fa-tachometer-alt fa-fw"></i> Network Hash/s: <span id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span></li>
+                        <li><i class="fas fa-unlock-alt fa-fw" aria-hidden="true"></i> Difficulty: <span id="statsNetworkDiff{{=pool}}">{{=bigNumber(it.stats.pools[pool].poolStats.networkDiff)}}</span></li>
+                        <li><i class="fas fa-coins fa-fw"></i> Total Supply: <span id="statsNetworkCoins{{=pool}}">{{=(it.stats.pools[pool].poolStats.networkBlocks*256).toLocaleString('en')}}</span></li>
+                        <li><i class="fas fa-users fa-fw"></i> Node Connections: <span id="statsNetworkConnections{{=pool}}">{{=it.stats.pools[pool].poolStats.networkConnections}}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {{ } }}
+    </div>
+    <script>
+        document.querySelector('main').appendChild(document.createElement('script')).src = '/static/home.js';
+    </script>
+</div>

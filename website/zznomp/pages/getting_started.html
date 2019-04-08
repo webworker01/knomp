@@ -4,6 +4,7 @@
 
         <ul class="pure-menu-list">
             <li class="pure-menu-item"><a href="#poolDetails" class="pure-menu-link">Pool Details</a></li>
+            <li class="pure-menu-item"><a href="#payments" class="pure-menu-link">Payout Information</a></li>
             <li class="pure-menu-item"><a href="#createWallet" class="pure-menu-link">Create Wallet</a></li>
             <li class="pure-menu-item"><a href="#gpuMining" class="pure-menu-link">GPU Mining Software</a></li>
             <li class="pure-menu-item"><a href="#cpuMining" class="pure-menu-link">CPU Mining Software</a></li>
@@ -53,6 +54,7 @@
                 {{ } }}
             {{ } else { }}
                 {{ for (var pool in it.poolsConfigs) { }}
+                    {{if (String(pool) == 'pirate') { continue; } }}
                     <code>
                         <div class="coinInfoHeader"><span class="coinInfoName">{{=it.poolsConfigs[pool].coin.name}}</span> Configuration:</div>
                         <div class="coinInfoRows">
@@ -67,7 +69,7 @@
                             <div class="coinInfoRowValues">
                                 <div class="coinInfoUsername">
                                     {{ if (it.poolsConfigs[pool].coin && it.poolsConfigs[pool].coin.privateChain) { }}
-                                        your {{=it.poolsConfigs[pool].coin.name}} wallet <b style="color:#C99631;">Z</b> address<br>
+                                        your {{=it.poolsConfigs[pool].coin.name}} <b style="color:#C99631;">zs1</b> sapling address<br>
                                        
                                     {{ } else if (it.poolsConfigs[pool].coin) { }}
                                         your {{=it.poolsConfigs[pool].coin.name}} wallet address
@@ -88,14 +90,37 @@
                 <div class="content">
                     If you have multiple mining rigs you can add a label at the end of your username to see stats broken down by rig on the worker stats page.
                 </div>
-                <code>
-                    zm --server {{=it.portalConfig.website.stratumHost}} --port {{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} --user RWEBo1Yp4uGkeXPi1ZGQARfLPkGmoW1MwY.rig1
+                <code style="word-break:break-all;">
+                    <b><em>DSTM</em></b><br>
+                    zm --server {{=it.portalConfig.website.stratumHost}} --port {{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} --user zs1gfnu0j84arzuv4dauryyvys07m0p5vwd8grl4whz08y769jmzj7zar84hewngtgskce4vex4udc.<span style="text-decoration:underline; font-weight:900;">myrigname</span> --pass x -dev 0 1 --temp-target=0:70,1:70 --intensity=0:0.5,1:0.5 --color --time
+                </code>
+                <code style="word-break:break-all;">
+                    <b><em>EWBF</em></b><br>
+                    miner --server {{=it.portalConfig.website.stratumHost}} --user zs1gfnu0j84arzuv4dauryyvys07m0p5vwd8grl4whz08y769jmzj7zar84hewngtgskce4vex4udc.<span style="text-decoration:underline; font-weight:900;">myrigname</span> --pass x --port {{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} --fee 0 --pec --templimit 70 --intensity 50
+                </code>
+                <code style="word-break:break-all;">
+                    <b><em>BMINER</em></b><br>
+                    bminer -uri stratum://zs1gfnu0j84arzuv4dauryyvys07m0p5vwd8grl4whz08y769jmzj7zar84hewngtgskce4vex4udc.<span style="text-decoration:underline; font-weight:900;">myrigname</span>@{{=it.portalConfig.website.stratumHost}}:{{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} -max-temperature 70 -nofee
                 </code>
             {{ } }}
         </div>
 
+        <div class="menuHeader" id="payments">Payments</div>
+        <div class="content">
+            On the sapling pool, payouts should take anywhere from 10 to 30 minutes.<br><br>
+            There is a limit of 200 receipients that can be included in a payout, hence the high min payout set on the pool.  If payments stop going out, do not worry! Funds are safu! Blocks can still be found and will be credited to your username!<br><br>
+            Most likely the min payout of the pool needs to be adjusted upwards. Please check the <a href="https://discord.gg/5f7p3vx">#pools-and-operators channel in discord</a> to see if it's already being worked on. <br><br>
+            The longer it takes to make a payout, the more people meet the min payout making the following payout take longer. If you scroll down the payments page compare the number of miners paid versus the time between payments and you will see the correlation.<br><br>
+            Pending is supposed to be time to maturity before a block gets paid which I have set to 10 to try to coincide with dPoW, but I have doubts this is working right and believe it's just a visual change (need to verify this in the code)<br><br>
+            Immature and balance on your worker stats page are the unpaid balances accrued from previous payout rounds, it does not count blocks that have not yet been attempted to be paid by the pool<br><br>
+            Payments that show up on the payments page initially are in the process of constructing the z transaction, once it actually broadcasts the transaction it will switch to being hyperlinked and then should arrive in miners' wallets in the next block or two.
+        </div>
+
         <div class="menuHeader" id="createWallet">Generate Wallet and Address</div>
         <div class="content">
+            <a href="https://pirate.black/wallets/" target="_blank" rel="noopener noreferrer">GUI Wallet for PIRATE</a> is available. For Agama support please visit <a href="https://discord.gg/5f7p3vx">#newpirates and #agama-wallet on Discord</a><br><br>
+
+            CLI Wallet:
             <ol>
                 <li><a href="https://docs.komodoplatform.com/komodo/install-Komodo-manually.html" target="_blank">Build Komodo</a></li>
                 <li>Launch PIRATE chain:
@@ -132,8 +157,10 @@
                 Here are a couple well-known GPU miners:
             </p>
             <ul>
-                <li><a href="https://bitcointalk.org/index.php?topic=2021765.0" target="_blank">dstm's ZCash / Equihash Nvidia Miner</a></li>
-                <li><a href="https://bitcointalk.org/index.php?topic=1670733.0" target="_blank">Claymore's ZCash/BTG AMD GPU Miner</a></li>
+                <li><a href="https://bitcointalk.org/index.php?topic=2021765.0" target="_blank" rel="noopener noreferrer">dstm's ZCash / Equihash Nvidia Miner</a></li>
+                <li><a href="https://bitcointalk.org/index.php?topic=1707546.0" target="_blank" rel="noopener noreferrer">EWBF's CUDA Zcash miner 0.3.4b</a></li>
+                <li><a href="https://www.bminer.me/releases/" target="_blank" rel="noopener noreferrer">Bminer Lite</a></li>
+                <li><a href="https://bitcointalk.org/index.php?topic=1670733.0" target="_blank" rel="noopener noreferrer">Claymore's ZCash/BTG AMD GPU Miner</a></li>
             </ul>
         </div>
 
@@ -154,7 +181,7 @@
                 git clone -b Linux https://github.com/nicehash/nheqminer.git<br>
                 cd ~/nheqminer/cpu_xenoncat/Linux/asm/<br>
                 sh assemble.sh<br>
-                cd /home/zcash/nheqminer/Linux_cmake/nheqminer_cpuv
+                cd /home/zcash/nheqminer/Linux_cmake/nheqminer_cpu<br>
                 cmake . && make<br>
                 ln -s /home/zcash/nheqminer/Linux_cmake/nheqminer_cpu/nheqminer_cpu /usr/local/bin/nheqminer_cpu
             </code>
@@ -164,7 +191,7 @@
             </code>
 
             <h4>Windows</h4>
-            <p>Download and install the latest release for windows from <a href="https://github.com/nicehash/nheqminer/releases">the github repo</a></p>
+            <p>Download and install the latest release for windows from <a href="https://github.com/nicehash/nheqminer/releases" target="_blank" rel="noopener noreferrer">the github repo</a></p>
             <p>Replace the placeholders below as needed and start mining!</p>
             <code>
                 nheqminer -t <i>numberofthreads</i> -l <i>stratumhost</i>:<i>stratumport</i> -u <i>youraddress</i>
@@ -172,8 +199,8 @@
 
             <h4>Additional Resources</h4>
             <ul>
-                <li><a href="https://github.com/nicehash/nheqminer" target="_blank">nheqminer repo</a></li>
-                <li><a href="https://steemit.com/mining/@bobinson/zcash-cpu-mining-setup-on-linux" target="_blank">CPU Mining</a></li>
+                <li><a href="https://github.com/nicehash/nheqminer" target="_blank" rel="noopener noreferrer">nheqminer repo</a></li>
+                <li><a href="https://steemit.com/mining/@bobinson/zcash-cpu-mining-setup-on-linux" target="_blank" rel="noopener noreferrer">CPU Mining</a></li>
             </ul>
         </div>
     </div>

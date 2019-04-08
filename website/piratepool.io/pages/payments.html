@@ -1,0 +1,64 @@
+{{ 
+function readableDate(a){ 
+    return new Date(parseInt(a)).toISOString().substring(0, 16).replace('T', ' ') + ' UTC'; 
+}
+function bigNumber(x){ 
+    return (x > 1000000000000) ? (x / 1000000000000).toFixed(1) + 'T' : (x > 1000000000) ? (x / 1000000000).toFixed(1) + 'B' : (x > 1000000) ? (x / 1000000).toFixed(1) + 'M' : (x > 1000) ? (x / 1000).toFixed(1) + 'K' : x.toFixed(1); 
+}
+function timeTil(x){ 
+    return (x < 0) ? 'Now' : (x > 86400) ? (x/86400).toFixed(1) + ' Days' : (x > 3600) ? (x/3600).toFixed(1) + ' Hours' : (x > 60) ? (x / 60).toFixed(1) + ' Minutes' : x + ' Seconds';
+}
+function timeTilNumbers(timestamp) {
+    return new Date(timestamp * 1000).toISOString().substr(11, 8);
+}
+}}
+<div id="pagePayments">
+    <div class="alertbar">Payout frequency has been changed to 4 hours because miners have been mining to exchange addresses&#8230;</div>
+    {{ for(var pool in it.stats.pools) { }}
+        <div class="poolLabel">
+            {{=it.stats.pools[pool].name}} Payments<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
+            <small>
+                Lifetime<br class="responsiveonly" />
+                <i class="fas fa-link fa-fw"></i> <span id="statsValidBlocks{{=pool}}">{{=parseInt(it.stats.pools[pool].poolStats.validBlocks).toLocaleString('en')}}</span> Blocks Found<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
+                <i class="fas fa-money-bill-wave fa-fw"></i> <span id="statsTotalPaid{{=pool}}">{{=parseInt(it.stats.pools[pool].poolStats.totalPaid).toLocaleString('en')}}</span> {{=it.stats.pools[pool].symbol}} Paid<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
+                <i class="far fa-clock fa-fw"></i> Next Payment ETA <span id="statsNextPayment{{=pool}}" class="countdownTimer">{{=timeTil(it.poolsConfigs[pool].paymentProcessing.paymentInterval-parseInt((new Date().getTime() - parseInt(it.stats.pools[pool].payments[0].time))/1000))}}</span>
+            </small>
+        </div>
+        <table class="pure-table" id="paymentTable{{=pool}}">
+            <thead>
+                <tr>
+                    <th>Blocks</th>
+                    <th>Time</th>
+                    <th>Miners</th>
+                    <th>Shares</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{ for(var p in it.stats.pools[pool].payments) { }}
+                <tr id="payment{{=pool}}{{=it.stats.pools[pool].payments[p].time}}">
+                    <td class="paymentblocks" title="Blocks:{{=it.stats.pools[pool].payments[p].blocks.length}} {{=it.stats.pools[pool].payments[p].opid}}">
+                        <span class="responsiveTableLabel"><i class="fas fa-link fa-fw"></i></span> <span>Blocks: [{{=it.stats.pools[pool].payments[p].blocks.length}}] </span>
+                        {{if (String(it.stats.pools[pool].name) == "KMD") { }}
+                            <a href="https://kmdexplorer.io/tx/{{=it.stats.pools[pool].payments[p].txid}}" target="_blank" rel="noopener noreferrer">{{=it.stats.pools[pool].payments[p].blocks}}</a>
+                        {{ } else if (typeof it.stats.pools[pool].payments[p].txid !== 'undefined' && (String(it.stats.pools[pool].name).startsWith("pirate") || String(it.stats.pools[pool].name).startsWith("arrr")) ) { }}
+                            <a href="https://explorer.pirate.black/tx/{{=it.stats.pools[pool].payments[p].txid}}" target="_blank" rel="noopener noreferrer">{{=it.stats.pools[pool].payments[p].blocks}}</a>
+                        {{ } else { }}
+                            <a>{{=it.stats.pools[pool].payments[p].blocks}}</a>
+                        {{ } }}
+                        <div class="fade">&#9660;</div>
+                    </td>
+                    <td><span class="responsiveTableLabel"><i class="far fa-clock fa-fw"></i> Time: </span>{{=readableDate(it.stats.pools[pool].payments[p].time)}}</td>
+                    <td><span class="responsiveTableLabel"><i class="fas fa-users fa-fw"></i> Miners: </span>{{=it.stats.pools[pool].payments[p].miners}}</td>
+                    <td><span class="responsiveTableLabel"><i class="fas fa-cog fa-fw"></i> Shares: </span>{{=bigNumber(it.stats.pools[pool].payments[p].shares)}}</td>
+                    <td><span class="responsiveTableLabel"><i class="fas fa-money-bill-wave fa-fw"></i> Amount: </span>{{=it.stats.pools[pool].payments[p].paid}} {{=it.stats.pools[pool].symbol}}</td>
+                </tr>
+            {{ } }}
+            </tbody>
+        </table>
+    {{ } }}
+    
+    <script>
+        document.querySelector('main').appendChild(document.createElement('script')).src = '/static/payments.js';
+    </script>
+</div>

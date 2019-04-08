@@ -91,7 +91,7 @@
 </div>
 
 {{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
-{{ function readableDate(a){ return new Date(parseInt(a)).toString(); } }}
+{{ function readableDate(a){ return new Date(parseInt(a)).toISOString().substring(0, 16).replace('T', ' ') + ' UTC'; } }}
 
 <div class="pure-g-r" id="boxesLower">
     {{ for(var pool in it.stats.pools) { }}
@@ -140,14 +140,15 @@
                     <!--<div id="{{=it.stats.pools[pool].name}}NewBlocks"></div>-->
                     {{ for(var b in it.stats.pools[pool].pending.blocks) { }}
                         {{ var block = it.stats.pools[pool].pending.blocks[b].split(":"); }}
-                        <div style="margin-bottom: 9px; background-color: #eeeeee; min-width:600px;"><i class="fa fa-bars"></i>
+                        <div style="margin-bottom: 9px; background-color: #eeeeee; min-width:600px;" title="{{if (it.stats.pools[pool].pending.confirms && it.stats.pools[pool].pending.confirms[block[0]]) { }}{{if (it.stats.pools[pool].pending.confirms[block[0]] == 1) { }}Waiting for dPoW notarization{{} else if (it.stats.pools[pool].pending.confirms[block[0]] < it.poolsConfigs[pool].paymentProcessing.minConf*2) { }}Waiting for min confirmations{{ } else { }}Queued for payment{{ } }}{{ } else { }}Waiting for payment processor to review{{ } }}">
+                            <i class="fa fa-bars"></i>
                             <small>Block:</small>
-                            {{if (String(it.stats.pools[pool].name).startsWith("zcash")) { }}
-                                <a href="https://explorer.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                            {{ } else if (String(it.stats.pools[pool].name).startsWith("zclassic")) { }}
-                                <a href="https://classic.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                            {{ } else if (String(it.stats.pools[pool].name).startsWith("hush")) { }}
-                                <a href="https://explorer.myhush.org/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                            {{if (String(it.stats.pools[pool].name) == "kmd") { }}
+                                <a href="https://kmdexplorer.io/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                            {{ } else if (String(it.stats.pools[pool].name) == "rkt") { }}
+                                <a href="http://rkt.explorer.dexstats.info/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                            {{ } else if (String(it.stats.pools[pool].name) == "kmdice") { }}
+                                <a href="http://kmdice.explorer.dexstats.info/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
                             {{ } else { }}
                                 {{=block[2]}}
                             {{ } }}
@@ -155,16 +156,16 @@
                             {{if (block[4] != null) { }}
                                 <span style="padding-left: 18px;"><small>{{=readableDate(block[4])}}</small></span>
                             {{ } }}
-                            {{if (it.stats.pools[pool].pending.confirms) { }}
-                                {{if (it.stats.pools[pool].pending.confirms[block[0]]) { }}
-                                <span style="float:right; color: red;"><small>{{=it.stats.pools[pool].pending.confirms[block[0]]}} of 100</small></span>
+                            {{if (it.stats.pools[pool].pending.confirms && it.stats.pools[pool].pending.confirms[block[0]]) { }}
+                                {{if (it.stats.pools[pool].pending.confirms[block[0]] == 1) { }}
+                                    <span style="float:right; color: red;"><small>Waiting for Notarization</small></span>
                                 {{ } else { }}
-                                <span style="float:right; color: red;"><small>*PENDING*</small></span>
+                                    <span style="float:right; color: red;"><small>{{=it.stats.pools[pool].pending.confirms[block[0]]}} of {{=it.poolsConfigs[pool].paymentProcessing.minConf*2}} Confirmations</small></span>
                                 {{ } }}
                             {{ } else { }}
                                 <span style="float:right; color: red;"><small>*PENDING*</small></span>
                             {{ } }}
-                            <div><i class="fa fa-gavel"></i><small>Mined By:</small> <a href="/workers/{{=block[3].split('.')[0]}}">{{=block[3]}}</a></div>
+                            <div><i class="fa fa-gavel"></i><small>Mined By:</small> <a href="/workers/{{=block[3].split('.')[0]}}">{{=block[3].length > 40 ? block[3].substring(0, 20) + '...' + block[3].substring(block[3].length-20, block[3].length): block[3]}}</a></div>
                         </div>
                         {{ blockscomb.push(block);}}
                     {{ } }}
@@ -174,10 +175,12 @@
                             {{ var block = it.stats.pools[pool].confirmed.blocks[b].split(":"); }}
                             <div style="margin-bottom: 9px; background-color: #eeeeee; min-width:600px;"><i class="fa fa-bars"></i>
                                 <small>Block:</small>
-                                {{if (String(it.stats.pools[pool].name).startsWith("zcash")) { }}
-                                    <a href="https://explorer.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
-                                {{ } else if (String(it.stats.pools[pool].name).startsWith("zclassic")) { }}
-                                    <a href="https://classic.zcha.in/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                {{if (String(it.stats.pools[pool].name) == "kmd") { }}
+                                <a href="https://kmdexplorer.io/blocks/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                {{ } else if (String(it.stats.pools[pool].name).startsWith("rkt")) { }}
+                                    <a href="http://rkt.explorer.dexstats.info/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
+                                {{ } else if (String(it.stats.pools[pool].name).startsWith("kmdice")) { }}
+                                    <a href="http://kmdice.explorer.dexstats.info/block/{{=block[0]}}" target="_blank">{{=block[2]}}</a>
                                 {{ } else { }}
                                     {{=block[2]}}
                                 {{ } }}
@@ -185,7 +188,7 @@
                                     <span style="padding-left: 18px;"><small>{{=readableDate(block[4])}}</small></span>
                                 {{ } }}
                                 <span style="float:right; padding-left: 18px; color: green;"><small>*PAID*</small></span>
-                                <div><i class="fa fa-gavel"></i><small>Mined By:</small> <a href="/workers/{{=block[3].split('.')[0]}}">{{=block[3]}}</a></div>
+                                <div><i class="fa fa-gavel"></i><small>Mined By:</small> <a href="/workers/{{=block[3].split('.')[0]}}">{{=block[3].length > 40 ? block[3].substring(0, 20) + '...' + block[3].substring(block[3].length-20, block[3].length): block[3]}}</a></div>
                             </div>
                             {{blockscomb.push(block);}}
                         {{ } }}

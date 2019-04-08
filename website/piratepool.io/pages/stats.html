@@ -1,0 +1,108 @@
+{{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
+{{ function readableDate(a){ return new Date(parseInt(a)).toISOString().substring(0, 16).replace('T', ' ') + ' UTC'; } }}
+{{ function bigNumber(x){ return (x > 1000000000000) ? (x / 1000000000000).toFixed(1) + 'T' : (x > 1000000000) ? (x / 1000000000).toFixed(1) + 'B' : (x > 1000000) ? (x / 1000000).toFixed(1) + 'M' : (x > 1000) ? (x / 1000).toFixed(1) + 'K' : x.toFixed(1); } }}
+{{ function middleEllipsis(x) { return x.length > 40 ? x.substring(0, 15) + '...' + x.substring(x.length-15, x.length): x; } }}
+<div id="pageStats">
+    <div id="topCharts">
+        <div class="chartWrapper">
+            <h1 class="chartLabel">Pool Hashrate</h1>
+            <div class="chartHolder"><svg id="poolHashrate"></svg></div>
+        </div>
+    </div>
+
+    <div class="pure-g boxStats">
+    {{ for(var pool in it.stats.pools) { }}
+        <div class="pure-u-1-2 pure-responsive-disable">
+            <div class="l-box">
+                <h3>{{=it.stats.pools[pool].name}} Pool Stats</h3>
+                <div class="boxStatsList">
+                    <ul>
+                        <li><i class="fas fa-users fa-fw"></i> <span id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners</li>
+                        <li><i class="fas fa-rocket fa-fw"></i> <span id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span> Workers</li>
+                        <li><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrate{{=pool}}">{{=it.stats.pools[pool].hashrateString}}</span> (Now)</li>
+                        <li><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrateAvg{{=pool}}">...</span> (Avg)</li>
+                        <li><i class="fas fa-dice fa-fw"></i> Luck <span id="statsLuckDays{{=pool}}">{{=it.stats.pools[pool].luckDays}}</span> Days</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="pure-u-1-2 pure-responsive-disable">
+            <div class="l-box">
+                <h3>{{=it.stats.pools[pool].name}} Network Stats</h3>
+                <div class="boxStatsList">
+                    <ul>
+                        <li><i class="fas fa-link fa-fw" aria-hidden="true"></i> Block Height: <span id="statsNetworkBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.networkBlocks}}</span></li>
+                        <li><i class="fas fa-tachometer-alt fa-fw"></i> Network Hash/s: <span id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span></li>
+                        <li><i class="fas fa-unlock-alt fa-fw" aria-hidden="true"></i> Difficulty: <span id="statsNetworkDiff{{=pool}}">{{=bigNumber(it.stats.pools[pool].poolStats.networkDiff)}}</span></li>
+                        <li><i class="fas fa-coins fa-fw"></i> Total Supply: <span id="statsNetworkCoins{{=pool}}">{{=(it.stats.pools[pool].poolStats.networkBlocks*256).toLocaleString('en')}}</span></li>
+                        <li><i class="fas fa-users fa-fw"></i> Node Connections: <span id="statsNetworkConnections{{=pool}}">{{=it.stats.pools[pool].poolStats.networkConnections}}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {{ } }}
+    </div>
+
+    {{ for(var pool in it.stats.pools) { }}
+        <div class="blocksFound" id="blocksFound{{=it.stats.pools[pool].name}}">
+            <div class="blocksFoundHeader">
+                <div>
+                    {{=it.stats.pools[pool].name}} Recent Blocks Found (<span id="blocksFoundHeaderCount{{=it.stats.pools[pool].name}}">{{=it.stats.pools[pool].pending.blocks.length}}</span>)
+                </div>
+                <div>
+                    Lifetime<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
+                    <i class="fas fa-link fa-fw"></i> <span id="statsValidBlocks{{=pool}}">{{=parseInt(it.stats.pools[pool].poolStats.validBlocks).toLocaleString('en')}}</span> Blocks Found<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
+                    <i class="fas fa-money-bill-wave fa-fw"></i> <span id="statsTotalPaid{{=pool}}">{{=parseInt(it.stats.pools[pool].poolStats.totalPaid).toLocaleString('en')}}</span> {{=it.stats.pools[pool].symbol}} Paid
+                </div>
+            </div>
+
+            <div class="blocksFoundList">
+                {{ for (var b in it.stats.pools[pool].pending.blocks) { }}
+                    {{ var block = it.stats.pools[pool].pending.blocks[b].split(":"); }}
+                    <div class="blocksFoundPending" id="blocksFoundPending{{=block[0]}}" title="{{if (it.stats.pools[pool].pending.confirms && it.stats.pools[pool].pending.confirms[block[0]]) { }}{{if (it.stats.pools[pool].pending.confirms[block[0]] == 1) { }}Waiting for dPoW notarization{{} else if (it.stats.pools[pool].pending.confirms[block[0]] < it.poolsConfigs[pool].paymentProcessing.minConf*2) { }}Waiting for min confirmations{{ } else { }}Queued for payment{{ } }}{{ } else { }}Waiting for payment processor to review{{ } }}">
+                        <div>
+                            <i class="fas fa-link fa-fw"></i>
+                            <small>Block:</small>
+                            <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
+
+                            {{if (block[4] != null) { }}
+                                <span style="padding-left: 10px;"><small>{{=readableDate(block[4])}}</small></span>
+                            {{ } }}
+                            {{if (it.stats.pools[pool].pending.confirms && it.stats.pools[pool].pending.confirms[block[0]]) { }}
+                                {{if (it.stats.pools[pool].pending.confirms[block[0]] == 1) { }}
+                                    <span class="countLabel">Need dPoW</span>
+                                {{ } else { }}
+                                    <span class="countLabel">{{=it.stats.pools[pool].pending.confirms[block[0]]}}/{{=it.poolsConfigs[pool].paymentProcessing.minConf*2}}</span>
+                                {{ } }}
+                            {{ } else { }}
+                                <span class="countLabel">Pending</span>
+                            {{ } }}
+                        </div>
+                        <div><i class="fas fa-crown fa-fw"></i> <small>Mined By:</small> <a href="/workers/{{=block[3].split('.')[0]}}" class="minerAddress" title="{{=block[3]}}">{{=middleEllipsis(block[3])}}</a></div>
+                    </div>
+                {{ } }}
+
+                {{ for(var i=0; i < 8; i++) { }}
+                    {{ var block = it.stats.pools[pool].confirmed.blocks[i].split(":"); }}
+                    <div class="blocksFoundPaid" id="blocksFoundPaid{{=block[0]}}" title="Payment sent, please check payments page">
+                        <div>
+                            <i class="fas fa-link fa-fw"></i>
+                            <small>Block:</small>
+                            <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
+                            {{if (block[4] != null) { }}
+                                <span style="padding-left: 10px;"><small>{{=readableDate(block[4])}}</small></span>
+                            {{ } }}
+                            <span class="countLabel">Paid</span>
+                        </div>
+                        <div><i class="fas fa-crown fa-fw"></i> <small>Mined By:</small> <a href="/workers/{{=block[3].split('.')[0]}}" class="minerAddress" title="{{=block[3]}}">{{=middleEllipsis(block[3])}}</a></div>
+                    </div>
+                {{ } }}
+            </div>
+        </div>
+    {{ } }}
+
+    <script>
+        document.querySelector('main').appendChild(document.createElement('script')).src = '/static/stats.js';
+    </script>
+</div>

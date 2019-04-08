@@ -142,13 +142,21 @@ module.exports = function(logger){
             var shareProcessor = new ShareProcessor(logger, poolOptions);
 
             handlers.auth = function(port, workerName, password, authCallback){
+
                 if (poolOptions.validateWorkerUsername !== true)
                     authCallback(true);
                 else {
                     if (privateChain) {
+                        let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
                         pool.daemon.cmd('z_validateaddress', [String(workerName).split(".")[0]], function (results) {
                             var isValid = results.filter(function (r) {
-                                return r.response.isvalid
+                                if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs') {
+                                    return (r.response.isvalid && r.response.type == 'sapling');
+                                } else if ( poolZAddressPrefix == 'zc') {
+                                    return (r.response.isvalid && r.response.type == 'sprout');
+                                } else {
+                                    return r.response.isvalid;
+                                }
                             }).length > 0;
                             authCallback(isValid);
                         });

@@ -181,6 +181,12 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         if (paymentInterval) {
             clearInterval(paymentInterval);
         }
+
+        //Make payment on startup if "paymentProcessing" : { "payOnStart": true } is set
+        if (typeof processingConfig.payOnStart !== 'undefined' && processingConfig.payOnStart) {
+            processPayments();
+        }
+
         paymentInterval = setInterval(processPayments, paymentIntervalSecs * 1000);
         //setTimeout(processPayments, 100);
         setupFinished(true);
@@ -367,7 +373,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     }
 
     // check operation statuses every 57 seconds
-    var opid_interval =  57 * 1000;
+    //var opid_interval =  57 * 1000;
+    var opid_interval = (typeof poolOptions.sapling !== 'undefined' && ( poolOptions.sapling  || poolOptions.sapling > 0 )) ? 15 * 1000 : 57 * 1000;
+
     // shielding not required for some equihash coins
     if (requireShielding === true) {
         var checkOpids = function() {
@@ -421,15 +429,10 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                                 });
                                             } else {
                                                 logger.special(logSystem, logComponent, 'Found payment opid ' + op.id );
-                                                redisClient.multi([ ['zremrangebyscore', coin + ':payments', apresult.time, apresult.time] ]).exec(function(error, results) {
-                                                    if (error) {
-                                                        logger.error(logSystem, logComponent, "Removed old payment failed OPID:" + op.id + " " + error);
-                                                    } else {
-                                                        logger.special(logSystem, logComponent, "Removed old payment success! OPID:" + op.id);
-                                                    }
-                                                });
-
-                                                redisClient.multi([ ['zadd', coin + ':payments', apresult.time, JSON.stringify(apresult)]]).exec(function(error, results) {
+                                                redisClient.multi([ 
+                                                    ['zremrangebyscore', coin + ':payments', apresult.time, apresult.time],
+                                                    ['zadd', coin + ':payments', apresult.time, JSON.stringify(apresult)]
+                                                ]).exec(function(error, results) {
                                                     if (error) {
                                                         logger.error(logSystem, logComponent, "Updating txid for ztransaction failed OPID:" + op.id + " " + error);
                                                     } else {
@@ -467,6 +470,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
                 /* Not sure if this is needed but call this to clear out operations (some seemed to get stuck) */
                 if (privateChain) {
+                    logger.special(logSystem, logComponent, "Running z_operationresult for privateChain - TEST");
                     batchRPC.push(['z_getoperationresult']);
                 }
 
@@ -721,8 +725,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         }
                         var round = rounds[i];
                         // update confirmations for round
-                        if (tx && tx.result)
+                        if (tx && tx.result) {
                             round.confirmations = parseInt((tx.result.confirmations || 0));
+                        }
 
                         // look for transaction errors
                         if (tx.error && tx.error.code === -5){
@@ -750,20 +755,22 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             logger.error(logSystem, logComponent, 'Missing output details to pool address for transaction ' + round.txHash);
                             return;
                         }
+
                         // get transaction category for round
                         round.category = generationTx.category;
+
                         // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
-			   var minerperc = 1;
-			   if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
-				for (var r in poolOptions.rewardRecipients) {
-         			    minerperc = minerperc - (poolOptions.rewardRecipients[r]/100);
-        		        }
-			    }
-			    poolperc = roundTo(1 - minerperc,4);
+			                      var minerperc = 1;
+			                      if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
+				                        for (var r in poolOptions.rewardRecipients) {
+         			                      minerperc = minerperc - (poolOptions.rewardRecipients[r]/100);
+        		                    }
+			                      }
+			                      poolperc = roundTo(1 - minerperc,4);
                             round.reward = coinsRound(parseFloat(generationTx.amount*minerperc || generationTx.value*minerperc));
-			}
-			//console.log(round.reward);
+			                    }
+			                    //console.log(round.reward);
                     });
 
                     var canDeleteShares = function(r){
@@ -782,6 +789,12 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     // only pay max blocks at a time
                     var payingBlocks = 0;
                     rounds = rounds.filter(function(r){
+                        // Don't count for payout before minConfirmations from config
+                        if ( r.confirmations > -1 && r.confirmations < (minConfPayout*2) ) {
+                            r.category = 'immature';
+                            return true;
+                        }
+
                         switch (r.category) {
                             case 'orphan':
                             case 'kicked':
@@ -1161,22 +1174,21 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     // do final rounding of payments per address
                     // this forces amounts to be valid (0.12345678)
                     var totalcoinstosend = 0;
-		    for (var a in addressAmounts) {
+		                for (var a in addressAmounts) {
                         addressAmounts[a] = coinsRound(addressAmounts[a]);
-			totalcoinstosend = totalcoinstosend + addressAmounts[a];
+			                  totalcoinstosend = totalcoinstosend + addressAmounts[a];
                     }
 
-		    if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
-		        var totalbr = coinsRound(totalcoinstosend*(poolperc+1));
-			//console.log(totalbr);
-			for (var r in poolOptions.rewardRecipients) {
-        		     var feetopay = coinsRound(totalbr*(poolOptions.rewardRecipients[r]/100));
-			     addressAmounts[r] = feetopay;
-			}
-		    }
+		                if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
+		                    var totalbr = coinsRound(totalcoinstosend*(poolperc+1));
+			                  //console.log(totalbr);
+			                  for (var r in poolOptions.rewardRecipients) {
+        		                var feetopay = coinsRound(totalbr*(poolOptions.rewardRecipients[r]/100));
+			                      addressAmounts[r] = feetopay;
+			                  }
+                    }
 
-		    //console.log(addressAmounts);
-
+		                //console.log(addressAmounts);
 
                     // POINT OF NO RETURN! GOOD LUCK!
                     // WE ARE SENDING PAYMENT CMD TO DAEMON
@@ -1234,8 +1246,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                         });
 
                                         var paymentsUpdate = [];
-                                        var paymentsData = {time:Date.now(), opid:opid, shares:totalShares, paid:satoshisToCoins(totalSent),  miners:Object.keys(addressAmounts).length, blocks: paymentBlocks, amounts: addressAmounts, balances: balanceAmounts, work:shareAmounts};
-                                        paymentsUpdate.push(['zadd', logComponent + ':payments', Date.now(), JSON.stringify(paymentsData)]);
+                                        let paymentTime = Date.now();
+                                        var paymentsData = {time:paymentTime, opid:opid, shares:totalShares, paid:satoshisToCoins(totalSent),  miners:Object.keys(addressAmounts).length, blocks: paymentBlocks, amounts: addressAmounts, balances: balanceAmounts, work:shareAmounts};
+                                        paymentsUpdate.push(['zadd', logComponent + ':payments', paymentTime, JSON.stringify(paymentsData)]);
 
                                         callback(null, workers, rounds, paymentsUpdate);
                                     } else {
@@ -1497,19 +1510,23 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         });
     };
 
-    //@todo better validation on Z address format
     var getProperAddress = function(address){
-        if (privateChain && address.length == 95) {
+        let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
+        let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
+        let minerAddressPrefix = address.substring(0,2);
+
+        if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
+            //validate as sapling
+            return address;
+        } else if (privateChain && poolZAddressPrefix == 'zc' && minerAddressLength == 95 && minerAddressPrefix == 'zc') {
+            //validate as sprout
+            return address;
+        } else if (privateChain || address.length >= 40 || address.length <= 30) {
+            logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
+            return (poolOptions.invalidAddress || poolOptions.address);
+        } else {
             return address;
         }
-        if (address.length >= 40){
-            logger.warning(logSystem, logComponent, 'Invalid address '+address+', convert to address '+(poolOptions.invalidAddress || poolOptions.address));
-            return (poolOptions.invalidAddress || poolOptions.address);
-        }
-        if (address.length <= 30) {
-            logger.warning(logSystem, logComponent, 'Invalid address '+address+', convert to address '+(poolOptions.invalidAddress || poolOptions.address));
-            return (poolOptions.invalidAddress || poolOptions.address);
-        }
-        return address;
     };
+
 }
