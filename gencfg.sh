@@ -1,6 +1,6 @@
 #!/bin/bash
 # Put the address to mine to here
-walletaddress=RWEBo1Yp4uGkeXPi1ZGQARfLPkGmoW1MwY
+walletaddress=
 
 #Change to path of komodo-cli here
 komodoexec=~/komodo/src/komodo-cli
@@ -11,6 +11,7 @@ declare -a skip=("BEER" "PIZZA")
 # Stratum port to start with
 stratumport=3030
 
+cli="komodo-cli"
 coinsdir=./coins
 poolconfigdir=./pool_configs
 coinstpl=coins.template
@@ -32,18 +33,39 @@ if [ -f $ufwdisablefile ]; then
     rm $ufwdisablefile
 fi
 
-~/komodo/src/listassetchains | while read chain; do
-    conffile="~/.komodo/$chain/$chain.conf"
+if [[ -z $1 ]]; then
+  specificchain=0
+else
+  specificchain=$1
+fi
 
-    if [[ " ${skip[@]} " =~ " ${chain} " ]] || [ ! -f $conffile ]; then
-        pointless=0
-    else
-        thisconf=$(<$conffile)
-        string=$(printf '%08x\n' $($komodoexec -ac_name=$chain getinfo | jq '.magic'))
-        magic=${string: -8}
-        magicrev=$(echo ${magic:6:2}${magic:4:2}${magic:2:2}${magic:0:2})
+listassetchains () {
+  if [[ $specificchain = "0" ]]; then
+    ~/komodo/src/listassetchains
+  else
+    echo $specificchain
+  fi
+}
 
-        p2pport=$($komodoexec -ac_name=$chain getinfo | jq '.p2pport')
+listassetchains | while read chain; do
+  if [[ " ${skip[@]} " =~ " ${chain} " ]]; then
+    pointless=0
+  else
+    echo  "[$chain] Generating config files"
+    getinfo=$(${cli} -ac_name=$chain getinfo 2>/dev/null)
+    outcome=$(echo $?)
+
+    if [[ $outcome != 0 ]]; then
+       echo "[$chain] Daemon is not running skipped."
+       continue
+    fi
+
+    string=$(printf '%08x\n' $(echo $getinfo | jq '.magic'))
+    magic=${string: -8}
+    magicrev=$(echo ${magic:6:2}${magic:4:2}${magic:2:2}${magic:0:2})
+
+    p2pport=$(echo $getinfo | jq '.p2pport')
+    thisconf=$(<~/.komodo/$chain/$chain.conf)
 
         rpcuser=$(echo $thisconf | grep -Po "rpcuser=(\S*)" | sed 's/rpcuser=//')
         rpcpass=$(echo $thisconf | grep -Po "rpcpassword=(\S*)" | sed 's/rpcpassword=//')
