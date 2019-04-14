@@ -5,27 +5,10 @@
 "zAddress": "",
 "tAddress": "WALLETADDRVAR",
 "walletInterval": 5,
-"rewardRecipients": {
-	"RUpV4Mov3Soj34iVNq3hPMCoUFYtB1Jzuf":1
-},
+"rewardRecipients": {},
 "tlsOptions": { "enabled": false },
-    "paymentProcessing": {
-        "minConf": 4,
-        "enabled": true,
-        "paymentMode": "prop",
-        "_comment_paymentMode":"prop, pplnt",
-        "paymentInterval": 300,
-        "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
-        "minimumPayment": 0.1,
-        "maxBlocksPerPayment": 20,
-        "daemon": {
-          "host": "127.0.0.1",
-          "port": RPCPORTVAR,
-          "user": "RPCUSERVAR",
-          "password": "RPCPASSVAR"
-        }
-    },
-"trackShares": { "disable": false },
+"paymentProcessing": { "enabled": false, "daemon": false },
+"trackShares": { "disable": true },
 "ports": {
     "STRATUMPORTVAR": {
         "tls":false,
