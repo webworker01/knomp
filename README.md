@@ -34,18 +34,10 @@ sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoco
 ```
 Now, let's build Komodo
 ```shell
-git clone https://github.com/jl777/komodo -b FSM
+git clone https://github.com/jl777/komodo -b dev
 cd komodo
 zcutil/fetch-params.sh
 zcutil/build.sh -j8
-```
-
-We need to generate the coins files (coin daemon must be running!): `gencfg.sh <coin name>`
-
-You can run just gencfg.sh with no coin name to use the assetchains.json in komodo/src directory for all coins. Make sure you edit the template with the correct values you want before running the config generator.
-
-We need node and npminstalled
-=======
 strip src/komodod
 strip src/komodo-cli
 ```
@@ -71,30 +63,34 @@ curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 
 Now, let's build our stratum and run it. This will install the pool and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
 ```shell
-git clone https://github.com/blackjok3rtt/knomp
+git clone https://github.com/webworker01/knomp
 cd knomp
-nano gencfg.sh
-```
-Edit line 3 in so that it has your own KMD based address, CTRL-X then Y to save and exit
-```shell
-./gencfg.sh
 npm install
 cp config_example.json config.json (and configure it)
+nano gencfg.sh
+```
+
+Edit line 3 in so that it has your own KMD based address, CTRL-X then Y to save and exit
+
+We need to generate the coins files (coin daemon must be running!): `gencfg.sh <coin name>`
+
+You can run just gencfg.sh with no coin name to use the assetchains.json in komodo/src directory for all coins. Make sure you edit the template with the correct values you want before running the config generator.
+
+Finally we are ready to start the pool software
+
+```shell
 npm start
 ```
 
-
-## Disable Coinbase Mode 
-This mode is enabled by default in the coins.template with`"disablecb" : true` 
-
-To disable it, change the value to false. This mode uses -pubkey to tell the daemon where the coinbase should be sent, and uses the daemons coinbase transaction rather then having the pool create the coinabse transaction. This enables special coinbase transactions, such as ac_founders and ac_script or new modes with CC vouts in the coinbase not yet created, it will work with all coins, except Full Z support described below. 
-
-The pool fee is taken in the payment processor using this mode, and might not be 100% accurate down to the single satoshi, so the pool address may end up with some small amount of coins over time. To use the pool fee, just change `rewardRecipents` value in the `poolconfig.template` before running the `gencfg.sh` script as you normally would for the standard mode.
-
-
-Full Z Transaction Support
-
 If all went well the program should start without error and you should be able to browse to your pool website on your server via port 8080.
+
+Disable Coinbase Mode 
+-------------
+This mode uses -pubkey to tell the daemon where the coinbase should be sent, and uses the daemons coinbase transaction rather then having the pool create the coinabse transaction. This enables special coinbase transactions, such as ac_founders and ac_script or new modes with CC vouts in the coinbase not yet created, it will work with all coins, except Full Z support described below. 
+
+To enable it, change the value in the `./coins/*.json` to `"disablecb" : true`
+
+The pool fee is taken in the payment processor using this mode, and might not be 100% accurate down to the single satoshi, so the pool address may end up with some small amount of coins over time.
 
 Payment Processing
 -------------
@@ -117,7 +113,6 @@ You can add an option to your pool_config to have any miners that mine with an i
 ```
 
 Full Z Transaction Support (Sprout)
-
 -------------
 This is an option to force miners to use a Z address as their username for payouts
 
@@ -143,9 +138,9 @@ In pool_config:
 "walletInterval": 2,
 "validateWorkerUsername": true,
 "paymentProcessing": {
-        "minConf": 5,
-        "paymentInterval": 180,
-        "maxBlocksPerPayment": 20,
+    "minConf": 5,
+    "paymentInterval": 180,
+    "maxBlocksPerPayment": 20,
 ```
 
 More Resources
