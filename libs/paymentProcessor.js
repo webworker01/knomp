@@ -120,6 +120,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
             }
         }, true);
     }
+
     function validateTAddress (callback) {
         daemon.cmd('validateaddress', [poolOptions.tAddress], function(result) {
             if (result.error){
@@ -136,8 +137,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                 callback()
             }
         }, true);
-     }
-     function validateZAddress (callback) {
+    }
+
+    function validateZAddress (callback) {
         daemon.cmd('z_validateaddress', [poolOptions.zAddress], function(result) {
             if (result.error){
                 logger.error(logSystem, logComponent, 'Error with payment processing daemon ' + JSON.stringify(result.error));
@@ -154,6 +156,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
             }
         }, true);
     }
+
     function getBalance(callback){
         daemon.cmd('getbalance', [], function(result){
             if (result.error){
@@ -408,7 +411,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         if (privateChain && op.status != "executing") {
                             //Check to see if the opid exists in the payments datastore and a payment needs the transaction updated or we need to mark the payment as failed
 
-                              redisClient.multi([ ['zrange', coin + ':payments', 0, -1] ]).exec(function(error, allpayments) {
+                            redisClient.multi([ ['zrange', coin + ':payments', 0, -1] ]).exec(function(error, allpayments) {
                                 if (!error && allpayments) {
                                     // console.log(allpayments[0]);
                                     paymentstoparse = allpayments[0];
@@ -451,9 +454,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         // log status to console
                         if (op.status == "failed") {
                             if (op.error) {
-                              logger.error(logSystem, logComponent, "Shielded operation failed " + op.id + " " + op.error.code +", " + op.error.message);
+                                logger.error(logSystem, logComponent, "Shielded operation failed " + op.id + " " + op.error.code +", " + op.error.message);
                             } else {
-                              logger.error(logSystem, logComponent, "Shielded operation failed " + op.id);
+                                logger.error(logSystem, logComponent, "Shielded operation failed " + op.id);
                             }
                         } else {
                             logger.special(logSystem, logComponent, 'Shielded operation success ' + op.id + '  txid: ' + op.result.txid);
@@ -761,16 +764,16 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
                         // get reward for newly generated blocks
                         if (round.category === 'generate' || round.category === 'immature') {
-			                      var minerperc = 1;
-			                      if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
-				                        for (var r in poolOptions.rewardRecipients) {
-         			                      minerperc = minerperc - (poolOptions.rewardRecipients[r]/100);
-        		                    }
-			                      }
-			                      poolperc = roundTo(1 - minerperc,4);
+                            var minerperc = 1;
+                            if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
+                                for (var r in poolOptions.rewardRecipients) {
+                                    minerperc = minerperc - (poolOptions.rewardRecipients[r]/100);
+                                }
+                            }
+                            poolperc = roundTo(1 - minerperc,4);
                             round.reward = coinsRound(parseFloat(generationTx.amount*minerperc || generationTx.value*minerperc));
-			                    }
-			                    //console.log(round.reward);
+                        }
+                        //console.log(round.reward);
                     });
 
                     var canDeleteShares = function(r){
@@ -905,10 +908,10 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                         case 'orphan':
                                         case 'kicked':
                                         case 'immature':
-                                           return true;
-                                       case 'generate':
-                                           r.category = 'immature';
-                                           return true;
+                                            return true;
+                                        case 'generate':
+                                            r.category = 'immature';
+                                            return true;
                                         default:
                                             return false;
                                     };
@@ -927,26 +930,26 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                 var workerTimes = {};
                                 var maxTime = 0;
                                 if (pplntEnabled === true) {
-	                                for (var workerAddressWithPoolId in workerTimesWithPoolIds){
+                                    for (var workerAddressWithPoolId in workerTimesWithPoolIds){
                                         var workerWithoutPoolId = workerAddressWithPoolId.split('.')[0];
                                         var workerTimeFloat = parseFloat(workerTimesWithPoolIds[workerAddressWithPoolId]);
                                         if (maxTime < workerTimeFloat) {
                                             maxTime = workerTimeFloat;
                                         }
-	                                    if (!(workerWithoutPoolId in workerTimes)) {
-	                                        workerTimes[workerWithoutPoolId] = workerTimeFloat;
-	                                    } else {
+                                        if (!(workerWithoutPoolId in workerTimes)) {
+                                            workerTimes[workerWithoutPoolId] = workerTimeFloat;
+                                        } else {
                                             // add time from other instances with penalty
-	                                        if (workerTimes[workerWithoutPoolId] < workerTimeFloat) {
-	                                            workerTimes[workerWithoutPoolId] = workerTimes[workerWithoutPoolId] * 0.5 + workerTimeFloat;
-	                                        } else {
+                                            if (workerTimes[workerWithoutPoolId] < workerTimeFloat) {
+                                                workerTimes[workerWithoutPoolId] = workerTimes[workerWithoutPoolId] * 0.5 + workerTimeFloat;
+                                            } else {
                                                 workerTimes[workerWithoutPoolId] = workerTimes[workerWithoutPoolId] + workerTimeFloat * 0.5;
                                             }
                                             if (workerTimes[workerWithoutPoolId] > maxTime) {
                                                 workerTimes[workerWithoutPoolId] = maxTime;
                                             }
-	                                    }
-	                                }
+                                        }
+                                    }
                                 }
                                 switch (round.category){
                                     case 'kicked':
@@ -1089,9 +1092,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
 
             /*
-               Step 4 - Generate RPC commands to send payments
-               When deciding the sent balance, it the difference should be -1*amount they had in db,
-               If not sending the balance, the differnce should be +(the amount they earned this round)
+                Step 4 - Generate RPC commands to send payments
+                When deciding the sent balance, it the difference should be -1*amount they had in db,
+                If not sending the balance, the differnce should be +(the amount they earned this round)
             */
             function(workers, rounds, addressAccount, callback) {
 
@@ -1174,18 +1177,18 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     // do final rounding of payments per address
                     // this forces amounts to be valid (0.12345678)
                     var totalcoinstosend = 0;
-		                for (var a in addressAmounts) {
+                    for (var a in addressAmounts) {
                         addressAmounts[a] = coinsRound(addressAmounts[a]);
-			                  totalcoinstosend = totalcoinstosend + addressAmounts[a];
+                        totalcoinstosend = totalcoinstosend + addressAmounts[a];
                     }
 
-		                if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
-		                    var totalbr = coinsRound(totalcoinstosend*(poolperc+1));
-			                  //console.log(totalbr);
-			                  for (var r in poolOptions.rewardRecipients) {
-        		                var feetopay = coinsRound(totalbr*(poolOptions.rewardRecipients[r]/100));
-			                      addressAmounts[r] = feetopay;
-			                  }
+                    if (poolOptions.coin.disablecb && poolOptions.rewardRecipients.length !== 0) {
+                        var totalbr = coinsRound(totalcoinstosend*(poolperc+1));
+                        //console.log(totalbr);
+                        for (var r in poolOptions.rewardRecipients) {
+                        var feetopay = coinsRound(totalbr*(poolOptions.rewardRecipients[r]/100));
+                            addressAmounts[r] = feetopay;
+                        }
                     }
 
 		                //console.log(addressAmounts);
