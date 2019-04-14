@@ -3,5 +3,6 @@
 "symbol": "COINNAMEVAR",
 "algorithm": "equihash",
 "txfee": 0.0001,
-"peerMagic": "MAGICREVVAR"
+"peerMagic": "MAGICREVVAR",
+"disablecb": "false"
 }
