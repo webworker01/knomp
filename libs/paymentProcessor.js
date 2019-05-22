@@ -1517,10 +1517,11 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
     var getProperAddress = function(address){
         let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
+        var isValid = false;
 
         if (privateChain) {
-            pool.daemon.cmd('z_validateaddress', [String(workerName).split(".")[0]], function (results) {
-                var isValid = results.filter(function (r) {
+            daemon.cmd('z_validateaddress', [address], function (results) {
+                isValid = results.filter(function (r) {
                     if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs') {
                         return (r.response.isvalid && r.response.type == 'sapling');
                     } else if ( poolZAddressPrefix == 'zc') {
@@ -1529,14 +1530,14 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         return r.response.isvalid;
                     }
                 }).length > 0;
-                authCallback(isValid);
+                //authCallback(isValid);
             });
         } else {
-            pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
-                var isValid = results.filter(function (r) {
+            daemon.cmd('validateaddress', [address], function (results) {
+                isValid = results.filter(function (r) {
                     return r.response.isvalid
                 }).length > 0;
-                authCallback(isValid);
+                //authCallback(isValid);
             });
         }
 
