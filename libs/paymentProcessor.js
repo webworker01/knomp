@@ -1127,6 +1127,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             minerTotals[address] = toSendSatoshis;
                         }
                     }
+
                     // now process each workers balance, and pay the miner
                     for (var w in workers) {
                         var worker = workers[w];
@@ -1158,6 +1159,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                 }
                             }
                         }
+
                         // track share work
                         if (worker.totalShares > 0) {
                             if (shareAmounts[address] != null && shareAmounts[address] > 0) {
@@ -1191,7 +1193,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                         }
                     }
 
-		                //console.log(addressAmounts);
+                    //console.log(addressAmounts);
 
                     // POINT OF NO RETURN! GOOD LUCK!
                     // WE ARE SENDING PAYMENT CMD TO DAEMON
@@ -1515,20 +1517,33 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
     var getProperAddress = function(address){
         let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
-        let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
-        let minerAddressPrefix = address.substring(0,2);
 
-        if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
-            //validate as sapling
-            return address;
-        } else if (privateChain && poolZAddressPrefix == 'zc' && minerAddressLength == 95 && minerAddressPrefix == 'zc') {
-            //validate as sprout
-            return address;
-        } else if (privateChain || address.length >= 40 || address.length <= 30) {
-            logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
-            return (poolOptions.invalidAddress || poolOptions.address);
+        if (privateChain) {
+            pool.daemon.cmd('z_validateaddress', [String(workerName).split(".")[0]], function (results) {
+                var isValid = results.filter(function (r) {
+                    if ( (poolOptions.coin.sapling || poolOptions.coin.sapling > 0) && poolZAddressPrefix == 'zs') {
+                        return (r.response.isvalid && r.response.type == 'sapling');
+                    } else if ( poolZAddressPrefix == 'zc') {
+                        return (r.response.isvalid && r.response.type == 'sprout');
+                    } else {
+                        return r.response.isvalid;
+                    }
+                }).length > 0;
+                authCallback(isValid);
+            });
         } else {
+            pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
+                var isValid = results.filter(function (r) {
+                    return r.response.isvalid
+                }).length > 0;
+                authCallback(isValid);
+            });
+        }
+
+        if (isValid) {
             return address;
+        } else {
+            return (poolOptions.invalidAddress || poolOptions.address);
         }
     };
 
