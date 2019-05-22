@@ -432,7 +432,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                                 });
                                             } else {
                                                 logger.special(logSystem, logComponent, 'Found payment opid ' + op.id );
-                                                redisClient.multi([ 
+                                                redisClient.multi([
                                                     ['zremrangebyscore', coin + ':payments', apresult.time, apresult.time],
                                                     ['zadd', coin + ':payments', apresult.time, JSON.stringify(apresult)]
                                                 ]).exec(function(error, results) {
