@@ -21,13 +21,13 @@ module.exports = function(logger, poolConfig){
     var logSystem = 'Pool';
     var logComponent = coin;
     var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
-    
+
     var connection = redis.createClient(redisConfig.port, redisConfig.host);
     if (redisConfig.password) {
         connection.auth(redisConfig.password);
     }
     connection.on('ready', function(){
-        logger.debug(logSystem, logComponent, logSubCat, 'Share processing setup with redis (' + redisConfig.host +
+        logger.info(logSystem, logComponent, logSubCat, 'Share processing setup with redis (' + redisConfig.host +
             ':' + redisConfig.port  + ')');
     });
     connection.on('error', function(err){

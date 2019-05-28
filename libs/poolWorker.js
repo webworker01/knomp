@@ -64,11 +64,11 @@ module.exports = function(logger){
                 var proxyPorts = Object.keys(proxySwitch[switchName].ports);
 
                 if (newCoin == oldCoin) {
-                    logger.debug(logSystem, logComponent, logSubCat, 'Switch message would have no effect - ignoring ' + newCoin);
+                    logger.info(logSystem, logComponent, logSubCat, 'Switch message would have no effect - ignoring ' + newCoin);
                     break;
                 }
 
-                logger.debug(logSystem, logComponent, logSubCat, 'Proxy message for ' + algo + ' from ' + oldCoin + ' to ' + newCoin);
+                logger.info(logSystem, logComponent, logSubCat, 'Proxy message for ' + algo + ' from ' + oldCoin + ' to ' + newCoin);
 
                 if (newPool) {
                     oldPool.relinquishMiners(
@@ -87,7 +87,7 @@ module.exports = function(logger){
                             logger.error(logSystem, logComponent, logSubCat, 'Redis error writing proxy config: ' + JSON.stringify(err))
                         }
                         else {
-                            logger.debug(logSystem, logComponent, logSubCat, 'Last proxy state saved to redis for ' + algo);
+                            logger.info(logSystem, logComponent, logSubCat, 'Last proxy state saved to redis for ' + algo);
                         }
                     });
 
@@ -159,7 +159,7 @@ module.exports = function(logger){
 
                 var authString = authorized ? 'Authorized' : 'Unauthorized ';
 
-                logger.debug(logSystem, logComponent, logSubCat, authString + ' ' + workerName + ':' + password + ' [' + ip + ']');
+                logger.info(logSystem, logComponent, logSubCat, authString + ' ' + workerName + ':' + password + ' [' + ip + ']');
                 callback({
                     error: null,
                     authorized: authorized,
@@ -175,10 +175,10 @@ module.exports = function(logger){
             var shareData = JSON.stringify(data);
 
             if (data.blockHash && !isValidBlock)
-                logger.debug(logSystem, logComponent, logSubCat, 'We thought a block was found but it was rejected by the daemon, share data: ' + shareData);
+                logger.info(logSystem, logComponent, logSubCat, 'We thought a block was found but it was rejected by the daemon, share data: ' + shareData);
 
             else if (isValidBlock)
-                logger.debug(logSystem, logComponent, logSubCat, 'Block found: ' + data.blockHash + ' by ' + data.worker);
+                logger.info(logSystem, logComponent, logSubCat, 'Block found: ' + data.blockHash + ' by ' + data.worker);
 
             if (isValidShare) {
                 if(data.shareDiff > 1000000000) {
@@ -188,7 +188,7 @@ module.exports = function(logger){
                 }
                 //logger.debug(logSystem, logComponent, logSubCat, 'Share accepted at diff ' + data.difficulty + '/' + data.shareDiff + ' by ' + data.worker + ' [' + data.ip + ']' );
             } else if (!isValidShare) {
-                logger.debug(logSystem, logComponent, logSubCat, 'Share rejected: ' + shareData);
+                logger.info(logSystem, logComponent, logSubCat, 'Share rejected: ' + shareData);
             }
 
             // handle the share
@@ -225,9 +225,7 @@ module.exports = function(logger){
         // Load proxy state for each algorithm from redis which allows NOMP to resume operation
         // on the last pool it was using when reloaded or restarted
         //
-        logger.debug(logSystem, logComponent, logSubCat, 'Loading last proxy state from redis');
-
-
+        logger.info(logSystem, logComponent, logSubCat, 'Loading last proxy state from redis');
 
         /*redisClient.on('error', function(err){
             logger.debug(logSystem, logComponent, logSubCat, 'Pool configuration failed: ' + err);
@@ -236,7 +234,7 @@ module.exports = function(logger){
         redisClient.hgetall("proxyState", function(error, obj) {
             if (!error && obj) {
                 proxyState = obj;
-                logger.debug(logSystem, logComponent, logSubCat, 'Last proxy state loaded from redis');
+                logger.info(logSystem, logComponent, logSubCat, 'Last proxy state loaded from redis');
             }
 
             //
@@ -265,7 +263,7 @@ module.exports = function(logger){
                     var f = net.createServer(function(socket) {
                         var currentPool = proxySwitch[switchName].currentPool;
 
-                        logger.debug(logSystem, 'Connect', logSubCat, 'Connection to '
+                        logger.info(logSystem, 'Connect', logSubCat, 'Connection to '
                             + switchName + ' from '
                             + socket.remoteAddress + ' on '
                             + port + ' routing to ' + currentPool);
@@ -276,7 +274,7 @@ module.exports = function(logger){
                             pools[initalPool].getStratumServer().handleNewClient(socket);
 
                     }).listen(parseInt(port), function() {
-                        logger.debug(logSystem, logComponent, logSubCat, 'Switching "' + switchName
+                        logger.info(logSystem, logComponent, logSubCat, 'Switching "' + switchName
                             + '" listening for ' + algorithm
                             + ' on port ' + port
                             + ' into ' + proxySwitch[switchName].currentPool);
@@ -305,7 +303,7 @@ module.exports = function(logger){
     //
     this.setDifficultyForProxyPort = function(pool, coin, algo) {
 
-        logger.debug(logSystem, logComponent, algo, 'Setting proxy difficulties after pool start');
+        logger.info(logSystem, logComponent, algo, 'Setting proxy difficulties after pool start');
 
         Object.keys(portalConfig.switching).forEach(function(switchName) {
             if (!portalConfig.switching[switchName].enabled) return;
