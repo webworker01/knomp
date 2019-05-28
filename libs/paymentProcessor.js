@@ -32,7 +32,7 @@ module.exports = function(logger) {
             var logSystem = 'Payments';
             var logComponent = coin;
 
-            logger.debug(logSystem, logComponent, 'Payment processing setup with daemon ('
+            logger.info(logSystem, logComponent, 'Payment processing setup with daemon ('
                 + processingConfig.daemon.user + '@' + processingConfig.daemon.host + ':' + processingConfig.daemon.port
                 + ') and redis (' + poolOptions.redis.host + ':' + poolOptions.redis.port + ')');
         });
@@ -86,11 +86,11 @@ function SetupForPool(logger, poolOptions, setupFinished) {
 
     var fee = parseFloat(poolOptions.coin.txfee) || parseFloat(0.0004);
 
-    logger.debug(logSystem, logComponent, logComponent + ' requireShielding: ' + requireShielding);
-    logger.debug(logSystem, logComponent, logComponent + ' minConf: ' + minConfShield);
-    logger.debug(logSystem, logComponent, logComponent + ' payments txfee reserve: ' + fee);
-    logger.debug(logSystem, logComponent, logComponent + ' maxBlocksPerPayment: ' + maxBlocksPerPayment);
-    logger.debug(logSystem, logComponent, logComponent + ' PPLNT: ' + pplntEnabled + ', time period: '+pplntTimeQualify);
+    logger.info(logSystem, logComponent, logComponent + ' requireShielding: ' + requireShielding);
+    logger.info(logSystem, logComponent, logComponent + ' minConf: ' + minConfShield);
+    logger.info(logSystem, logComponent, logComponent + ' payments txfee reserve: ' + fee);
+    logger.info(logSystem, logComponent, logComponent + ' maxBlocksPerPayment: ' + maxBlocksPerPayment);
+    logger.info(logSystem, logComponent, logComponent + ' PPLNT: ' + pplntEnabled + ', time period: '+pplntTimeQualify);
 
     var daemon = new Stratum.daemon.interface([processingConfig.daemon], function(severity, message){
         logger[severity](logSystem, logComponent, message);
@@ -726,7 +726,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                     } else {
                                         // keep unique valid block
                                         validBlocks[dups[i].blockHash] = dups[i].serialized;
-                                        logger.debug(logSystem, logComponent, 'Keep valid duplicate block ' + block.result.height + ' > ' + block.result.hash);
+                                        logger.info(logSystem, logComponent, 'Keep valid duplicate block ' + block.result.height + ' > ' + block.result.hash);
                                     }
                                 }
                             }
@@ -1581,7 +1581,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         ], function(){
             //On complete
             var paymentProcessTime = Date.now() - startPaymentProcess;
-            logger.debug(logSystem, logComponent, 'Finished interval - time spent: '
+            logger.info(logSystem, logComponent, 'Finished interval - time spent: '
                 + paymentProcessTime + 'ms total, ' + timeSpentRedis + 'ms redis, '
                 + timeSpentRPC + 'ms daemon RPC');
         });
