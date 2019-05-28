@@ -105,14 +105,6 @@ module.exports = function(logger){
         var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
         var trackShares = (typeof poolOptions.trackShares !== 'undefined' && typeof poolOptions.trackShares.disable !== 'undefined') ? !poolOptions.trackShares.disable : true;
 
-        if (typeof poolOptions.coin.privateChain !== 'undefined' && poolOptions.coin.privateChain === true) {
-            var privateChain = poolOptions.coin.privateChain === true;
-            // var requireShielding = true;
-        } else {
-            var privateChain = false;
-            // var requireShielding = poolOptions.coin.requireShielding === true;
-        }
-
         var handlers = {
             auth: function(){},
             share: function(){},
@@ -145,7 +137,7 @@ module.exports = function(logger){
                 if (poolOptions.validateWorkerUsername !== true) {
                     authCallback(true);
                 } else {
-                    authCallback(_this.validateAddress());
+                    authCallback(_this.validateAddress(String(workerName).split(".")[0], poolOptions));
                 }
             };
 
@@ -188,7 +180,7 @@ module.exports = function(logger){
                 }
                 //logger.debug(logSystem, logComponent, logSubCat, 'Share accepted at diff ' + data.difficulty + '/' + data.shareDiff + ' by ' + data.worker + ' [' + data.ip + ']' );
             } else if (!isValidShare) {
-                logger.info(logSystem, logComponent, logSubCat, 'Share rejected: ' + shareData);
+                logger.debug(logSystem, logComponent, logSubCat, 'Share rejected: ' + shareData);
             }
 
             // handle the share
@@ -327,10 +319,16 @@ module.exports = function(logger){
         });
     };
 
-    this.validateAddress = function(address) {
-        let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
+    this.validateAddress = function(address, poolOptions) {
+        let poolZAddressPrefix = (typeof poolOptions.zAddress !== 'undefined' ? poolOptions.zAddress : '').substring(0,2);
         let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
         let minerAddressPrefix = address.substring(0,2);
+
+        if (typeof poolOptions.coin.privateChain !== 'undefined' && poolOptions.coin.privateChain === true) {
+            var privateChain = poolOptions.coin.privateChain === true;
+        } else {
+            var privateChain = false;
+        }
 
         if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
             //validate as sapling
