@@ -612,6 +612,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         } else if (privateChain || address.length >= 40 || address.length <= 30) {
             logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
             return (poolOptions.invalidAddress || poolOptions.address);
+        // as a final stopgap you can add "minerPrefix":"R" to pool_config
         } else if (checkPrefix && address.substring(0, checkPrefix.length) != checkPrefix) {
             logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
             return (poolOptions.invalidAddress || poolOptions.address);
