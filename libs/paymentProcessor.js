@@ -601,6 +601,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         let poolZAddressPrefix = poolOptions.zAddress.substring(0,2);
         let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
         let minerAddressPrefix = address.substring(0,2);
+        let checkPrefix = (poolOptions.minerPrefix || false);
 
         if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
             //validate as sapling
@@ -609,6 +610,10 @@ function SetupForPool(logger, poolOptions, setupFinished) {
             //validate as sprout
             return address;
         } else if (privateChain || address.length >= 40 || address.length <= 30) {
+            logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
+            return (poolOptions.invalidAddress || poolOptions.address);
+        } else if (checkPrefix && address.substring(0, checkPrefix.length) != checkPrefix) {
+            logger.warning(logSystem, logComponent, 'Invalid address ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
             return (poolOptions.invalidAddress || poolOptions.address);
         } else {
             return address;
