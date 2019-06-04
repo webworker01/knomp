@@ -508,10 +508,17 @@ var startNetworkStats = function(){
 };
 
 var startHeapDumper = function() {
-    heapdump.writeSnapshot(Date.now() + '.heapsnapshot');
-    setTimeout(function() {
+    if (typeof portalConfig.heapdumpSeconds !== 'undefined' && parseInt(portalConfig.heapdumpSeconds) > 0) {
         heapdump.writeSnapshot(Date.now() + '.heapsnapshot');
-    }, 900000);
+        logger.info('Pool', 'heapdump', 'Heap snapshotting will occur every ' + portalConfig.heapdumpSeconds + ' seconds' );
+        logger.info('Pool', 'heapdump', 'Wrote heap snapshot to file ' + (Date.now() + '.heapsnapshot') );
+        setTimeout(function() {
+            heapdump.writeSnapshot(Date.now() + '.heapsnapshot');
+            logger.info('Pool', 'heapdump', 'Wrote heap snapshot to file ' + (Date.now() + '.heapsnapshot') );
+        }, portalConfig.heapdumpSeconds * 1000);
+    } else {
+        logger.info('Pool', 'heapdump', 'Heap snapshotting disabled, configure heapdumpSeconds in config.json to enable');
+    }
 };
 
 (function init(){
