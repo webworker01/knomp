@@ -512,7 +512,7 @@ var startHeapDumper = function() {
         heapdump.writeSnapshot(Date.now() + '.heapsnapshot');
         logger.info('Pool', 'heapdump', 'Heap snapshotting will occur every ' + portalConfig.heapdumpSeconds + ' seconds' );
         logger.info('Pool', 'heapdump', 'Wrote heap snapshot to file ' + (Date.now() + '.heapsnapshot') );
-        setTimeout(function() {
+        setInterval(function() {
             heapdump.writeSnapshot(Date.now() + '.heapsnapshot');
             logger.info('Pool', 'heapdump', 'Wrote heap snapshot to file ' + (Date.now() + '.heapsnapshot') );
         }, portalConfig.heapdumpSeconds * 1000);
