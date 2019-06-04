@@ -16,6 +16,8 @@ var Website = require('./libs/website.js');
 var ProfitSwitch = require('./libs/profitSwitch.js');
 var NetworkStats = require('./libs/networkStats.js');
 
+var heapdump = require('heapdump');
+
 var algos = require('stratum-pool/lib/algoProperties.js');
 
 JSON.minify = JSON.minify || require("node-json-minify");
@@ -505,6 +507,13 @@ var startNetworkStats = function(){
     });
 };
 
+var startHeapDumper = function() {
+    heapdump.writeSnapshot(Date.now() + '.heapsnapshot');
+    setTimeout(function() {
+        heapdump.writeSnapshot(Date.now() + '.heapsnapshot');
+    }, 900000);
+};
+
 (function init(){
 
     poolConfigs = buildPoolConfigs();
@@ -521,4 +530,5 @@ var startNetworkStats = function(){
 
     startCliListener();
 
+    startHeapDumper();
 })();
