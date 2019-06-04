@@ -3,6 +3,8 @@
     "_logLevelOptions": "debug/warning/error",
     "logColors": true,
 
+    "heapdumpSeconds": false,
+
     "cliPort": 17117,
 
     "clustering": {
