@@ -1,6 +1,6 @@
 {
     "logLevel": "debug",
-    "_logLevelOptions": "debug/warning/error",
+    "_logLevelOptions": "debug/info/warning/error",
     "logColors": true,
 
     "heapdumpSeconds": false,
