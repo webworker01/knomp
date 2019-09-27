@@ -49,12 +49,11 @@ $(function() {
                             console.log('Added new payment!');
                         }
                     } else {
-                        //Update existing (txid) for private chains 
+                        //Update existing (txid) for private chains
                         if (typeof paymentstat.txid !== 'undefined' && (String(stats.pools[pool].name).startsWith("pirate") || String(stats.pools[pool].name).startsWith("arrr")) ) {
-                            var explorer = 'https://explorer.pirate.black/tx/';
                             var paymentblock = document.querySelector('#payment' + pool + paymentstat.time + ' .paymentblocks a');
 
-                            paymentblock.setAttribute('href', explorer + paymentstat.txid);
+                            paymentblock.setAttribute('href', explorerURL + 'tx/' + paymentstat.txid);
                             paymentblock.setAttribute('target', '_blank');
                             paymentblock.setAttribute('rel', 'noopener noreferrer');
                         }

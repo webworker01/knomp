@@ -603,7 +603,10 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         let minerAddressPrefix = address.substring(0,2);
         let checkPrefix = (poolOptions.minerPrefix || false);
 
-        if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
+        if (typeof poolOptions.rewardsDisabled !== 'undefined' && poolOptions.rewardsDisabled.includes(address)) {
+            logger.warning(logSystem, logComponent, 'Rewards disabled for this adddress: ' + address + ', convert to address ' + (poolOptions.invalidAddress || poolOptions.address));
+            return (poolOptions.invalidAddress || poolOptions.address);
+        } else if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
             //validate as sapling
             return address;
         } else if (privateChain && poolZAddressPrefix == 'zc' && minerAddressLength == 95 && minerAddressPrefix == 'zc') {

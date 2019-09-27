@@ -12,32 +12,34 @@ $(function() {
             for (var f = 0; f < poolKeys.length; f++) {
                 var pool =  poolKeys[f];
                 var sharesTotal = 0;
+                var minerIndex = 0;
 
                 for (var addr in stats.pools[pool].miners) {
+                    minerIndex++;
                     var workerstat = stats.pools[pool].miners[addr];
                     sharesTotal += parseFloat(workerstat.shares);
-                    var existingRow = document.querySelector('#workers' + pool + ' #worker' + addr);
+                    var existingRow = document.querySelector('#workers' + pool + ' #worker' + minerIndex);
                     var minerEfficiency = ( workerstat.shares > 0 ) ? Math.floor(10000 * workerstat.shares / (workerstat.shares + workerstat.invalidshares)) / 100 : 0;
-                    
+
                     if (existingRow == null) {
                         //Add new
                         var insertMinerTr = document.createElement('tr');
-                        insertMinerTr.id = 'worker' + addr;
+                        insertMinerTr.id = 'worker' + minerIndex;
                         insertMinerTr.setAttribute('data-hashrate', workerstat.hashrate);
-                        insertMinerTr.innerHTML = '<td><span class="responsiveTableLabel"><i class="far fa-address-card fa-fw"></i> Address: </span><a href="/workers/' + addr + '" title="' + addr + '">'+ middleEllipsis(addr, 20) + '</a></td>';
+                        insertMinerTr.innerHTML = '<td><span class="responsiveTableLabel"><i class="far fa-address-card fa-fw"></i></span>Miner #'+ minerIndex +'</td>';
                         insertMinerTr.innerHTML += '<td><span class="responsiveTableLabel"><i class="fas fa-cog fa-fw"></i> Shares: </span><span>' + bigNumber(workerstat.shares) + '</span></td>';
                         insertMinerTr.innerHTML += '<td><span class="responsiveTableLabel"><i class="fas fa-bullseye fa-fw"></i> Efficiency: </span><span> ' + minerEfficiency + '%</span></td>';
                         insertMinerTr.innerHTML += '<td><span class="responsiveTableLabel"><i class="fas fa-tachometer-alt fa-fw"></i> Hashrate: </span><span>' + workerstat.hashrateString + '</span></td>';
 
                         document.querySelector('#workers' + pool + ' .poolMinerTable tbody').appendChild(insertMinerTr);
 
-                        console.log('Added new miner! [' + addr + ']');
+                        console.log('Added new miner! [' + minerIndex + ']');
                     } else {
                         //Update existing
-                        document.querySelector('#workers' + pool + ' #worker' + addr + ' td:nth-child(2) span:nth-child(2)').innerHTML = bigNumber(workerstat.shares);
-                        document.querySelector('#workers' + pool + ' #worker' + addr + ' td:nth-child(3) span:nth-child(2)').innerHTML = minerEfficiency + '%';
-                        document.querySelector('#workers' + pool + ' #worker' + addr + ' td:nth-child(4) span:nth-child(2)').innerHTML = workerstat.hashrateString;
-                        document.querySelector('#workers' + pool + ' #worker' + addr).setAttribute('data-hashrate', workerstat.hashrate);
+                        document.querySelector('#workers' + pool + ' #worker' + minerIndex + ' td:nth-child(2) span:nth-child(2)').innerHTML = bigNumber(workerstat.shares);
+                        document.querySelector('#workers' + pool + ' #worker' + minerIndex + ' td:nth-child(3) span:nth-child(2)').innerHTML = minerEfficiency + '%';
+                        document.querySelector('#workers' + pool + ' #worker' + minerIndex + ' td:nth-child(4) span:nth-child(2)').innerHTML = workerstat.hashrateString;
+                        document.querySelector('#workers' + pool + ' #worker' + minerIndex).setAttribute('data-hashrate', workerstat.hashrate);
                     }
                 }
 

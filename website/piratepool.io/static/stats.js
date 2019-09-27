@@ -58,7 +58,7 @@ $(function() {
                                 insertPendingBlock.setAttribute('title', 'Waiting for payment processor to review');
                                 insertPendingBlock.style.opacity = 0;
                                 insertPendingBlock.style.transition = 'opacity 1s ease-in';
-                                insertPendingBlock.innerHTML = '<div><i class="fas fa-link fa-fw"></i> <small>Block:</small> <a href="' + explorerURL + 'block/' + checkblock[0] + '" target="_blank" rel="noopener noreferrer">' + checkblock[2] + '</a><span style="padding-left: 10px;"><small>' + readableDate(checkblock[4]) + '</small></span><span class="countLabel">Pending</span></div><div><i class="fas fa-crown fa-fw"></i> <small>Mined By:</small> <a href="/workers/' + checkblock[3].split('.')[0] + '" class="minerAddress" title="' + checkblock[3] + '">' + middleEllipsis(checkblock[3]) + '</a></div>';
+                                insertPendingBlock.innerHTML = '<div><i class="fas fa-link fa-fw"></i> <small>Block:</small> <a href="' + explorerURL + 'block/' + checkblock[0] + '" target="_blank" rel="noopener noreferrer">' + checkblock[2] + '</a><span style="padding-left: 10px;"><small>' + readableDate(checkblock[4]) + '</small></span><span class="countLabel">Pending</span></div>';
 
                                 if (parseInt(checkblock[2]) > prevHeight) {
                                     poolFoundList.insertBefore(insertPendingBlock, poolFoundList.firstChild);
@@ -85,7 +85,7 @@ $(function() {
                                 insertPendingBlock.id = 'blocksFoundPaid' + checkblock[0];
                                 insertPendingBlock.setAttribute('class', 'blocksFoundPaid');
                                 insertPendingBlock.setAttribute('title', 'Payment sent, please check payments page');
-                                insertPendingBlock.innerHTML = '<div><i class="fas fa-link fa-fw"></i> <small>Block:</small> <a href="' + explorerURL + 'block/' + checkblock[0] + '" target="_blank" rel="noopener noreferrer">' + checkblock[2] + '</a><span style="padding-left: 10px;"><small>' + readableDate(checkblock[4]) + '</small></span><span class="countLabel">Pending</span></div><div><i class="fas fa-crown fa-fw"></i> <small>Mined By:</small> <a href="/workers/' + checkblock[3].split('.')[0] + '" class="minerAddress" title="' + checkblock[3] + '">' + middleEllipsis(checkblock[3]) + '</a></div>';
+                                insertPendingBlock.innerHTML = '<div><i class="fas fa-link fa-fw"></i> <small>Block:</small> <a href="' + explorerURL + 'block/' + checkblock[0] + '" target="_blank" rel="noopener noreferrer">' + checkblock[2] + '</a><span style="padding-left: 10px;"><small>' + readableDate(checkblock[4]) + '</small></span><span class="countLabel">Pending</span></div>';
 
                                 poolFoundList.insertBefore(insertPendingBlock, document.querySelectorAll('.blocksFoundList .blocksFoundPaid')[0]);
                             }
