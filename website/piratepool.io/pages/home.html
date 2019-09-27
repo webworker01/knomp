@@ -2,8 +2,11 @@
 <div>
     <div class="alertbar">
     <!-- Stop mining to exchange addresses&#8230; -->
-    300K+ ARRR donated to Onboarding/Dev and Marketing funds, made possible via KMD notary node income.<br>
-    Thank you for all who voted me into KMD notary node for 2019 in SH! ❤ 🐸</div>
+    <!-- 300K+ ARRR donated to Onboarding/Dev and Marketing funds, made possible via KMD notary node income.<br>
+    Thank you for all who voted me into KMD notary node for 2019 in SH! ❤ 🐸-->
+    <!-- New piratepool.io discord support and discussion channel created! <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">join #piratepool</a> 🐸 -->
+    Payout strategy changed to PPLNT with 1 hour payout frequency! Join <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool</a> for support and discussion! 🐸
+    </div>
     <div class="pure-g boxWelcome">
         <div class="pure-u-1-3 pure-responsive-disable" style="display:flex; justify-content:center; align-items:center;">
             <img src="/static/pirate128.png" style="width:128px; -webkit-filter: drop-shadow(-1px -1px 0 #000); filter: drop-shadow(-1px -1px 0 #000);" alt="piratepool.io - knomp" />
@@ -11,8 +14,15 @@
         <div class="pure-u-2-3 pure-responsive-disable">
             <h1 style="font-size: 2em; text-align:left; font-weight:900; color:#BB9645; margin:5px 0 10px;" class="textshadow">piratepool.io</h1>
             <h2 style="color:#FFF; font-weight:900; font-size:1.5em; margin:0 0 10px;">Mining Pool For PirateChain (ARRR)</h2>
+            <p>
+                Donating 66% of the pool fee to the PirateChain project!<br>
+                <em>33% to PIRATE dev and <a href="https://dexstats.info/onboarding.php" target="_blank" rel="noopener noreferrer">onboarding</a> <a href="https://explorer.pirate.black/address/RAzq6y7dsUKgfuzNjpzyGiuFzvrwuDheQw" target="_blank" rel="noopener noreferrer">fund</a>
+                <br />
+                33% to <a href="https://explorer.pirate.black/address/RD5PhyAUhapsvj5ps2cCHozsXZfQSvDdrZ" target="_blank" rel="noopener noreferrer">PIRATE Marketing</a>!</em>
+            </p>
             <table style="width: 100%; margin: 15px auto; text-align: left;">
                 <tr><td style="width:50%;">Algorithm: </td><td>Equihash</td></tr>
+                <tr><td>Payout Strategy: </td><td>PPLNT</td></tr>
                 <tr><td>Payout Frequency: </td><td>{{=it.poolsConfigs['arrr'].paymentProcessing.paymentInterval/60/60}} Hours</td></tr>
                 <tr><td>Min Payout: </td><td>{{=it.poolsConfigs['arrr'].paymentProcessing.minimumPayment}} ARRR</td></tr>
                 <tr><td>Pool Fee: </td><td>1%</td></tr>
@@ -36,19 +46,15 @@
     </div>
     <div style="max-width:640px; margin:10px auto; padding: 10px 10px 0;">
         <p>
-        <em>1/3rd of the pool fee is donated to the PIRATE <a href="https://dexstats.info/onboarding.php" target="_blank" rel="noopener noreferrer">onboarding</a> <a href="https://explorer.pirate.black/address/RAzq6y7dsUKgfuzNjpzyGiuFzvrwuDheQw" target="_blank" rel="noopener noreferrer">fund</a> and <br />
-        1/3rd is donated to <a href="https://explorer.pirate.black/address/RD5PhyAUhapsvj5ps2cCHozsXZfQSvDdrZ" target="_blank" rel="noopener noreferrer">PIRATE Marketing</a>!</em>
+            <a href="https://medium.com/piratechain/pirateocean-wallet-guide-1cb80f70364c" target="_blank" rel="noopener noreferrer">Download the latest PirateOcean wallet</a> and create a sapling address (<span class="highlight">starts with zs1</span>) and connect to the new stratum ports labeled as <strong><em>arrr</em></strong> on <a href="/getting_started" class="hot-swapper">Getting Started</a>.
         </p>
         <p>
-        <span style="font-weight:900;">Sprout stratum has been retired! <a href="https://piratepool.io/static/sproutfinal.txt" target="_blank" style=" text-decoration:underline; text-decoration-color:#BB9645">Final Sprout Payouts Report</a></span>
+            {{ /* <span style="font-weight:900;">Sprout stratum has been retired! <a href="https://piratepool.io/static/sproutfinal.txt" target="_blank" style=" text-decoration:underline; text-decoration-color:#BB9645">Final Sprout Payouts Report</a></span> */ }}
         </p>
-        <p>
-        <a href="https://github.com/KomodoPlatform/Agama/releases" target="_blank" rel="noopener noreferrer">Download the latest Agama wallet</a> and create a sapling address (<span class="highlight">starts with zs1</span>) and connect to the new stratum ports labeled as <strong><em>arrr</em></strong> on <a href="/getting_started" class="hot-swapper">Getting Started</a>.
-        </p>
-        <p>
+        <!-- <p>
         You need to migrate sprout funds in your own zc wallet address by <span class="highlight">2019-02-01</span>. A quick guide on how to migrate can be <a href="https://github.com/PirateNetwork/docs/wiki/How-to-Migrate-Pirate-(ARRR)-from-sprout-address-to-sapling-address" target="_blank" rel="noopener noreferrer">found here</a>.
         You could also try <a href="https://dexstats.info/pirateswap.php" target="_blank" rel="noopener noreferrer">this service to swap your coins</a>.
-        </p>
+        </p> -->
     </div>
 
     <div class="pure-g boxStats">

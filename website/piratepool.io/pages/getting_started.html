@@ -110,20 +110,20 @@
                 </code>
                 <code>
                     <h3 class="coinInfoHeader">Optiminer</h3>
-                    optiminer-zcash -s {{=it.portalConfig.website.stratumHost}}:{{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} -u zs1nrn7h684wq4429pz8a20r49dmmhd3ey07u38f8m2n9du33ashd0xcnls3lfz0spdvn26z3r4jrv<span class="highlight">.myrigname</span> -p x 
+                    optiminer-zcash -s {{=it.portalConfig.website.stratumHost}}:{{= Object.keys(it.poolsConfigs[Object.keys(it.poolsConfigs)[0]].ports)[0] }} -u zs1nrn7h684wq4429pz8a20r49dmmhd3ey07u38f8m2n9du33ashd0xcnls3lfz0spdvn26z3r4jrv<span class="highlight">.myrigname</span> -p x
                 </code>
             {{ } }}
         </div>
 
         <h1 class="menuHeader" id="payments">Payments</h1>
         <div class="gettingStartedContent">
-            <p>Payouts are currently scheduled once every 4 hours with a minimum payout of 42 ARRR.</p>
+            <p>Payouts are currently scheduled once every 4 hours with a minimum payout of 21 ARRR.</p>
             <p>There is a limit of ~200 recipients that can be included in a single payout, so the pool payouts are monitored and the min payout adjusted accordingly to ensure a constant flow of payments.</p>
-            <p>If payments stop going out, do not worry! Funds are safu! Blocks can still be found and will be credited to your worker! Please check the <a href="https://discord.gg/rZCXtCC">#pools-and-operators channel in discord</a> to see if it's already being worked on.</p>
+            <p>If payments stop going out, do not worry! Funds are safu! Blocks can still be found and will be credited to your worker! Please check <!-- the <a href="https://discord.gg/rZCXtCC">#pools-and-operators channel in discord</a>--><a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool in discord</a> to see if it's already being worked on.</p>
             <p>Pending blocks have not yet been scanned by the payment processor. After being scanned, blocks will need to receive both <a href="https://komodoplatform.com/security-delayed-proof-of-work-dpow/" target="_blank" rel="noopener noreferrer">dPoW notarization</a> and 10 confirmations before being actually paid out.</p>
-            <p>On your worker stats page, <em class="highlight">pending</em> balance is the remaining estimated amount to be paid for blocks that 
-            were scanned but not yet eligible for payout either because of 
-            <a href="https://komodoplatform.com/new-feature-to-verify-dpow-notarizations/" target="_blank" rel="noopener noreferrer">dPoW</a> or min confirmations. 
+            <p>On your worker stats page, <em class="highlight">pending</em> balance is the remaining estimated amount to be paid for blocks that
+            were scanned but not yet eligible for payout either because of
+            <a href="https://komodoplatform.com/new-feature-to-verify-dpow-notarizations/" target="_blank" rel="noopener noreferrer">dPoW</a> or min confirmations.
             <em class="highlight">Balance</em> includes blocks that were scanned and already paid out but you have not yet met the min payout.<em class="highlight">*</em></p>
             <p><em class="highlight">*Please note these 2 stats will only update when the payment processor runs which is currently every 4 hours.</em></p>
             <p>Payments that show up on the payments page initially are in the process of constructing the z transaction. Once the transaction actually broadcasts to the network, the blocks paid out will become hyperlinked to the explorer and then should arrive in your wallet in the next block or two.</p>
@@ -131,7 +131,7 @@
 
         <h1 class="menuHeader" id="createWallet">Generate Wallet and Address</h1>
         <div class="gettingStartedContent">
-            <p><a href="https://pirate.black/wallets/" target="_blank" rel="noopener noreferrer">The Agama GUI Wallet for PIRATE</a> is available. For Agama support please visit <a href="https://discord.gg/qReShun">#newpirates on Discord</a></p>
+            <p><a href="https://medium.com/piratechain/pirateocean-wallet-guide-1cb80f70364c" target="_blank" rel="noopener noreferrer">The PirateOceanQT for PIRATE</a> is available. For wallet support please visit <a href="https://discord.gg/qReShun">#newpirates on Discord</a></p>
 
             <h4>CLI Wallet:</h4>
             <ol>
@@ -172,7 +172,7 @@
                 <li><a href="https://www.bminer.me/releases/" target="_blank" rel="noopener noreferrer">Bminer Lite</a></li>
                 <li><a href="https://bitcointalk.org/index.php?topic=1670733.0" target="_blank" rel="noopener noreferrer">Claymore's ZCash/BTG AMD GPU Miner</a></li>
                 <li><a href="https://github.com/Optiminer/OptiminerZcash" target="_blank" rel="noopener noreferrer">Optiminer AMD</a></li>
-                
+
             </ul>
         </div>
 

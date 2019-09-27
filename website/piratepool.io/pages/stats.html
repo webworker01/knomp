@@ -3,6 +3,10 @@
 {{ function bigNumber(x){ return (x > 1000000000000) ? (x / 1000000000000).toFixed(1) + 'T' : (x > 1000000000) ? (x / 1000000000).toFixed(1) + 'B' : (x > 1000000) ? (x / 1000000).toFixed(1) + 'M' : (x > 1000) ? (x / 1000).toFixed(1) + 'K' : x.toFixed(1); } }}
 {{ function middleEllipsis(x) { return x.length > 40 ? x.substring(0, 15) + '...' + x.substring(x.length-15, x.length): x; } }}
 <div id="pageStats">
+    <div class="alertbar">
+        <!-- New piratepool.io discord support and discussion channel created! <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">join #piratepool</a> 🐸 -->
+        Payout strategy changed to PPLNT with 1 hour payout frequency! Join <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool</a> for support and discussion! 🐸
+    </div>
     <div id="topCharts">
         <div class="chartWrapper">
             <h1 class="chartLabel">Pool Hashrate</h1>
@@ -35,7 +39,7 @@
                         <li><i class="fas fa-link fa-fw" aria-hidden="true"></i> Block Height: <span id="statsNetworkBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.networkBlocks}}</span></li>
                         <li><i class="fas fa-tachometer-alt fa-fw"></i> Network Hash/s: <span id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span></li>
                         <li><i class="fas fa-unlock-alt fa-fw" aria-hidden="true"></i> Difficulty: <span id="statsNetworkDiff{{=pool}}">{{=bigNumber(it.stats.pools[pool].poolStats.networkDiff)}}</span></li>
-                        <li><i class="fas fa-coins fa-fw"></i> Total Supply: <span id="statsNetworkCoins{{=pool}}">{{=(it.stats.pools[pool].poolStats.networkBlocks*256).toLocaleString('en')}}</span></li>
+                        <li><i class="fas fa-coins fa-fw"></i> Total Supply: <span id="statsNetworkCoins{{=pool}}">{{=(99554304+(it.stats.pools[pool].poolStats.networkBlocks-388884)*128).toLocaleString('en')}}</span></li>
                         <li><i class="fas fa-users fa-fw"></i> Node Connections: <span id="statsNetworkConnections{{=pool}}">{{=it.stats.pools[pool].poolStats.networkConnections}}</span></li>
                     </ul>
                 </div>
@@ -79,7 +83,6 @@
                                 <span class="countLabel">Pending</span>
                             {{ } }}
                         </div>
-                        <div><i class="fas fa-crown fa-fw"></i> <small>Mined By:</small> <a href="/workers/{{=block[3].split('.')[0]}}" class="minerAddress" title="{{=block[3]}}">{{=middleEllipsis(block[3])}}</a></div>
                     </div>
                 {{ } }}
 
@@ -95,7 +98,6 @@
                             {{ } }}
                             <span class="countLabel">Paid</span>
                         </div>
-                        <div><i class="fas fa-crown fa-fw"></i> <small>Mined By:</small> <a href="/workers/{{=block[3].split('.')[0]}}" class="minerAddress" title="{{=block[3]}}">{{=middleEllipsis(block[3])}}</a></div>
                     </div>
                 {{ } }}
             </div>
