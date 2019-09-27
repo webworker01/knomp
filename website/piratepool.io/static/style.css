@@ -13,7 +13,7 @@
 }
 
 html, body, button, input, select, textarea,
-.pure-g [class *= "pure-u"] {  
+.pure-g [class *= "pure-u"] {
     font-family: 'Roboto', sans-serif;
     line-height: 1.4em;
 }
@@ -99,8 +99,8 @@ footer a {
 }
 
 .highlight {
-    color:var(--gold); 
-    font-weight:900; 
+    color:var(--gold);
+    font-weight:900;
 }
 
 .muted {
@@ -117,11 +117,11 @@ br.responsiveonly {
 }
 
 .alertbar {
-    color:var(--gold); 
+    color:var(--gold);
     font-weight:900;
     text-shadow: -3px -3px 0px #000;
     text-align:center;
-    padding:10px 0; 
+    padding:10px 0;
     background-color:var(--dark-blue);
 }
 
@@ -134,7 +134,7 @@ header .pure-menu {
 }
 
 header .home-menu,
-header .home-menu .pure-menu-list, 
+header .home-menu .pure-menu-list,
 header .home-menu .pure-menu-list li {
     display: flex;
     align-items: center;
@@ -151,7 +151,7 @@ header .home-menu a {
     transition:background-color 0.33s ease-out, color 0.33s ease-out;
 }
 
-header .home-menu a:hover, 
+header .home-menu a:hover,
 header .home-menu .pure-menu-selected a {
     color: #FFF!important;
     background-color: var(--gold);
@@ -162,7 +162,7 @@ header .home-menu li a i {
     margin-right:5px;
 }
 
-.pure-menu.pure-menu-open, 
+.pure-menu.pure-menu-open,
 .pure-menu.pure-menu-horizontal li .pure-menu-children {
     border:none;
 }
@@ -208,7 +208,7 @@ header .home-menu li a i {
     background-color: var(--dark-blue);
     color: white;
     max-width:640px;
-    margin:15px auto 10px auto; 
+    margin:15px auto 10px auto;
     padding:5px 10px 10px;
     box-shadow: -1px -1px 0 #000;
 }
@@ -265,7 +265,7 @@ header .home-menu li a i {
 }
 
 .blocksFoundList .countLabel {
-    float:right; 
+    float:right;
     font-size:0.8em;
     line-height:1em;
 }
@@ -298,7 +298,7 @@ header .home-menu li a i {
 }
 
 .blocksFoundHeader > div:nth-child(2) {
-    font-size:0.8em; 
+    font-size:0.8em;
     text-align:right;
 }
 
@@ -349,6 +349,11 @@ header .home-menu li a i {
 }
 
 .paymentblocks .fade {
+    display:none;
+}
+
+.paymentblocksexpand .fade {
+    display:block;
     z-index: 10;
     background-image: linear-gradient(to bottom, rgba(20, 20, 20, 0), rgba(20, 20, 20, 1) 90%);
     width: 95%;
@@ -370,11 +375,11 @@ header .home-menu li a i {
     transition: max-height 0.2s ease-out 0.33s;
 }
 
-.paymentblocks a:hover {
+.paymentblocksexpand a:hover {
     max-height: 1000px;
 }
 
-.paymentblocks a:hover + .fade {
+.paymentblocksexpand a:hover + .fade {
     opacity:0;
 }
 
@@ -444,9 +449,9 @@ header .home-menu li a i {
 
 .nv-group.nv-series-0,
 .nv-series:first-of-type .nv-legend-symbol {
-    stroke-opacity: 1; 
-    fill-opacity: 0.5; 
-    fill: var(--gold)!important; 
+    stroke-opacity: 1;
+    fill-opacity: 0.5;
+    fill: var(--gold)!important;
     stroke: var(--gold)!important;
 }
 
@@ -468,32 +473,32 @@ header .home-menu li a i {
         font-size: 1em;
         line-height: 1em;
     }
-    
+
     .home-menu li a i {
         margin-right:0;
     }
 
-	.pure-table { 
+	.pure-table {
 	  	border-top: 1px solid var(--grey);
 	}
 
-	table, thead, tbody, th, td, tr { 
-		display: block; 
+	table, thead, tbody, th, td, tr {
+		display: block;
 	}
 
-	thead tr { 
+	thead tr {
 		display:none;
         visiblity:hidden;
 	}
 
-	tr { 
+	tr {
         border-bottom: 1px solid var(--grey);
     }
 
-	td { 
+	td {
 		border: none;
 		position: relative;
-        
+
 	}
 
     .pure-table td {
@@ -508,11 +513,11 @@ header .home-menu li a i {
     br.responsiveonly {
         display:initial;
     }
-    
+
     .responsivehide {
         display:none;
     }
-    
+
     .boxWelcome h1,
     .boxWelcome h2    {
         text-align:center!important;
@@ -525,7 +530,7 @@ header .home-menu li a i {
     .blocksFoundHeader > div {
         text-align:center!important;
     }
-    
+
     .blocksFoundList > div {
         flex: 1;
     }
@@ -534,16 +539,16 @@ header .home-menu li a i {
         display:inline-block;
         visibility:visible;
     }
-    
+
     .pure-responsive-disable,
     .flex-responsive-disable {
         width: 100%;
     }
-    
+
     .paymentblocks a {
         display:inline;
     }
-    
+
     .paymentblocks .fade {
         display:none;
     }
