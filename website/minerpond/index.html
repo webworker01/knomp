@@ -1,0 +1,86 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <link rel="shortcut icon" type="image/png" href="/static/kmdfavicon.svg"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.4.2/pure-min.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.5/d3.min.js"></script>
+    <script src="/static/nvd3.js"></script>
+    <link rel="stylesheet" href="/static/nvd3.css">
+
+    <script src="/static/main.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <title>minerpond - komodo assetchains mining pool</title>
+
+</head>
+
+<body>
+
+<header>
+    <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal">
+
+        <a class="pure-menu-heading hot-swapper" href="/"><i class="fa fa-home"></i>&nbsp;Home</a>
+
+        <ul>
+            <li class="{{? it.selected === 'getting_started' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/getting_started">
+                    <i class="fa fa-rocket"></i>&nbsp;
+                    Getting Started
+                </a>
+            </li>
+            <li class="{{? it.selected === 'stats' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/stats">
+                    <i class="fa fa-bar-chart-o"></i>&nbsp;
+                    Graph Stats
+                </a>
+            </li>
+            <li class="{{? it.selected === 'tbs' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/tbs">
+                    <i class="fa fa-table"></i>&nbsp;
+                    Tab Stats
+                </a>
+            </li>
+            <li class="{{? it.selected === 'workers' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/workers">
+                    <i class="fa fa-cogs"></i>&nbsp;
+                    Workers Stats
+                </a>
+            </li>
+            <li class="{{? it.selected === 'payments' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/payments">
+                    <i class="fa fa-bitcoin"></i>&nbsp;
+                    Payments
+                </a>
+            </li>
+            <li class="{{? it.selected === 'api' }}pure-menu-selected{{?}}">
+                <a class="hot-swapper" href="/api">
+                    <i class="fa fa-code"></i>&nbsp;
+                    API
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<main>
+    {{=it.page}}
+</main>
+
+
+<footer>
+    &lt;3 <a href="https://webworker.sh" target="_blank">🐸</a> &middot; <a href="https://github.com/webworker01/knomp" target="_blank">knomp on Github</a> &middot; <a href="https://discord.gg/QaPwxKB" target="_blank" rel="nofollow noreferrer noopener">Discord Chat</a>
+</footer>
+
+</body>
+</html>
