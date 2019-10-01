@@ -43,9 +43,9 @@ module.exports = function(logger, portalConfig, poolConfigs){
                 for(var pool in portalStats.stats.pools) {
                     filterIterate(portalStats.stats.pools[pool].pending.blocks, {split:{by:':', index:3}}, 'miner-');
                     for (payment in portalStats.stats.pools[pool].payments) {
-                        filterIterate(portalStats.stats.pools[pool].payments[payment].amounts, {key: true}, 'miner-', );
-                        filterIterate(portalStats.stats.pools[pool].payments[payment].balances, {key: true}, 'miner-', );
-                        filterIterate(portalStats.stats.pools[pool].payments[payment].work, {key: true}, 'miner-', );
+                        filterIterate(portalStats.stats.pools[pool].payments[payment].amounts, {key: true}, 'miner-');
+                        filterIterate(portalStats.stats.pools[pool].payments[payment].balances, {key: true}, 'miner-');
+                        filterIterate(portalStats.stats.pools[pool].payments[payment].work, {key: true}, 'miner-');
                     }
                     poolBlocks.push({name: pool, pending: portalStats.stats.pools[pool].pending, payments: portalStats.stats.pools[pool].payments});
                 }

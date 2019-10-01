@@ -35,7 +35,7 @@
             {{ for(var worker in it.stats.pools[pool].miners) { }}
                 {{ minerindex++; }}
                 {{var workerstat = it.stats.pools[pool].miners[worker];}}
-                <tr id="worker{{=minerindex}}" data-hashrate="{{=workerstat.hashrate}}">
+                <tr id="miner-{{=minerindex}}" data-hashrate="{{=workerstat.hashrate}}">
                     <td><span class="responsiveTableLabel"><i class="far fa-address-card fa-fw"></i></span>Miner #{{=minerindex}}</td>
                     <td><span class="responsiveTableLabel"><i class="fas fa-cog fa-fw"></i> Shares: </span><span>{{=bigNumber(workerstat.currRoundShares)}}</span></td>
                     <td><span class="responsiveTableLabel"><i class="fas fa-bullseye fa-fw"></i> Efficiency: </span><span>{{? workerstat.shares > 0}} {{=Math.floor(10000 * workerstat.shares / (workerstat.shares + workerstat.invalidshares)) / 100}}% {{??}} 0% {{?}}</span></td>

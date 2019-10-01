@@ -100,23 +100,17 @@ module.exports = function(logger, portalConfig, poolConfigs){
         var allBlocks = {};
         async.each(_this.stats.pools, function(pool, pcb) {
 
-            if (_this.stats.pools[pool.name].pending && _this.stats.pools[pool.name].pending.blocks)
+            if (_this.stats.pools[pool.name].pending && _this.stats.pools[pool.name].pending.blocks) {
                 for (var i=0; i<_this.stats.pools[pool.name].pending.blocks.length; i++) {
-                    let blockoutput = _this.stats.pools[pool.name].pending.blocks[i].split(':');
-                    blockoutput[3] = pool.name + '-miner';
-                    blockoutput = blockoutput.join(':');
-
-                    allBlocks[pool.name+"-"+_this.stats.pools[pool.name].pending.blocks[i].split(':')[2]] = blockoutput;
+                    allBlocks[pool.name+"-"+_this.stats.pools[pool.name].pending.blocks[i].split(':')[2]] = _this.stats.pools[pool.name].pending.blocks[i];
                 }
+            }
 
-            if (_this.stats.pools[pool.name].confirmed && _this.stats.pools[pool.name].confirmed.blocks)
+            if (_this.stats.pools[pool.name].confirmed && _this.stats.pools[pool.name].confirmed.blocks) {
                 for (var i=0; i<_this.stats.pools[pool.name].confirmed.blocks.length; i++) {
-                    let blockoutput = _this.stats.pools[pool.name].confirmed.blocks[i].split(':');
-                    blockoutput[3] = pool.name + '-miner';
-                    blockoutput = blockoutput.join(':');
-
-                    allBlocks[pool.name+"-"+_this.stats.pools[pool.name].confirmed.blocks[i].split(':')[2]] = blockoutput;
+                    allBlocks[pool.name+"-"+_this.stats.pools[pool.name].confirmed.blocks[i].split(':')[2]] = _this.stats.pools[pool.name].confirmed.blocks[i];
                 }
+            }
 
             pcb();
         }, function(err) {

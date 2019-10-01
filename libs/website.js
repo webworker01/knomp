@@ -124,12 +124,12 @@ module.exports = function(logger){
                 filterIterate(portalStats.stats.pools[pool].currentRoundTimes, {key: true}, 'miner-');
                 filterIterate(portalStats.stats.pools[pool].miners, {key: true, prop: ['name']}, 'miner-', );
                 filterIterate(portalStats.stats.pools[pool].pending.blocks, {split:{by:':', index:3}}, 'miner-');
-                filterIterate(portalStats.stats.pools[pool].workers, {key: true, prop: ['name']}, 'worker-', );
+                filterIterate(portalStats.stats.pools[pool].workers, {key: true, prop: ['name']}, 'worker-');
 
                 for (payment in portalStats.stats.pools[pool].payments) {
-                    filterIterate(portalStats.stats.pools[pool].payments[payment].amounts, {key: true}, 'miner-', );
-                    filterIterate(portalStats.stats.pools[pool].payments[payment].balances, {key: true}, 'miner-', );
-                    filterIterate(portalStats.stats.pools[pool].payments[payment].work, {key: true}, 'miner-', );
+                    filterIterate(portalStats.stats.pools[pool].payments[payment].amounts, {key: true}, 'miner-');
+                    filterIterate(portalStats.stats.pools[pool].payments[payment].balances, {key: true}, 'miner-');
+                    filterIterate(portalStats.stats.pools[pool].payments[payment].work, {key: true}, 'miner-');
                 }
             }
 
