@@ -2,6 +2,9 @@
 {{ function bigNumber(x){ return (x > 1000000000000) ? (x / 1000000000000).toFixed(1) + 'T' : (x > 1000000000) ? (x / 1000000000).toFixed(1) + 'B' : (x > 1000000) ? (x / 1000000).toFixed(1) + 'M' : (x > 1000) ? (x / 1000).toFixed(1) + 'K' : x.toFixed(1); } }}
 {{ function middleEllipsis(x) { return x.length > 40 ? x.substring(0, 20) + '...' + x.substring(x.length-20, x.length): x; } }}
 <div id="pageWorkers">
+    <div class="alertbar">
+        Miner Privacy Enabled! Search for your miner with Miner Lookup. Join <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool</a> for support and discussion! 🐸
+    </div>
     {{ var i=0; for(var pool in it.stats.pools) { }}
     <div id="workers{{=pool}}">
         <div class="poolLabel">
@@ -35,7 +38,7 @@
             {{ for(var worker in it.stats.pools[pool].miners) { }}
                 {{ minerindex++; }}
                 {{var workerstat = it.stats.pools[pool].miners[worker];}}
-                <tr id="worker{{=minerindex}}" data-hashrate="{{=workerstat.hashrate}}">
+                <tr id="miner-{{=minerindex}}" data-hashrate="{{=workerstat.hashrate}}">
                     <td><span class="responsiveTableLabel"><i class="far fa-address-card fa-fw"></i></span>Miner #{{=minerindex}}</td>
                     <td><span class="responsiveTableLabel"><i class="fas fa-cog fa-fw"></i> Shares: </span><span>{{=bigNumber(workerstat.currRoundShares)}}</span></td>
                     <td><span class="responsiveTableLabel"><i class="fas fa-bullseye fa-fw"></i> Efficiency: </span><span>{{? workerstat.shares > 0}} {{=Math.floor(10000 * workerstat.shares / (workerstat.shares + workerstat.invalidshares)) / 100}}% {{??}} 0% {{?}}</span></td>

@@ -21,6 +21,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                 let anonymizeJSON = JSON.parse(portalStats.statsString);
                 for (pool in anonymizeJSON.pools) {
                     filterIterate(anonymizeJSON.pools[pool].workers, {key: true, prop: ['name']}, 'miner-');
+                    //init miners as workers
+                    anonymizeJSON.pools[pool].minerCount = anonymizeJSON.pools[pool].workerCount;
                 }
                 res.header('Content-Type', 'application/json');
                 res.end(JSON.stringify(anonymizeJSON));

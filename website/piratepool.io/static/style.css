@@ -257,6 +257,8 @@ header .home-menu li a i {
     text-overflow: ellipsis;
     box-shadow: -1px -1px 0 #000;
     flex: 1;
+    min-width: 150px;
+    max-width: 150px;
 }
 
 .blocksFoundPending {

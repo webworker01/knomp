@@ -5,7 +5,8 @@
 <div id="pageStats">
     <div class="alertbar">
         <!-- New piratepool.io discord support and discussion channel created! <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">join #piratepool</a> 🐸 -->
-        Payout strategy changed to PPLNT with 1 hour payout frequency! Join <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool</a> for support and discussion! 🐸
+        <!-- Payout strategy changed to PPLNT with 1 hour payout frequency! Join <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool</a> for support and discussion! 🐸 -->
+        Miner Privacy Enabled! Search for your miner with Miner Lookup. Join <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool</a> for support and discussion! 🐸
     </div>
     <div id="topCharts">
         <div class="chartWrapper">
@@ -71,7 +72,7 @@
                             <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
 
                             {{if (block[4] != null) { }}
-                                <span style="padding-left: 10px;"><small>{{=readableDate(block[4])}}</small></span>
+                                <span><small>{{=readableDate(block[4])}}</small></span>
                             {{ } }}
                             {{if (it.stats.pools[pool].pending.confirms && it.stats.pools[pool].pending.confirms[block[0]]) { }}
                                 {{if (it.stats.pools[pool].pending.confirms[block[0]] == 1) { }}
@@ -94,7 +95,7 @@
                             <small>Block:</small>
                             <a href="https://explorer.pirate.black/block/{{=block[0]}}" target="_blank" rel="noopener noreferrer">{{=block[2]}}</a>
                             {{if (block[4] != null) { }}
-                                <span style="padding-left: 10px;"><small>{{=readableDate(block[4])}}</small></span>
+                                <span><small>{{=readableDate(block[4])}}</small></span>
                             {{ } }}
                             <span class="countLabel">Paid</span>
                         </div>
