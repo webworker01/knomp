@@ -14,6 +14,8 @@ var compress = require('compression');
 //var Stratum = require('stratum-pool');
 //var util = require('stratum-pool/lib/util.js');
 
+var filterIterate = require('./filterIterate.js');
+
 var api = require('./api.js');
 
 module.exports = function(logger){
@@ -115,8 +117,24 @@ module.exports = function(logger){
         portalStats.getGlobalStats(function(){
             processTemplates();
 
+            //Anonymize
+            for (pool in portalStats.stats.pools) {
+                filterIterate(portalStats.stats.pools[pool].confirmed.blocks, {split:{by:':', index:3}}, 'miner-');
+                filterIterate(portalStats.stats.pools[pool].currentRoundShares, {key: true}, 'miner-');
+                filterIterate(portalStats.stats.pools[pool].currentRoundTimes, {key: true}, 'miner-');
+                filterIterate(portalStats.stats.pools[pool].miners, {key: true, prop: ['name']}, 'miner-', );
+                filterIterate(portalStats.stats.pools[pool].pending.blocks, {split:{by:':', index:3}}, 'miner-');
+                filterIterate(portalStats.stats.pools[pool].workers, {key: true, prop: ['name']}, 'worker-', );
+
+                for (payment in portalStats.stats.pools[pool].payments) {
+                    filterIterate(portalStats.stats.pools[pool].payments[payment].amounts, {key: true}, 'miner-', );
+                    filterIterate(portalStats.stats.pools[pool].payments[payment].balances, {key: true}, 'miner-', );
+                    filterIterate(portalStats.stats.pools[pool].payments[payment].work, {key: true}, 'miner-', );
+                }
+            }
+
             var statData = 'data: ' + JSON.stringify(portalStats.stats) + '\n\n';
-            for (var uid in portalApi.liveStatConnections){
+            for (var uid in portalApi.liveStatConnections) {
                 var res = portalApi.liveStatConnections[uid];
                 res.write(statData);
             }

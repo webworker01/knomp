@@ -422,38 +422,6 @@ module.exports = function(logger, portalConfig, poolConfigs){
                             }
                         }
 
-                        //anonymize currentRoundShares
-                        let currentRoundSharesIndex = 0;
-                        for (var worker in replies[i + 8]) {
-                            Object.defineProperty(replies[i+8], 'worker' + currentRoundSharesIndex, Object.getOwnPropertyDescriptor(replies[i+8], worker));
-                            delete replies[i+8][worker];
-                            currentRoundSharesIndex++;
-                        }
-
-                        //anonymize currentRoundTimes
-                        let currentRoundTimesIndex = 0;
-                        for (var worker in replies[i + 11]) {
-                            Object.defineProperty(replies[i+11], 'worker' + currentRoundTimesIndex, Object.getOwnPropertyDescriptor(replies[i+11], worker));
-                            delete replies[i+11][worker];
-                            currentRoundTimesIndex++;
-                        }
-
-                        //anonymize confirmed blocks
-                        for (var b=0; b < replies[i + 7].length; b++) {
-                            let blockoutput = replies[i + 7][b].split(':');
-                            blockoutput[3] = coinName + '-miner';
-                            blockoutput = blockoutput.join(':');
-                            replies[i + 7][b] = blockoutput;
-                        }
-
-                        //anonymize pending blocks
-                        for (var b=0; b < replies[i + 6].length; b++) {
-                            let blockoutput = replies[i + 6][b].split(':');
-                            blockoutput[3] = coinName + '-miner';
-                            blockoutput = blockoutput.join(':');
-                            replies[i + 6][b] = blockoutput;
-                        }
-
                         var coinStats = {
                             name: coinName,
                             symbol: poolConfigs[coinName].coin.symbol.toUpperCase(),
@@ -503,30 +471,6 @@ module.exports = function(logger, portalConfig, poolConfigs){
                                 jsonObj = null;
                             }
                             if (jsonObj !== null) {
-                                //Anonymize paid amounts
-                                let paymentIndex = 0;
-                                for (var payment in jsonObj.amounts) {
-                                    Object.defineProperty(jsonObj.amounts, 'miner' + paymentIndex, Object.getOwnPropertyDescriptor(jsonObj.amounts, payment));
-                                    delete jsonObj.amounts[payment];
-                                    paymentIndex++;
-                                }
-
-                                //Anonymize balances
-                                let balanceIndex = 0;
-                                for (var balance in jsonObj.balances) {
-                                    Object.defineProperty(jsonObj.balances, 'miner' + balanceIndex, Object.getOwnPropertyDescriptor(jsonObj.balances, balance));
-                                    delete jsonObj.balances[balance];
-                                    balanceIndex++;
-                                }
-
-                                //Anonymize work
-                                let workIndex = 0;
-                                for (var work in jsonObj.work) {
-                                    Object.defineProperty(jsonObj.work, 'miner' + workIndex, Object.getOwnPropertyDescriptor(jsonObj.work, work));
-                                    delete jsonObj.work[work];
-                                    workIndex++;
-                                }
-
                                 coinStats.payments.push(jsonObj);
                             }
                         }
@@ -643,24 +587,6 @@ module.exports = function(logger, portalConfig, poolConfigs){
                         }
                     }
                 });
-
-                //anonymize miners
-                let minerindex = 0;
-                for (var miner in coinStats.miners) {
-                    Object.defineProperty(coinStats.miners, 'miner' + minerindex, Object.getOwnPropertyDescriptor(coinStats.miners, miner));
-                    coinStats.miners['miner' + minerindex].name = 'miner' + minerindex;
-                    delete coinStats.miners[miner];
-                    minerindex++;
-                }
-
-                //anonymize workers
-                let workerindex = 0;
-                for (var worker in coinStats.workers) {
-                    Object.defineProperty(coinStats.workers, 'worker' + workerindex, Object.getOwnPropertyDescriptor(coinStats.workers, worker));
-                    coinStats.workers['worker' + workerindex].name = 'worker' + workerindex;
-                    delete coinStats.workers[worker];
-                    workerindex++;
-                }
 
                 var shareMultiplier = Math.pow(2, 32) / algos[coinStats.algorithm].multiplier;
                 coinStats.hashrate = shareMultiplier * coinStats.shares / portalConfig.website.stats.hashrateWindow;
