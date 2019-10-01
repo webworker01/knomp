@@ -33,21 +33,23 @@ module.exports = function(logger, portalConfig, poolConfigs){
             case 'getblocksstats':
                 portalStats.getBlocks(function(data){
                     //Anonymize
-                    filterIterate(data, {split:{by:':', index:3}}, 'miner-');
+                    let anonData = JSON.parse(JSON.stringify(data));
+                    filterIterate(anonData, {split:{by:':', index:3}}, 'miner-');
                     res.header('Content-Type', 'application/json');
-                    res.end(JSON.stringify(data));
+                    res.end(JSON.stringify(anonData));
                 });
                 break;
             case 'payments':
                 var poolBlocks = [];
-                for(var pool in portalStats.stats.pools) {
-                    filterIterate(portalStats.stats.pools[pool].pending.blocks, {split:{by:':', index:3}}, 'miner-');
-                    for (payment in portalStats.stats.pools[pool].payments) {
-                        filterIterate(portalStats.stats.pools[pool].payments[payment].amounts, {key: true}, 'miner-', );
-                        filterIterate(portalStats.stats.pools[pool].payments[payment].balances, {key: true}, 'miner-', );
-                        filterIterate(portalStats.stats.pools[pool].payments[payment].work, {key: true}, 'miner-', );
+                let anonPortalStats = JSON.parse(JSON.stringify(portalStats.stats));
+                for(var pool in anonPortalStats.pools) {
+                    filterIterate(anonPortalStats.pools[pool].pending.blocks, {split:{by:':', index:3}}, 'miner-');
+                    for (payment in anonPortalStats.pools[pool].payments) {
+                        filterIterate(anonPortalStats.pools[pool].payments[payment].amounts, {key: true}, 'miner-', );
+                        filterIterate(anonPortalStats.pools[pool].payments[payment].balances, {key: true}, 'miner-', );
+                        filterIterate(anonPortalStats.pools[pool].payments[payment].work, {key: true}, 'miner-', );
                     }
-                    poolBlocks.push({name: pool, pending: portalStats.stats.pools[pool].pending, payments: portalStats.stats.pools[pool].payments});
+                    poolBlocks.push({name: pool, pending: anonPortalStats.pools[pool].pending, payments: anonPortalStats.pools[pool].payments});
                 }
                 res.header('Content-Type', 'application/json');
                 res.end(JSON.stringify(poolBlocks));

@@ -118,22 +118,23 @@ module.exports = function(logger){
             processTemplates();
 
             //Anonymize
-            for (pool in portalStats.stats.pools) {
-                filterIterate(portalStats.stats.pools[pool].confirmed.blocks, {split:{by:':', index:3}}, 'miner-');
-                filterIterate(portalStats.stats.pools[pool].currentRoundShares, {key: true}, 'miner-');
-                filterIterate(portalStats.stats.pools[pool].currentRoundTimes, {key: true}, 'miner-');
-                filterIterate(portalStats.stats.pools[pool].miners, {key: true, prop: ['name']}, 'miner-', );
-                filterIterate(portalStats.stats.pools[pool].pending.blocks, {split:{by:':', index:3}}, 'miner-');
-                filterIterate(portalStats.stats.pools[pool].workers, {key: true, prop: ['name']}, 'worker-', );
+            let anonPortalStats = JSON.parse(JSON.stringify(portalStats.stats));
+            for (pool in anonPortalStats.pools) {
+                filterIterate(anonPortalStats.pools[pool].confirmed.blocks, {split:{by:':', index:3}}, 'miner-');
+                filterIterate(anonPortalStats.pools[pool].currentRoundShares, {key: true}, 'miner-');
+                filterIterate(anonPortalStats.pools[pool].currentRoundTimes, {key: true}, 'miner-');
+                filterIterate(anonPortalStats.pools[pool].miners, {key: true, prop: ['name']}, 'miner-', );
+                filterIterate(anonPortalStats.pools[pool].pending.blocks, {split:{by:':', index:3}}, 'miner-');
+                filterIterate(anonPortalStats.pools[pool].workers, {key: true, prop: ['name']}, 'worker-', );
 
-                for (payment in portalStats.stats.pools[pool].payments) {
-                    filterIterate(portalStats.stats.pools[pool].payments[payment].amounts, {key: true}, 'miner-', );
-                    filterIterate(portalStats.stats.pools[pool].payments[payment].balances, {key: true}, 'miner-', );
-                    filterIterate(portalStats.stats.pools[pool].payments[payment].work, {key: true}, 'miner-', );
+                for (payment in anonPortalStats.pools[pool].payments) {
+                    filterIterate(anonPortalStats.pools[pool].payments[payment].amounts, {key: true}, 'miner-', );
+                    filterIterate(anonPortalStats.pools[pool].payments[payment].balances, {key: true}, 'miner-', );
+                    filterIterate(anonPortalStats.pools[pool].payments[payment].work, {key: true}, 'miner-', );
                 }
             }
 
-            var statData = 'data: ' + JSON.stringify(portalStats.stats) + '\n\n';
+            var statData = 'data: ' + JSON.stringify(anonPortalStats) + '\n\n';
             for (var uid in portalApi.liveStatConnections) {
                 var res = portalApi.liveStatConnections[uid];
                 res.write(statData);
