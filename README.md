@@ -29,7 +29,7 @@ cd ./knomp
 cp config_example.json config.json
 ```
 
-Setup your (config.json)[config_example.json], `./coins/` and `./pool_configs/` in here, then:
+Setup your [config.json](./config_example.json), `./coins/` and `./pool_configs/` in here, then:
 
 ```
 docker-compose up &
