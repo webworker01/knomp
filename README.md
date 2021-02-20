@@ -1,5 +1,12 @@
 # Mining stratum for Komodo and Komodo assetchains.
 
+## Table of Contents
+* [Differences between this and Z-NOMP](#differences-between-this-and-z-nomp)
+* [Using Docker (easy)](#using-docker-easy)
+* [Bare metal installation](#bare-metal-installation)
+* [More Config Information](#more-config-information)
+* [License](#license)
+
 ## Differences between this and Z-NOMP
 * This is meant for Komodo mining
 * Founders, Treasury, and other ZEC/ZEN specific stuff is removed
