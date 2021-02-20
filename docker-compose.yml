@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  knomp:
+    container_name: knomp
+    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.json:/home/knomp/knomp/config.json
+      - ./coins:/home/knomp/knomp/coins
+      - ./libs:/home/knomp/knomp/libs
+      - ./pool_configs:/home/knomp/knomp/pool_configs
+      - ./website:/home/knomp/knomp/website
+    ports:
+      - 8080:8080
+      - 3333:3333
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:6.0.10-alpine
+    container_name: redis
+    network_mode: host
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./redis-data:/data
+    ports:
+      - 6379:6379
+    restart: always

@@ -12,6 +12,38 @@ Differences between this and Z-NOMP
 * This is meant for Komodo mining
 * Founders, Treasury, and other ZEC/ZEN specific stuff is removed
 
+Using Docker (easy)
+-------------
+
+[Install Docker](https://docs.docker.com/engine/install/)
+
+To install (
+
+```
+git clone https://github.com/webworker01/knomp.git
+cd ./knomp
+cp config_example.json config.json
+```
+
+Setup your (config.json)[config_example.json], `./coins/` and `./pool_configs/` in here, then:
+
+```
+docker-compose up &
+```
+
+To stop: 
+```
+docker-compose down
+```
+
+To rebuild:
+```
+docker-compose down
+docker rmi knomp_knomp
+git pull
+docker-compose up &
+```
+
 Upgrade
 -------------
 Please be sure to backup your `./coins` and `./pool_configs` directory before upgrading

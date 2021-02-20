@@ -209,6 +209,11 @@ module.exports = function(logger){
 
     var app = express();
 
+    app.use('/robots.txt', function (req, res, next) {
+        res.type('text/plain')
+        res.send("User-agent: *\nDisallow: /workers/*");
+    });
+
     app.use(bodyParser.json());
 
     app.get('/get_page', function(req, res, next){

@@ -4,4 +4,6 @@ config.json
 pool_configs/
 !pool_configs/zclassic_example.json
 coins/
+!coins/komodo.json
 website/piratepool.io/static/*.txt
+redis-data/

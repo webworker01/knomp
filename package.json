@@ -45,7 +45,7 @@
         "nonce": "1.0.4",
         "redis": "2.8.0",
         "request": "^2.88.0",
-        "stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git#new-merkle"
+        "stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git"
     },
     "engines": {
         "node": ">=8.11"
