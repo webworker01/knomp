@@ -228,7 +228,7 @@
                     host: it.portalConfig.website.stratumHost
                 }).replace(/"/g, '&quot;');
             }}
-            <a href="#" class="poolOption" data-info="{{=info}}">{{=pool}}</a>
+            <a href="#" class="poolOption" data-info="{{=info}}">{{=pool}} {{=Object.keys(it.poolsConfigs[pool].ports)[0]}}</a>
             {{ } }}
         </div>
     </div>
