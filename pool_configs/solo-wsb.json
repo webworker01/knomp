@@ -1,0 +1,38 @@
+{
+  "enabled": false,
+  "coin": "wsb.json",
+  "address": "RWEBo1Yp4uGkeXPi1ZGQARfLPkGmoW1MwY",
+  "zAddress": "",
+  "tAddress": "RWEBo1Yp4uGkeXPi1ZGQARfLPkGmoW1MwY",
+  "walletInterval": 1,
+  "rewardRecipients": {},
+  "tlsOptions": { "enabled": false },
+  "paymentProcessing": { "enabled": false, "daemon": false },
+  "trackShares": { "disable": true },
+  "ports": {
+      "3333": {
+          "tls":false,
+          "diff": 0.001,
+          "varDiff": {
+              "minDiff": 0.001,
+              "maxDiff": 10000,
+              "targetTime": 15,
+              "retargetTime": 60,
+              "variancePercent": 30
+          }
+      }
+  },
+  "daemons": [{
+      "host": "127.0.0.1",
+      "port": 52043,
+      "user": "user",
+      "password": "pass"
+  }],
+  "p2p": {
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 52042,
+      "disableTransactions": true
+  },
+  "mposMode": { "enabled": false }
+}
