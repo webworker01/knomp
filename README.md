@@ -17,8 +17,7 @@ Using Docker (easy)
 
 [Install Docker](https://docs.docker.com/engine/install/)
 
-To install (
-
+To install:
 ```
 git clone https://github.com/webworker01/knomp.git
 cd ./knomp
