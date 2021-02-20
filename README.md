@@ -1,11 +1,5 @@
 # Mining stratum for Komodo and Komodo assetchains.
 
-## Requirements
-* node v10+
-* libsodium
-* boost
-* Redis (see https://redis.io/topics/quickstart for details)
-
 ## Differences between this and Z-NOMP
 * This is meant for Komodo mining
 * Founders, Treasury, and other ZEC/ZEN specific stuff is removed
@@ -18,6 +12,7 @@ It will directly use your host system's network so you can connect to the coin d
 
 The ports it listens on must not be in use, this includes 8080 for the website, 6379 for redis and any ports you open for stratums (default is 3333).
 
+### Requirements
 [Install Docker](https://docs.docker.com/engine/install/)
 
 ### Docker Install
@@ -47,6 +42,12 @@ docker-compose up &
 ```
 
 ## Bare metal installation
+### Requirements
+* node v10+
+* libsodium
+* boost
+* Redis (see https://redis.io/topics/quickstart for details)
+
 ### Upgrade
 Please be sure to backup your `./coins` and `./pool_configs` directory before upgrading
 
