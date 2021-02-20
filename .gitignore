@@ -2,8 +2,10 @@ node_modules/
 .idea/
 config.json
 pool_configs/
-!pool_configs/zclassic_example.json
+!pool_configs/komodo.json
+!pool_configs/solo-wsb.json
 coins/
 !coins/komodo.json
+!coins/wsb.json
 website/piratepool.io/static/*.txt
 redis-data/

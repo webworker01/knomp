@@ -1,0 +1,9 @@
+{
+  "name": "WSB",
+  "symbol": "WSB",
+  "algorithm": "equihash",
+  "txfee": 0.0001,
+  "peerMagic": "faa04bca",
+  "sapling": true,
+  "disablecb": true
+}
