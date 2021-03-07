@@ -1,0 +1,18 @@
+{
+  "apps" : [{
+    "name"        : "pool",
+    "script"      : "npm",
+    "args"        : "start",
+    "watch"       : true,
+    "ignore_watch" : [".git/*"],
+    "watch_options": {
+      "followSymlinks": false
+    },
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "env_production" : {
+       "NODE_ENV": "production"
+    }
+  }]
+}
