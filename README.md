@@ -13,14 +13,14 @@
 
 ## Using Docker (easy)
 
-This method sets up 2 docker containers, one with knomp and one with redis. 
+This method sets up 2 docker containers, one with knomp and one with redis.
 
 It will directly use your host system's network so you can connect to the coin daemon without opening up RPC beyond 127.0.0.1.
 
 The ports it listens on must not be in use, this includes 8080 for the website, 6379 for redis and any ports you open for stratums (default is 3333).
 
 ### Requirements
-[Install Docker](https://docs.docker.com/engine/install/)
+[Install Docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/)
 
 ### Docker Install
 ```
@@ -125,8 +125,8 @@ npm start
 If all went well the program should start without error and you should be able to browse to your pool website on your server via port 8080.
 
 ## More Config Information
-### Disable Coinbase Mode 
-This mode uses -pubkey to tell the daemon where the coinbase should be sent, and uses the daemons coinbase transaction rather then having the pool create the coinabse transaction. This enables special coinbase transactions, such as ac_founders and ac_script or new modes with CC vouts in the coinbase not yet created, it will work with all coins, except Full Z support described below. 
+### Disable Coinbase Mode
+This mode uses -pubkey to tell the daemon where the coinbase should be sent, and uses the daemons coinbase transaction rather then having the pool create the coinabse transaction. This enables special coinbase transactions, such as ac_founders and ac_script or new modes with CC vouts in the coinbase not yet created, it will work with all coins, except Full Z support described below.
 
 To enable it, change the value in the `./coins/*.json` to `"disablecb" : true`
 
@@ -153,7 +153,7 @@ You can add an option to your pool_config to have any miners that mine with an i
 ### Full Z Transaction Support (Sprout)
 This is an option to force miners to use a Z address as their username for payouts
 
-In your coins file add: 
+In your coins file add:
 ```
 "privateChain": true,
 "burnFees": true
@@ -166,7 +166,7 @@ In coins/pirate.json file:
 "burnFees": true,
 "sapling": 152855
 ```
-Please note, PIRATE sapling became active around 2018-12-15 01:15UTC at block 152855 Now that this has passed this can just be set to `"sapling":true` 
+Please note, PIRATE sapling became active around 2018-12-15 01:15UTC at block 152855 Now that this has passed this can just be set to `"sapling":true`
 
 In pool_config:
 ```
@@ -188,4 +188,4 @@ Forked from ComputerGenie repo (deleted)
 Released under the GNU General Public License v2
 http://www.gnu.org/licenses/gpl-2.0.html
 
-_Forked from [z-classic/z-nomp](https://github.com/z-classic/z-nomp) which is incorrectly licensed under MIT License - see [zone117x/node-open-mining-portal](https://github.com/zone117x/node-open-mining-portal)_ 
+_Forked from [z-classic/z-nomp](https://github.com/z-classic/z-nomp) which is incorrectly licensed under MIT License - see [zone117x/node-open-mining-portal](https://github.com/zone117x/node-open-mining-portal)_
