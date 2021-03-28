@@ -40,7 +40,8 @@
                         <li><i class="fas fa-link fa-fw" aria-hidden="true"></i> Block Height: <span id="statsNetworkBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.networkBlocks}}</span></li>
                         <li><i class="fas fa-tachometer-alt fa-fw"></i> Network Hash/s: <span id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span></li>
                         <li><i class="fas fa-unlock-alt fa-fw" aria-hidden="true"></i> Difficulty: <span id="statsNetworkDiff{{=pool}}">{{=bigNumber(it.stats.pools[pool].poolStats.networkDiff)}}</span></li>
-                        <li><i class="fas fa-coins fa-fw"></i> Total Supply: <span id="statsNetworkCoins{{=pool}}">{{=(99554304+(it.stats.pools[pool].poolStats.networkBlocks-388884)*128).toLocaleString('en')}}</span></li>
+                        <!-- <li><i class="fas fa-coins fa-fw"></i> Total Supply: <span id="statsNetworkCoins{{=pool}}">{{=(99554304+(it.stats.pools[pool].poolStats.networkBlocks-388884)*128).toLocaleString('en')}}</span></li> -->
+                        <li><i class="fas fa-coins fa-fw"></i> Total Supply: <span id="statsNetworkCoins{{=pool}}">200,000,000</span></li>
                         <li><i class="fas fa-users fa-fw"></i> Node Connections: <span id="statsNetworkConnections{{=pool}}">{{=it.stats.pools[pool].poolStats.networkConnections}}</span></li>
                     </ul>
                 </div>
