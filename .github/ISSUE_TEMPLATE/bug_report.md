@@ -1,6 +1,7 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Please only submit bug reports to this issues tracker, all other submissions
+  will be considered spam.
 title: ''
 labels: ''
 assignees: ''
