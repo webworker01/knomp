@@ -43,7 +43,7 @@
         "node-json-minify": "1.0.0",
         "node-watch": "0.5.8",
         "nonce": "1.0.4",
-        "redis": "4.1.0",
+        "redis": "3.1.1",
         "request": "2.88.2",
         "stratum-pool": "github:webworker01/node-stratum-pool.git"
     },
