@@ -14,9 +14,10 @@ RUN echo "knomp ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/user && \
     chmod 0440 /etc/sudoers.d/user && \
     chown -R knomp:knomp /home/knomp
 
+USER knomp
+
 RUN cd /home/knomp/knomp && npm install
 
-USER knomp
 WORKDIR /home/knomp/knomp
 
 EXPOSE 8080
