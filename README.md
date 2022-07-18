@@ -50,7 +50,7 @@ docker-compose up &
 
 ## Bare metal installation
 ### Requirements
-* node v10+
+* node v10
 * libsodium
 * boost
 * Redis (see https://redis.io/topics/quickstart for details)
