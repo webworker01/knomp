@@ -100,11 +100,11 @@ We need node and npm installed
 # Install NVM
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 
-# Install node 10
-nvm install 10
+# Install node 14
+nvm install 14
 
-# Use node 10
-nvm use 10
+# Use node 14
+nvm use 14
 ```
 
 Now, let's build our stratum and run it. This will install the pool and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
