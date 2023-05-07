@@ -97,8 +97,14 @@ Once all the chains you want on your pool have synced up we can configure the st
 We need node and npm installed
 
 ```shell
-cd ~
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+# Install NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+# Install node 10
+nvm install 10
+
+# Use node 10
+nvm use 10
 ```
 
 Now, let's build our stratum and run it. This will install the pool and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
