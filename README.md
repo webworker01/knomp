@@ -71,7 +71,7 @@ Some initial setup
 ```shell
 # The following packages are needed to build both Komodo and this stratum:
 sudo apt-get update
-sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoconf libtool ncurses-dev unzip git python python-zmq zlib1g-dev wget libcurl4-openssl-dev bsdmainutils automake curl libboost-dev libboost-system-dev libsodium-dev jq redis-server nano -y
+sudo apt-get install build-essential pkg-config libc6-dev m4 g++-multilib autoconf libtool ncurses-dev unzip git python python3-zmq zlib1g-dev wget libcurl4-openssl-dev bsdmainutils automake curl libboost-dev libboost-system-dev libsodium-dev jq redis-server nano -y
 ```
 Now, let's build Komodo
 ```shell
@@ -97,8 +97,14 @@ Once all the chains you want on your pool have synced up we can configure the st
 We need node and npm installed
 
 ```shell
-cd ~
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+# Install NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+# Install node 14
+nvm install 14
+
+# Use node 14
+nvm use 14
 ```
 
 Now, let's build our stratum and run it. This will install the pool and configure it for all the assetchains on your system automatically. It must be run from the same user as the coin deamons were launched, as it pulls the rpcuser/pass from the conf file in the home directory.
